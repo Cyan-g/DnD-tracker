@@ -151,7 +151,11 @@ export default {
       let coins = 0;
       this.sells.forEach((sell) => {
         if (sell.players[playerindex]) {
-          coins += sell.price / this.players.length;
+          let totalPlayers = 0;
+          sell.players.forEach((x) => {
+            if (x) totalPlayers++;
+          });
+          coins += sell.price / totalPlayers;
         }
       });
       return Math.floor(coins);
