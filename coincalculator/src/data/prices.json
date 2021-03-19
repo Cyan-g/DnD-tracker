@@ -1,0 +1,69 @@
+[
+  {
+    "name": "Wing1",
+    "price": 200,
+    "bosses": [
+      { "name": "ValeGuardian", "price": 80 },
+      { "name": "Spirit Run", "price": 70 },
+      { "name": "Gorseval", "price": 80 },
+      { "name": "Sabetha", "price": 100 }
+    ]
+  },
+  {
+    "name": "Wing2",
+    "price": 200,
+    "bosses": [
+      { "name": "Slothasor", "price": 80 },
+      { "name": "Trio", "price": 80 },
+      { "name": "Matthias", "price": 100 }
+    ]
+  },
+  {
+    "name": "Wing3",
+    "price": 200,
+    "bosses": [
+      { "name": "Escort", "price": 80 },
+      { "name": "KeepConstruct", "price": 80 },
+      { "name": "Twisted Castle", "price": 70 },
+      { "name": "Xera", "price": 100 }
+    ]
+  },
+  {
+    "name": "Wing4",
+    "price": 200,
+    "bosses": [
+      { "name": "Cairn", "price": 80 },
+      { "name": "MursaatOverseer", "price": 80 },
+      { "name": "Samarog", "price": 80 },
+      { "name": "Deimos", "price": 100 }
+    ]
+  },
+  {
+    "name": "Wing5",
+    "price": 300,
+    "bosses": [
+      { "name": "SoullessHorror", "price": 80 },
+      { "name": "River", "price": 80 },
+      { "name": "Statues", "price": 80 },
+      { "name": "Dhuum", "price": 140 }
+    ]
+  },
+  {
+    "name": "Wing6",
+    "price": 320,
+    "bosses": [
+      { "name": "ConjuredAmalgemate", "price": 80 },
+      { "name": "Largos", "price": 80 },
+      { "name": "Qadim", "price": 200 }
+    ]
+  },
+  {
+    "name": "Wing7",
+    "price": 320,
+    "bosses": [
+      { "name": "Sabir", "price": 80 },
+      { "name": "Adina", "price": 80 },
+      { "name": "QadimP", "price": 200 }
+    ]
+  }
+]
