@@ -55,17 +55,27 @@
       ></b-row>
 
       <!-- sells -->
-      <b-row v-for="(sell, index) in sells" :key="index">
+      <b-row class="mt-3" v-for="(sell, i) in sells" :key="i">
         <b-col cols="1">
           <b-form-group>
             <label>{{ sell.name }}</label>
             <b-form-input v-model.number="sell.price"></b-form-input>
           </b-form-group>
         </b-col>
-        <b-col v-for="(player, index) in players" :key="index">
-          <b-form-radio size="lg"></b-form-radio>
-        </b-col>
-        <b-col cols="1.5"></b-col>
+        <b-col v-for="(player, j) in sell.players" :key="j">
+          <b-button
+            pill
+            :variant="player ? 'warning' : 'secondary'"
+            @click="toggleValue(i, j)"
+            ><i class="fas fa-coins"></i></b-button
+        ></b-col>
+        <b-col cols="1.5"
+          ><b-button
+            @click="sells.splice(i, 1)"
+            variant="outline-danger"
+            style="margin-right: 3rem; width: 2.5rem"
+            ><i class="fas fa-times"></i></b-button
+        ></b-col>
       </b-row>
       <b-button
         class="mt-2 mb-2"
@@ -84,7 +94,7 @@
             ><b-col v-for="(player, index) in players" :key="index">
               <b-form-input v-model="players[index].name"></b-form-input>
               <b-button class="mt-2" variant="success">{{
-                players[index].coins
+                calcPayment(index) || 0
               }}</b-button>
             </b-col>
             <b-col cols="1.5"
@@ -137,23 +147,40 @@ export default {
     },
   },
   methods: {
+    calcPayment(playerindex) {
+      let coins = 0;
+      this.sells.forEach((sell) => {
+        if (sell.players[playerindex]) {
+          coins += sell.price / this.players.length;
+        }
+      });
+      return Math.floor(coins);
+    },
+    toggleValue(i, j) {
+      this.sells[i].players[j] = !this.sells[i].players[j];
+      this.$forceUpdate();
+    },
     removePlayer() {
-      this.players.pop();
+      if (this.players.length > 1) {
+        this.players.pop();
+        this.sells.forEach((sell) => sell.players.pop());
+      }
     },
     addPlayer() {
       this.players.push({
         name: "Player" + (this.players.length + 1),
         coins: 0,
       });
+      this.sells.forEach((sell) => sell.players.push(true));
     },
     addSells(sell) {
-      this.sells.push({ name: sell.name, price: sell.price });
-      this.players.forEach((player) => {
-        player.boss[this.sells.length] = true;
+      let newSell = { name: sell.name, price: sell.price, players: [] };
+      this.players.forEach(() => {
+        newSell.players.push(true);
       });
+
+      this.sells.push(newSell);
     },
-    removeSell() {},
-    savePrices() {},
   },
   created() {
     let storedPrices = localStorage.getItem("prices");
