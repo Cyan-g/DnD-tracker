@@ -2,6 +2,7 @@
   <div id="app">
     <h1>Coinculator</h1>
     <hr />
+    <!-- discount modal -->
     <b-modal ref="discount-input" title="Add package deal" hide-footer>
       <label>Discounted Price:</label>
       <b-form-input v-model.number="discount"></b-form-input>
@@ -22,7 +23,7 @@
       </b-row>
     </b-modal>
     <!-- add sell form  -->
-    <b-modal hide-footer title="Add a Sell" id="sell-form">
+    <b-modal size="xl" hide-footer title="Add a Sell" id="sell-form">
       <b-form-group v-for="(pack, i) in prices" :key="i">
         <b-card>
           <b-row
@@ -229,9 +230,10 @@ export default {
   name: "App",
   data() {
     return {
-      preDiscount: 0,
+      totalPrice: 0,
+      originalPackage: null,
       discount: 0,
-      version: 1.12,
+      version: 1.21,
       prices: [],
       players: [
         { name: "Player1", coins: 0 },
@@ -255,47 +257,56 @@ export default {
     },
   },
   methods: {
+    clearSells() {
+      this.sells = [];
+      this.discount = 0;
+      this.originalPackage = null;
+      this.totalPrice = 0;
+    },
     discountModal(pack) {
       this.discount = Math.ceil(pack.price * 0.9);
-      this.preDiscount = JSON.parse(JSON.stringify(pack));
+      this.originalPackage = JSON.parse(JSON.stringify(pack));
       this.$refs["discount-input"].show();
-      this.preDiscount.price = 0;
-      this.preDiscount.subsells.forEach((sell) => {
+      this.originalPackage.price = 0;
+      this.originalPackage.subsells.forEach((sell) => {
         if (sell.subsells) {
           sell.subsells.forEach((subsell) => {
-            this.preDiscount.price += subsell.price;
+            this.originalPackage.price += subsell.price;
           });
         } else {
-          this.preDiscount.price += sell.price;
+          this.originalPackage.price += sell.price;
         }
       });
     },
     addSellPackage() {
       this.$refs["discount-input"].hide();
-      //let modifer = this.discount/this.preDiscount.price;
+      let modifier = this.discount / this.originalPackage.price;
 
-      if (this.preDiscount.subsells) {
-        this.preDiscount.subsells.forEach((sell, i) => {
+      if (this.originalPackage.subsells) {
+        this.originalPackage.subsells.forEach((sell) => {
           if (sell.subsells) {
-            sell.subsells.forEach((subsell, j) => {
-              let modifier =
-                this.preDiscount.subsells[i].subsells[j].price /
-                this.preDiscount.price;
-
+            sell.subsells.forEach((subsell) => {
               this.addSells({
                 name: subsell.name,
-                price: Math.ceil(this.discount * modifier),
+                price: Math.round(subsell.price * modifier),
               });
             });
           } else {
-            let modifier =
-              this.preDiscount.subsells[i].price / this.preDiscount.price;
             this.addSells({
               name: sell.name,
-              price: Math.ceil(this.discount * modifier),
+              price: Math.round(sell.price * modifier),
             });
           }
         });
+      }
+      let total = 0;
+      this.sells.forEach((x) => {
+        total += x.price;
+      });
+
+      if (this.totalPrice > 0 && this.totalPrice != total && this.sells[-1]) {
+        // equalize with discount
+        this.sells[-1].price -= total - this.totalPrice;
       }
     },
     calcLeftover() {
@@ -307,6 +318,7 @@ export default {
       this.players.forEach((x) => {
         playerTotal += x.coins;
       });
+      this.totalPrice = total;
       return { total: total, rest: total - playerTotal };
     },
     calcPayment(playerindex) {

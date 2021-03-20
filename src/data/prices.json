@@ -1,20 +1,20 @@
 [
   {
-    "name": "Fullclear",
+    "name": "Full-Clear",
     "price": 1200,
     "subsells": [
       {
-        "name": "Wing1",
+        "name": "Spirit-Vale",
         "price": 200,
         "subsells": [
-          { "name": "ValeGuardian", "price": 80 },
+          { "name": "Vale Guardian", "price": 80 },
           { "name": "Spirit Run", "price": 70 },
           { "name": "Gorseval", "price": 80 },
           { "name": "Sabetha", "price": 100 }
         ]
       },
       {
-        "name": "Wing2",
+        "name": "Salvation-Pass",
         "price": 200,
         "subsells": [
           { "name": "Slothasor", "price": 80 },
@@ -23,46 +23,46 @@
         ]
       },
       {
-        "name": "Wing3",
+        "name": "Stronghold-of-the-Faithfull",
         "price": 200,
         "subsells": [
           { "name": "Escort", "price": 80 },
-          { "name": "KeepConstruct", "price": 80 },
+          { "name": "Keep Construct", "price": 80 },
           { "name": "Twisted Castle", "price": 70 },
           { "name": "Xera", "price": 100 }
         ]
       },
       {
-        "name": "Wing4",
+        "name": "Bastion-of-the-Penitent",
         "price": 200,
         "subsells": [
           { "name": "Cairn", "price": 80 },
-          { "name": "MursaatOverseer", "price": 80 },
+          { "name": "Mursaat Overseer", "price": 80 },
           { "name": "Samarog", "price": 80 },
           { "name": "Deimos", "price": 100 }
         ]
       },
       {
-        "name": "Wing5",
+        "name": "Hall-of-Chains",
         "price": 300,
         "subsells": [
-          { "name": "SoullessHorror", "price": 80 },
+          { "name": "Soulless Horror", "price": 80 },
           { "name": "River", "price": 80 },
           { "name": "Statues", "price": 80 },
           { "name": "Dhuum", "price": 140 }
         ]
       },
       {
-        "name": "Wing6",
+        "name": "Mythwright-Gambit",
         "price": 320,
         "subsells": [
-          { "name": "ConjuredAmalgemate", "price": 80 },
+          { "name": "Conjured Amalgemate", "price": 80 },
           { "name": "Largos", "price": 80 },
           { "name": "Qadim", "price": 200 }
         ]
       },
       {
-        "name": "Wing7",
+        "name": "Key-of-Ahdashim",
         "price": 320,
         "subsells": [
           { "name": "Sabir", "price": 80 },
