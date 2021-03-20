@@ -144,7 +144,7 @@
         ></b-col>
         <b-col cols="1.5"
           ><b-button
-            @click="sells.splice(i, 1)"
+            @click="removeSell(i)"
             variant="outline-danger"
             style="margin-right: 3rem; width: 2.5rem"
             ><i class="fas fa-times"></i></b-button
@@ -230,7 +230,6 @@ export default {
   name: "App",
   data() {
     return {
-      totalPrice: 0,
       originalPackage: null,
       discount: 0,
       version: 1.21,
@@ -261,10 +260,9 @@ export default {
       this.sells = [];
       this.discount = 0;
       this.originalPackage = null;
-      this.totalPrice = 0;
     },
     discountModal(pack) {
-      this.discount = Math.ceil(pack.price * 0.9);
+      this.discount = Math.ceil(pack.price);
       this.originalPackage = JSON.parse(JSON.stringify(pack));
       this.$refs["discount-input"].show();
       this.originalPackage.price = 0;
@@ -282,31 +280,37 @@ export default {
       this.$refs["discount-input"].hide();
       let modifier = this.discount / this.originalPackage.price;
 
+      let oldTotal = 0;
+      this.sells.forEach((x) => {
+        oldTotal += x.price;
+      });
+
       if (this.originalPackage.subsells) {
         this.originalPackage.subsells.forEach((sell) => {
           if (sell.subsells) {
             sell.subsells.forEach((subsell) => {
               this.addSells({
                 name: subsell.name,
-                price: Math.round(subsell.price * modifier),
+                price: Math.ceil(subsell.price * modifier),
               });
             });
           } else {
             this.addSells({
               name: sell.name,
-              price: Math.round(sell.price * modifier),
+              price: Math.ceil(sell.price * modifier),
             });
           }
         });
       }
-      let total = 0;
+
+      let newTotal = 0;
       this.sells.forEach((x) => {
-        total += x.price;
+        newTotal += x.price;
       });
 
-      if (this.totalPrice > 0 && this.totalPrice != total && this.sells[-1]) {
-        // equalize with discount
-        this.sells[-1].price -= total - this.totalPrice;
+      let delta = newTotal - (this.discount + oldTotal);
+      for (let i = 0; i < delta; i++) {
+        this.sells[i].price--;
       }
     },
     calcLeftover() {
@@ -318,7 +322,6 @@ export default {
       this.players.forEach((x) => {
         playerTotal += x.coins;
       });
-      this.totalPrice = total;
       return { total: total, rest: total - playerTotal };
     },
     calcPayment(playerindex) {
@@ -360,6 +363,10 @@ export default {
       });
 
       this.sells.push(newSell);
+    },
+    removeSell(index) {
+      this.totalPrice -= this.sells[index].price;
+      this.sells.splice(index, 1);
     },
   },
   created() {
