@@ -168,14 +168,14 @@
                 <img
                   class="ml-1"
                   style="border-radius: 50%; height: 1.5rem"
-                  src="Mystic_Coin.png"
+                  src="./assets/Mystic_Coin.png"
               /></b-row>
               <b-row
                 >Rest: {{ calcLeftover().rest }}
                 <img
                   class="ml-1"
                   style="border-radius: 50%; height: 1.5rem"
-                  src="Mystic_Coin.png"/></b-row></b-col
+                  src="./assets/Mystic_Coin.png"/></b-row></b-col
             ><b-col v-for="(player, index) in players" :key="index">
               <b-form-input v-model="players[index].name"></b-form-input>
               <div class="mt-2">
@@ -185,7 +185,7 @@
                 <img
                   class="mb-3 ml-1"
                   style="border-radius: 50%; height: 2rem"
-                  src="Mystic_Coin.png"
+                  src="./assets/Mystic_Coin.png"
                 />
               </div>
             </b-col>
@@ -216,7 +216,8 @@
         size="sm"
         pill
         href="https://discordapp.com/users/294831845114380290"
-        ><img style="height: 1rem" src="discord.png" /> Cyan#2360</b-button
+        ><img style="height: 1rem" src="./assets/discord.png" />
+        Cyan#2360</b-button
       >
     </footer>
   </div>
