@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <h1>EU-CoinCalculator</h1>
+    <h1>Coinculator</h1>
     <!-- sell form  -->
     <b-modal hide-footer title="Add a Sell" id="sell-form">
       <b-form-group v-for="(wing, i) in prices" :key="i">
@@ -14,23 +14,33 @@
             ></b-col>
             <b-col cols="2">
               <b-button variant="outline-success" @click="addSells(wing)"
-                ><i class="fas fa-plus"></i></b-button></b-col
-          ></b-row>
-          <hr />
-          <b-row class="ml-2 mt-2" v-for="(boss, j) in wing.bosses" :key="j">
-            <b-col cols="4"
-              ><label>{{ wing.bosses[j].name }}</label></b-col
-            >
-            <b-col cols="3"
-              ><b-form-input
-                v-model.number="prices[i].bosses[j].price"
-              ></b-form-input
-            ></b-col>
-            <b-col cols="3">
-              <b-button variant="outline-success" @click="addSells(boss)"
                 ><i class="fas fa-plus"></i></b-button
             ></b-col>
-          </b-row>
+            <b-col cols="1"
+              ><b-button v-b-toggle="String(i)"
+                ><i class="fas fa-chevron-down"></i></b-button></b-col
+          ></b-row>
+          <hr />
+          <b-collapse
+            :id="String(i)"
+            class="ml-2 mt-2"
+            v-for="(boss, j) in wing.bosses"
+            :key="j"
+          >
+            <b-row
+              ><b-col cols="4"
+                ><label>{{ wing.bosses[j].name }}</label></b-col
+              >
+              <b-col cols="3"
+                ><b-form-input
+                  v-model.number="prices[i].bosses[j].price"
+                ></b-form-input
+              ></b-col>
+              <b-col cols="3">
+                <b-button variant="outline-success" @click="addSells(boss)"
+                  ><i class="fas fa-plus"></i></b-button></b-col
+            ></b-row>
+          </b-collapse>
         </b-card>
       </b-form-group>
     </b-modal>
@@ -90,12 +100,32 @@
       <b-row
         ><b-col
           ><b-row
-            ><b-col cols="1">Payment:</b-col
+            ><b-col cols="1">
+              <b-row
+                >Total: {{ calcLeftover().total }}
+                <img
+                  class="ml-1"
+                  style="border-radius: 50%; height: 1.5rem"
+                  src="./assets/Mystic_Coin.png"
+              /></b-row>
+              <b-row
+                >Rest: {{ calcLeftover().rest }}
+                <img
+                  class="ml-1"
+                  style="border-radius: 50%; height: 1.5rem"
+                  src="./assets/Mystic_Coin.png"/></b-row></b-col
             ><b-col v-for="(player, index) in players" :key="index">
               <b-form-input v-model="players[index].name"></b-form-input>
-              <b-button class="mt-2" variant="success">{{
-                calcPayment(index) || 0
-              }}</b-button>
+              <div class="mt-2">
+                <span style="font-size: 2rem">
+                  {{ calcPayment(index) || 0 }}</span
+                >
+                <img
+                  class="mb-3 ml-1"
+                  style="border-radius: 50%; height: 2rem"
+                  src="./assets/Mystic_Coin.png"
+                />
+              </div>
             </b-col>
             <b-col cols="1.5"
               ><b-button
@@ -124,6 +154,7 @@ export default {
   name: "App",
   data() {
     return {
+      version: 1,
       prices: [],
       players: [
         { name: "Player1", coins: 0 },
@@ -147,6 +178,17 @@ export default {
     },
   },
   methods: {
+    calcLeftover() {
+      let total = 0;
+      let playerTotal = 0;
+      this.sells.forEach((x) => {
+        total += x.price;
+      });
+      this.players.forEach((x) => {
+        playerTotal += x.coins;
+      });
+      return { total: total, rest: total - playerTotal };
+    },
     calcPayment(playerindex) {
       let coins = 0;
       this.sells.forEach((sell) => {
@@ -158,6 +200,7 @@ export default {
           coins += sell.price / totalPlayers;
         }
       });
+      this.players[playerindex].coins = Math.floor(coins);
       return Math.floor(coins);
     },
     toggleValue(i, j) {
@@ -188,9 +231,11 @@ export default {
   },
   created() {
     let storedPrices = localStorage.getItem("prices");
-    if (!storedPrices) {
+    let version = JSON.parse(localStorage.getItem("version"));
+    if (!storedPrices || !version || version < this.version) {
       this.prices = priceJSON;
       localStorage.setItem("prices", JSON.stringify(this.prices));
+      localStorage.setItem("version", JSON.stringify(this.version));
     } else {
       this.prices = JSON.parse(storedPrices);
     }
@@ -204,7 +249,11 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  color: white;
+  background-color: #2c3e50;
   margin-top: 60px;
+}
+#app > * {
+  background-color: #304152;
 }
 </style>
