@@ -168,14 +168,18 @@
                 <img
                   class="ml-1"
                   style="border-radius: 50%; height: 1.5rem"
-                  src="https://cyan-g.github.io/EU-Coins/Mystic_Coin.34ceded9.png"
+                  :src="
+                    'https://cyan-g.github.io/EU-Coins/Mystic_Coin.34ceded9.png'
+                  "
               /></b-row>
               <b-row
                 >Rest: {{ calcLeftover().rest }}
                 <img
                   class="ml-1"
                   style="border-radius: 50%; height: 1.5rem"
-                  src="https://cyan-g.github.io/EU-Coins/Mystic_Coin.34ceded9.png"/></b-row></b-col
+                  :src="
+                    'https://cyan-g.github.io/EU-Coins/Mystic_Coin.34ceded9.png'
+                  "/></b-row></b-col
             ><b-col v-for="(player, index) in players" :key="index">
               <b-form-input v-model="players[index].name"></b-form-input>
               <div class="mt-2">
@@ -185,7 +189,9 @@
                 <img
                   class="mb-3 ml-1"
                   style="border-radius: 50%; height: 2rem"
-                  src="https://cyan-g.github.io/EU-Coins/Mystic_Coin.34ceded9.png"
+                  :src="
+                    'https://cyan-g.github.io/EU-Coins/Mystic_Coin.34ceded9.png'
+                  "
                 />
               </div>
             </b-col>
@@ -218,7 +224,7 @@
         href="https://discordapp.com/users/294831845114380290"
         ><img
           style="height: 1rem"
-          src="https://cyan-g.github.io/EU-Coins/discord.1f9972ba.png"
+          :src="'https://cyan-g.github.io/EU-Coins/discord.1f9972ba.png'"
         />
         Cyan#2360</b-button
       >
