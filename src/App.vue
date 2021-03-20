@@ -128,6 +128,14 @@
       ></b-row>
 
       <!-- sells -->
+      <b-button
+        v-if="sells.length > 0"
+        class="mt-2 mb-2"
+        pill
+        variant="outline-danger"
+        @click="clearSells()"
+        ><i class="fas fa-times"></i> Clear</b-button
+      >
       <b-row class="mt-3" v-for="(sell, i) in sells" :key="i">
         <b-col cols="1">
           <b-form-group>
@@ -151,7 +159,6 @@
         ></b-col> </b-row
       ><b-button
         class="mt-2 mb-2"
-        style="margin-left:1rem"
         pill
         variant="outline-success"
         v-b-modal="'sell-form'"
