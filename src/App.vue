@@ -1,9 +1,9 @@
 <template>
   <div id="app">
-    <h1>Coinculator</h1>
+    <b-card> <h1>Coinculator</h1></b-card>
     <hr />
     <!-- discount modal -->
-    <b-modal ref="discount-input" title="Add package deal" hide-footer>
+    <b-modal ref="discount-input" title="Add discounted deal" hide-footer>
       <label>Discounted Price:</label>
       <b-form-input v-model.number="discount"></b-form-input>
       <hr />
@@ -22,6 +22,7 @@
         >
       </b-row>
     </b-modal>
+
     <!-- add sell form  -->
     <b-modal size="xl" hide-footer title="Add a Sell" id="sell-form">
       <b-form-group v-for="(pack, i) in prices" :key="i">
@@ -31,7 +32,10 @@
               ><label>{{ pack.name }}</label></b-col
             >
             <b-col cols="3"
-              ><b-form-input v-model.number="prices[i].price"></b-form-input
+              ><b-form-input
+                :disabled="!editMode"
+                v-model.number="prices[i].price"
+              ></b-form-input
             ></b-col>
             <b-col cols="1">
               <b-button variant="outline-success" @click="addSells(pack)"
@@ -46,58 +50,83 @@
             ></b-col>
             <b-col cols="1"
               ><b-button v-if="pack.subsells" v-b-toggle="pack.name + String(i)"
-                ><i class="fas fa-chevron-down"></i></b-button></b-col
+                ><i class="fas fa-chevron-down"></i></b-button
+            ></b-col>
+            <b-col cols="1"
+              ><b-button
+                v-if="editMode"
+                @click="prices.splice(i, 1)"
+                variant="outline-danger"
+                ><i class="fas fa-times"></i></b-button></b-col
           ></b-row>
           <div v-if="pack.subsells">
-            <hr />
             <b-collapse
               :id="pack.name + String(i)"
               class="ml-2 mt-2"
               v-for="(sell, j) in pack.subsells"
               :key="j"
-            >
+              ><hr />
               <b-row
                 ><b-col cols="4"
                   ><label>{{ pack.subsells[j].name }}</label></b-col
                 >
                 <b-col cols="3"
                   ><b-form-input
+                    :disabled="!editMode"
                     v-model.number="prices[i].subsells[j].price"
                   ></b-form-input
                 ></b-col>
-                <b-col cols="3">
+                <b-col cols="1">
                   <b-button variant="outline-success" @click="addSells(sell)"
-                    ><i class="fas fa-plus"></i></b-button></b-col
-                ><b-col
+                    ><i class="fas fa-plus"></i></b-button
+                ></b-col>
+
+                <b-col cols="2"
                   ><b-button
+                    variant="outline-warning"
+                    class="ml-2"
+                    @click="discountModal(sell)"
+                    ><i class="fas fa-gift"></i></b-button
+                ></b-col>
+
+                <b-col>
+                  <b-button
                     v-if="sell.subsells"
                     v-b-toggle="sell.name + String(j)"
                     ><i class="fas fa-chevron-down"></i></b-button></b-col
               ></b-row>
               <div v-if="sell.subsells">
-                <hr />
-                <b-collapse
-                  :id="sell.name + String(j)"
-                  class="ml-2 mt-2"
-                  v-for="(boss, k) in sell.subsells"
-                  :key="k"
-                >
+                <b-collapse :id="sell.name + String(j)"
+                  ><hr />
                   <b-row
+                    class="ml-2 mt-2"
+                    v-for="(boss, k) in sell.subsells"
+                    :key="k"
                     ><b-col cols="1"></b-col
                     ><b-col cols="4"
                       ><label>{{ sell.subsells[k].name }}</label></b-col
                     >
                     <b-col cols="3"
                       ><b-form-input
+                        :disabled="!editMode"
                         v-model.number="prices[i].subsells[j].subsells[k].price"
                       ></b-form-input
                     ></b-col>
-                    <b-col cols="3">
+                    <b-col cols="1">
                       <b-button
                         variant="outline-success"
                         @click="addSells(boss)"
-                        ><i class="fas fa-plus"></i></b-button></b-col
-                  ></b-row>
+                        ><i class="fas fa-plus"></i></b-button
+                    ></b-col>
+
+                    <b-col cols="2"
+                      ><b-button
+                        variant="outline-warning"
+                        class="ml-2"
+                        @click="discountModal(boss)"
+                        ><i class="fas fa-gift"></i></b-button
+                    ></b-col>
+                  </b-row>
                 </b-collapse>
 
                 <hr />
@@ -106,15 +135,175 @@
           </div>
         </b-card>
       </b-form-group>
+      <b-row
+        ><b-col cols="9"></b-col
+        ><b-col
+          ><b-button
+            variant="outline-success"
+            @click="$refs['new-package'].show()"
+            ><i class="fas fa-plus"></i> New</b-button
+          ></b-col
+        >
+        <b-col
+          ><b-button variant="outline-warning" @click="editMode = !editMode"
+            ><i class="fas fa-pen"></i> </b-button
+        ></b-col>
+      </b-row>
     </b-modal>
+
+    <!-- new package form  -->
+    <b-modal
+      ref="new-package"
+      id="new-package"
+      hide-footer
+      title="Add a new package"
+    >
+      <b-card>
+        <b-row>
+          <b-col cols="5">
+            <b-form-input v-model.trim="newSellPackage.name"></b-form-input>
+          </b-col>
+          <b-col cols="2">
+            <b-form-input v-model.number="newSellPackage.price"></b-form-input>
+          </b-col>
+          <b-col cols="1">
+            <b-col cols="1"
+              ><b-button v-b-toggle="newSellPackage.name + 'x1'"
+                ><i class="fas fa-chevron-down"></i></b-button
+            ></b-col>
+          </b-col>
+        </b-row>
+        <hr />
+        <b-collapse :id="newSellPackage.name + 'x1'">
+          <b-row
+            class="mt-2"
+            v-for="(sell, i) in newSellPackage.subsells"
+            :key="i"
+          >
+            <b-col cols="1"></b-col>
+            <b-col cols="5">
+              <b-form-input
+                v-model.trim="newSellPackage.subsells[i].name"
+              ></b-form-input>
+            </b-col>
+            <b-col cols="2">
+              <b-form-input
+                v-model.number="newSellPackage.subsells[i].price"
+              ></b-form-input>
+            </b-col>
+            <b-col cols="1" class="mr-1"
+              ><b-button
+                variant="outline-danger"
+                @click="newSellPackage.subsells.splice(i, 1)"
+                ><i class="fas fa-times"></i></b-button
+            ></b-col>
+            <b-col cols="1"
+              ><b-button
+                v-b-toggle="newSellPackage.subsells[i].name + String(i) + 'x1'"
+                ><i class="fas fa-chevron-down"></i></b-button
+            ></b-col>
+            <hr />
+            <b-collapse
+              :id="newSellPackage.subsells[i].name + String(i) + 'x1'"
+            >
+              <hr />
+              <b-col
+                ><b-row
+                  class="mt-2"
+                  v-for="(sells, j) in newSellPackage.subsells[i].subsells"
+                  :key="j"
+                >
+                  <b-col cols="2"></b-col>
+                  <b-col cols="5">
+                    <b-form-input
+                      v-model.trim="newSellPackage.subsells[i].subsells[j].name"
+                    ></b-form-input>
+                  </b-col>
+                  <b-col cols="2">
+                    <b-form-input
+                      v-model.number="
+                        newSellPackage.subsells[i].subsells[j].price
+                      "
+                    ></b-form-input>
+                  </b-col>
+                  <b-col cols="1" class="mr-1"
+                    ><b-button
+                      variant="outline-danger"
+                      @click="newSellPackage.subsells[i].subsells.splice(j, 1)"
+                      ><i class="fas fa-times"></i></b-button
+                  ></b-col>
+                </b-row>
+                <b-row
+                  ><b-col cols="1"></b-col>
+                  <b-col>
+                    <b-button
+                      class="mt-2"
+                      pill
+                      variant="outline-success"
+                      @click="
+                        newSellPackage.subsells[i].subsells.push({
+                          name: '',
+                          price: 0,
+                        })
+                      "
+                      ><i class="fas fa-plus"></i></b-button></b-col></b-row
+              ></b-col>
+
+              <hr />
+            </b-collapse>
+          </b-row>
+          <hr />
+          <b-row>
+            <b-col cols="10"></b-col>
+            <b-col
+              ><b-button
+                class="mt-2"
+                pill
+                variant="outline-success"
+                @click="
+                  newSellPackage.subsells.push({
+                    name: '',
+                    price: 0,
+                    subsells: [],
+                  })
+                "
+                ><i class="fas fa-plus"></i></b-button
+            ></b-col>
+          </b-row>
+        </b-collapse>
+
+        <b-row class="mt-2">
+          <b-col cols="8"
+            ><b-form-invalid-feedback
+              v-if="$v.newSellPackage.$invalid"
+              class="text-danger d-block mt-1"
+              >All Sell Names must be 3 Symbols or more</b-form-invalid-feedback
+            ></b-col
+          >
+          <b-button
+            variant="outline-secondary"
+            @click="$refs['new-package'].hide()"
+            >Cancel</b-button
+          >
+          <b-button
+            class="ml-2"
+            :disabled="$v.newSellPackage.$invalid"
+            variant="outline-success"
+            @click="createSellPackage()"
+            >Add</b-button
+          >
+        </b-row>
+      </b-card>
+    </b-modal>
+
+    <!-- players -->
     <b-card>
-      <!-- players -->
       <b-row
         ><b-col
           ><b-row
             ><b-col cols="1">Players:</b-col
             ><b-col v-for="(player, index) in players" :key="index">
-              <b-form-input v-model="players[index].name"></b-form-input>
+              <b-form-input v-model.trim="players[index].name"></b-form-input>
             </b-col>
             <b-col cols="1.5"
               ><b-button variant="outline-danger" @click="removePlayer()"
@@ -188,7 +377,7 @@
                     'https://cyan-g.github.io/EU-Coins/Mystic_Coin.34ceded9.png'
                   "/></b-row></b-col
             ><b-col v-for="(player, index) in players" :key="index">
-              <b-form-input v-model="players[index].name"></b-form-input>
+              <b-form-input v-model.trim="players[index].name"></b-form-input>
               <div class="mt-2">
                 <span style="font-size: 2rem">
                   {{ calcPayment(index) || 0 }}</span
@@ -219,33 +408,39 @@
           </b-row> </b-col
       ></b-row>
     </b-card>
+
     <!-- footer -->
     <hr />
-    <footer id="smallprint" class="pb-2 pt-2">
-      v:{{ version }}
-      <br />
-      Bugs? Suggestions? Message me
-      <b-button
-        size="sm"
-        pill
-        href="https://discordapp.com/users/294831845114380290"
-        ><img
-          style="height: 1rem"
-          :src="'https://cyan-g.github.io/EU-Coins/discord.1f9972ba.png'"
-        />
-        Cyan#2360</b-button
-      >
-    </footer>
+    <b-card>
+      <footer id="smallprint" class="pb-2 pt-2">
+        v:{{ version }}
+        <br />
+        Bugs? Suggestions? Message me
+        <b-button
+          size="sm"
+          pill
+          href="https://discordapp.com/users/294831845114380290"
+          ><img
+            style="height: 1rem"
+            :src="'https://cyan-g.github.io/EU-Coins/discord.1f9972ba.png'"
+          />
+          Cyan#2360</b-button
+        >
+      </footer></b-card
+    >
   </div>
 </template>
 
 <script>
 import priceJSON from "./data/prices.json";
+import { required, minLength } from "vuelidate/lib/validators";
 
 export default {
   name: "App",
   data() {
     return {
+      editMode: false,
+      newSellPackage: { name: "", price: 0, subsells: [] },
       originalPackage: null,
       discount: 0,
       version: 1.21,
@@ -263,6 +458,30 @@ export default {
       sells: [],
     };
   },
+  validations: {
+    newSellPackage: {
+      name: {
+        required,
+        minLength: minLength(3),
+      },
+      subsells: {
+        $each: {
+          name: {
+            required,
+            minLength: minLength(3),
+          },
+          subsells: {
+            $each: {
+              name: {
+                required,
+                minLength: minLength(3),
+              },
+            },
+          },
+        },
+      },
+    },
+  },
   watch: {
     prices: {
       handler() {
@@ -272,6 +491,11 @@ export default {
     },
   },
   methods: {
+    createSellPackage() {
+      this.$refs["new-package"].hide();
+      this.prices.push(this.newSellPackage);
+      this.newSellPackage = { name: "", price: 0, subsells: [] };
+    },
     clearSells() {
       this.sells = [];
       this.discount = 0;
@@ -330,7 +554,7 @@ export default {
 
       let delta = newTotal - (this.discount + oldTotal);
       for (let i = 0; i < delta; i++) {
-        this.sells[this.sells.length - i].price--;
+        this.sells[this.sells.length - 1 - i].price--;
       }
     },
     calcLeftover() {

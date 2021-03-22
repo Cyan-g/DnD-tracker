@@ -1,73 +1,73 @@
 [
   {
     "name": "Full-Clear",
-    "price": 1200,
+    "price": 1400,
     "subsells": [
       {
         "name": "Spirit-Vale",
         "price": 200,
         "subsells": [
-          { "name": "Vale Guardian", "price": 80 },
-          { "name": "Spirit Run", "price": 70 },
-          { "name": "Gorseval", "price": 80 },
-          { "name": "Sabetha", "price": 100 }
+          { "name": "Vale Guardian", "price": 70 },
+          { "name": "Spirit Run", "price": 40 },
+          { "name": "Gorseval", "price": 70 },
+          { "name": "Sabetha", "price": 80 }
         ]
       },
       {
         "name": "Salvation-Pass",
         "price": 200,
         "subsells": [
-          { "name": "Slothasor", "price": 80 },
-          { "name": "Trio", "price": 80 },
-          { "name": "Matthias", "price": 100 }
+          { "name": "Slothasor", "price": 70 },
+          { "name": "Trio", "price": 70 },
+          { "name": "Matthias", "price": 80 }
         ]
       },
       {
         "name": "Stronghold-of-the-Faithfull",
         "price": 200,
         "subsells": [
-          { "name": "Escort", "price": 80 },
-          { "name": "Keep Construct", "price": 80 },
-          { "name": "Twisted Castle", "price": 70 },
-          { "name": "Xera", "price": 100 }
+          { "name": "Escort", "price": 70 },
+          { "name": "Keep Construct", "price": 70 },
+          { "name": "Twisted Castle", "price": 40 },
+          { "name": "Xera", "price": 80 }
         ]
       },
       {
         "name": "Bastion-of-the-Penitent",
         "price": 200,
         "subsells": [
-          { "name": "Cairn", "price": 80 },
-          { "name": "Mursaat Overseer", "price": 80 },
-          { "name": "Samarog", "price": 80 },
-          { "name": "Deimos", "price": 100 }
+          { "name": "Cairn", "price": 70 },
+          { "name": "Mursaat Overseer", "price": 70 },
+          { "name": "Samarog", "price": 70 },
+          { "name": "Deimos", "price": 80 }
         ]
       },
       {
         "name": "Hall-of-Chains",
-        "price": 300,
+        "price": 250,
         "subsells": [
           { "name": "Soulless Horror", "price": 80 },
-          { "name": "River", "price": 80 },
-          { "name": "Statues", "price": 80 },
-          { "name": "Dhuum", "price": 140 }
+          { "name": "River", "price": 40 },
+          { "name": "Statues", "price": 60 },
+          { "name": "Dhuum", "price": 120 }
         ]
       },
       {
         "name": "Mythwright-Gambit",
-        "price": 320,
+        "price": 250,
         "subsells": [
-          { "name": "Conjured Amalgemate", "price": 80 },
-          { "name": "Largos", "price": 80 },
-          { "name": "Qadim", "price": 200 }
+          { "name": "Conjured Amalgemate", "price": 70 },
+          { "name": "Largos", "price": 70 },
+          { "name": "Qadim", "price": 120 }
         ]
       },
       {
         "name": "Key-of-Ahdashim",
-        "price": 320,
+        "price": 250,
         "subsells": [
-          { "name": "Sabir", "price": 80 },
+          { "name": "Sabir", "price": 70 },
           { "name": "Adina", "price": 80 },
-          { "name": "QadimP", "price": 200 }
+          { "name": "QadimP", "price": 120 }
         ]
       }
     ]
