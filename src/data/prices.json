@@ -74,7 +74,7 @@
   },
   {
     "name": "Achievements & CM's",
-    "price": 1400,
+    "price": 0,
     "subsells": [
       {
         "name": "Eternal",
@@ -116,10 +116,10 @@
         "name": "Crystalline Heart",
         "price": 400,
         "subsells": [
-          { "name": "Cairn", "price": 130 },
-          { "name": "Mursaat Overseer", "price": 70 },
-          { "name": "Samarog", "price": 70 },
-          { "name": "Deimos", "price": 130 }
+          { "name": "Cairn Heart", "price": 130 },
+          { "name": "Mursaat Overseer Heart", "price": 70 },
+          { "name": "Samarog Heart", "price": 70 },
+          { "name": "Deimos Heart", "price": 130 }
         ]
       },
       {

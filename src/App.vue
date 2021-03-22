@@ -60,10 +60,12 @@
             <b-col cols="1"
               ><b-button
                 v-if="editMode"
-                @click="prices.splice(i, 1)"
+                @click="deletePackage(i)"
                 variant="outline-danger"
                 ><i class="fas fa-times"></i></b-button></b-col
           ></b-row>
+
+          <!-- subsells -->
           <div v-if="pack.subsells">
             <b-collapse
               :id="pack.name.replace(/\s/g, '') + String(i)"
@@ -102,7 +104,14 @@
                     v-if="sell.subsells"
                     v-b-toggle="sell.name.replace(/\s/g, '') + String(j)"
                     ><i class="fas fa-chevron-down"></i></b-button></b-col
+                ><b-col cols="1"
+                  ><b-button
+                    v-if="editMode"
+                    @click="prices[i].subsells.splice(j, 1)"
+                    variant="outline-danger"
+                    ><i class="fas fa-times"></i></b-button></b-col
               ></b-row>
+              <!-- single bosses -->
               <div v-if="sell.subsells">
                 <b-collapse :id="sell.name.replace(/\s/g, '') + String(j)"
                   ><hr />
@@ -135,10 +144,16 @@
                         @click="discountModal(boss)"
                         ><i class="fas fa-gift"></i></b-button
                     ></b-col>
+
+                    <b-col
+                      ><b-button
+                        v-if="editMode"
+                        @click="prices[i].subsells[j].subsells.splice(k, 1)"
+                        variant="outline-danger"
+                        ><i class="fas fa-times"></i></b-button
+                    ></b-col>
                   </b-row>
                 </b-collapse>
-
-                <hr />
               </div>
             </b-collapse>
           </div>
@@ -510,6 +525,13 @@ export default {
     },
   },
   methods: {
+    deletePackage(index) {
+      this.$bvModal.msgBoxConfirm(`Delete Package?`).then((res) => {
+        if (res) {
+          this.prices.splice(index, 1);
+        }
+      });
+    },
     createSellPackage() {
       this.$refs["new-package"].hide();
       this.prices.push(this.newSellPackage);
