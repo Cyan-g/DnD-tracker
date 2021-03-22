@@ -317,7 +317,11 @@ export default {
             });
           }
         });
-      }
+      } else
+        this.addSells({
+          name: this.originalPackage.name,
+          price: this.originalPackage.price * modifier,
+        });
 
       let newTotal = 0;
       this.sells.forEach((x) => {
@@ -326,7 +330,7 @@ export default {
 
       let delta = newTotal - (this.discount + oldTotal);
       for (let i = 0; i < delta; i++) {
-        this.sells[i].price--;
+        this.sells[this.sells.length - i].price--;
       }
     },
     calcLeftover() {
