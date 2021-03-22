@@ -38,7 +38,10 @@
               ></b-form-input
             ></b-col>
             <b-col cols="1">
-              <b-button variant="outline-success" @click="addSells(pack)"
+              <b-button
+                v-if="pack.price > 0"
+                variant="outline-success"
+                @click="addSells(pack)"
                 ><i class="fas fa-plus"></i></b-button
             ></b-col>
             <b-col cols="2"
@@ -49,7 +52,9 @@
                 ><i class="fas fa-gift"></i></b-button
             ></b-col>
             <b-col cols="1"
-              ><b-button v-if="pack.subsells" v-b-toggle="pack.name + String(i)"
+              ><b-button
+                v-if="pack.subsells"
+                v-b-toggle="pack.name.replace(/\s/g, '') + String(i)"
                 ><i class="fas fa-chevron-down"></i></b-button
             ></b-col>
             <b-col cols="1"
@@ -61,7 +66,7 @@
           ></b-row>
           <div v-if="pack.subsells">
             <b-collapse
-              :id="pack.name + String(i)"
+              :id="pack.name.replace(/\s/g, '') + String(i)"
               class="ml-2 mt-2"
               v-for="(sell, j) in pack.subsells"
               :key="j"
@@ -77,7 +82,10 @@
                   ></b-form-input
                 ></b-col>
                 <b-col cols="1">
-                  <b-button variant="outline-success" @click="addSells(sell)"
+                  <b-button
+                    v-if="sell.price > 0"
+                    variant="outline-success"
+                    @click="addSells(sell)"
                     ><i class="fas fa-plus"></i></b-button
                 ></b-col>
 
@@ -92,11 +100,11 @@
                 <b-col>
                   <b-button
                     v-if="sell.subsells"
-                    v-b-toggle="sell.name + String(j)"
+                    v-b-toggle="sell.name.replace(/\s/g, '') + String(j)"
                     ><i class="fas fa-chevron-down"></i></b-button></b-col
               ></b-row>
               <div v-if="sell.subsells">
-                <b-collapse :id="sell.name + String(j)"
+                <b-collapse :id="sell.name.replace(/\s/g, '') + String(j)"
                   ><hr />
                   <b-row
                     class="ml-2 mt-2"
@@ -115,6 +123,7 @@
                     <b-col cols="1">
                       <b-button
                         variant="outline-success"
+                        v-if="boss.price > 0"
                         @click="addSells(boss)"
                         ><i class="fas fa-plus"></i></b-button
                     ></b-col>
@@ -140,6 +149,7 @@
         ><b-col
           ><b-button
             variant="outline-success"
+            v-if="editMode"
             @click="$refs['new-package'].show()"
             ><i class="fas fa-plus"></i> New</b-button
           ></b-col
@@ -168,13 +178,14 @@
           </b-col>
           <b-col cols="1">
             <b-col cols="1"
-              ><b-button v-b-toggle="newSellPackage.name + 'x1'"
+              ><b-button
+                v-b-toggle="newSellPackage.name.replace(/\s/g, '') + 'x1'"
                 ><i class="fas fa-chevron-down"></i></b-button
             ></b-col>
           </b-col>
         </b-row>
         <hr />
-        <b-collapse :id="newSellPackage.name + 'x1'">
+        <b-collapse :id="newSellPackage.name.replace(/\s/g, '') + 'x1'">
           <b-row
             class="mt-2"
             v-for="(sell, i) in newSellPackage.subsells"
@@ -199,12 +210,20 @@
             ></b-col>
             <b-col cols="1"
               ><b-button
-                v-b-toggle="newSellPackage.subsells[i].name + String(i) + 'x1'"
+                v-b-toggle="
+                  newSellPackage.subsells[i].name.replace(/\s/g, '') +
+                    String(i) +
+                    'x1'
+                "
                 ><i class="fas fa-chevron-down"></i></b-button
             ></b-col>
             <hr />
             <b-collapse
-              :id="newSellPackage.subsells[i].name + String(i) + 'x1'"
+              :id="
+                newSellPackage.subsells[i].name.replace(/\s/g, '') +
+                  String(i) +
+                  'x1'
+              "
             >
               <hr />
               <b-col
@@ -443,7 +462,7 @@ export default {
       newSellPackage: { name: "", price: 0, subsells: [] },
       originalPackage: null,
       discount: 0,
-      version: 1.21,
+      version: 1.22,
       prices: [],
       players: [
         { name: "Player1", coins: 0 },
