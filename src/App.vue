@@ -477,7 +477,7 @@ export default {
       newSellPackage: { name: "", price: 0, subsells: [] },
       originalPackage: null,
       discount: 0,
-      version: 1.22,
+      version: 1.23,
       prices: [],
       players: [
         { name: "Player1", coins: 0 },
