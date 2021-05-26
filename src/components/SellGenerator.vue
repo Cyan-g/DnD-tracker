@@ -103,11 +103,14 @@ export default {
     },
     addToCustomArray(sell) {
       let newSell = JSON.parse(JSON.stringify(sell));
-      let sum = this.scalePriceRecursive(newSell, 1);
+      let sum = this.priceSum(newSell);
+      console.log("sum: " + sum);
+      console.log("price: " + newSell.price);
       this.scalePrice(newSell, sum);
       this.customSell.subsells.push(newSell);
       this.customSell.price += sell.price;
       this.lastTotalPrice += sell.price;
+      this.calcGlobalPrice(this.customSell, this.priceSum(this.customSell));
     },
     removeFromCustomArray(value) {
       console.log("remove: ", value);
@@ -132,6 +135,17 @@ export default {
         sellObject.price = Math.floor(sellObject.price * factor);
       }
       return sellObject.price;
+    },
+    priceSum(sellObject) {
+      let sum = 0;
+      if (sellObject.subsells.length > 0) {
+        sellObject.subsells.forEach((subsell) => {
+          sum += this.priceSum(subsell);
+        });
+      } else {
+        sum += sellObject.price;
+      }
+      return sum;
     },
   },
 };
