@@ -14,7 +14,6 @@
               <b-col cols="4"
                 ><b-form-input
                   @blur="calcGlobalPrice(customSell, lastTotalPrice)"
-                  @submit="calcGlobalPrice(customSell, lastTotalPrice)"
                   v-model.number="customSell.price"
                 ></b-form-input
               ></b-col>
@@ -41,6 +40,7 @@
             <b-button
               v-b-popover.hover.top="'Add this sell'"
               variant="outline-success"
+              @click="$emit('add', customSell)"
               :disabled="customSell.subsells.length < 1"
               ><i class="fas fa-plus"></i> Finish</b-button
             ><b-button
@@ -78,6 +78,7 @@ export default {
   props: ["priceArray"],
   data() {
     return {
+      correction: 0,
       lastTotalPrice: 0,
       customSell: {
         name: "Custom Sell",
@@ -104,26 +105,24 @@ export default {
     addToCustomArray(sell) {
       let newSell = JSON.parse(JSON.stringify(sell));
       let sum = this.priceSum(newSell);
-      console.log("sum: " + sum);
-      console.log("price: " + newSell.price);
       this.scalePrice(newSell, sum);
       this.customSell.subsells.push(newSell);
-      this.customSell.price += sell.price;
-      this.lastTotalPrice += sell.price;
+      this.customSell.price += newSell.price;
+      this.lastTotalPrice += newSell.price;
       this.calcGlobalPrice(this.customSell, this.priceSum(this.customSell));
     },
-    removeFromCustomArray(value) {
-      console.log("remove: ", value);
-      this.customSell.price += value;
-      this.lastTotalPrice += value;
-      this.calcGlobalPrice(this.customSell, this.customSell.price);
-    },
     calcGlobalPrice(sellObject, oldPrice) {
-      this.lastTotalPrice = this.scalePrice(sellObject, oldPrice);
+      sellObject.price = this.scalePrice(sellObject, oldPrice);
+      this.lastTotalPrice = sellObject.price;
     },
     scalePrice(sellObject, oldPrice) {
       let factor = sellObject.price / oldPrice;
-      return this.scalePriceRecursive(sellObject, factor);
+      let original = sellObject.price;
+      this.scalePriceRecursive(sellObject, factor);
+      this.correction = original - sellObject.price;
+      this.correctPrice(sellObject);
+      this.correction = 0;
+      return sellObject.price;
     },
     scalePriceRecursive(sellObject, factor) {
       if (sellObject.subsells.length > 0) {
@@ -132,7 +131,7 @@ export default {
           sellObject.price += this.scalePriceRecursive(subsell, factor);
         });
       } else {
-        sellObject.price = Math.floor(sellObject.price * factor);
+        sellObject.price = Math.round(sellObject.price * factor);
       }
       return sellObject.price;
     },
@@ -146,6 +145,14 @@ export default {
         sum += sellObject.price;
       }
       return sum;
+    },
+    correctPrice(sellObject) {
+      if (sellObject.subsells.length > 0) {
+        sellObject.price += this.correction;
+        this.correctPrice(sellObject.subsells[0]);
+      } else {
+        sellObject.price += this.correction;
+      }
     },
   },
 };
