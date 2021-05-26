@@ -8,14 +8,14 @@
           >
           <b-col cols="4"
             ><b-form-input
-              :disabled="!editMode"
+              :disabled="!priceMode"
               v-model.number="priceArray[i].price"
             ></b-form-input
           ></b-col>
           <b-col cols="1">
             <b-button
               v-if="editMode"
-              v-b-popover.hover.top="'Add this sell'"
+              v-b-popover.hover.top="'Remove this sell'"
               variant="outline-danger"
               @click="removeSell(sell.price, i)"
               ><i class="fas fa-times"></i></b-button
@@ -39,9 +39,11 @@
           <b-collapse :id="sell.name.replace(/\s/g, '') + String(i) + editMode"
             ><hr />
             <prices-tree
+              @remove="emitRemove"
               @add="addSell"
               :priceArray="sell.subsells"
               :editMode="editMode"
+              :priceMode="priceMode"
             ></prices-tree>
           </b-collapse>
         </div>
@@ -52,8 +54,17 @@
 
 <script>
 export default {
-  props: ["editMode", "priceArray"],
+  props: ["editMode", "priceMode", "priceArray"],
   methods: {
+    emitRemove(value) {
+      this.priceArray.forEach((sell) => {
+        sell.price = 0;
+        sell.subsells.forEach((subsell) => {
+          sell.price += subsell.price;
+        });
+      });
+      this.$emit("remove", value);
+    },
     addSell(sell) {
       this.$emit("add", sell);
     },

@@ -20,7 +20,6 @@
               <b-col cols="1"></b-col>
               <b-col cols="1"
                 ><b-button
-                  @remove="removeFromCustomArray"
                   v-if="customSell.subsells.length > 0"
                   v-b-toggle="'customSellx'"
                   ><i class="fas fa-chevron-down"></i></b-button></b-col
@@ -29,8 +28,10 @@
               <b-collapse id="customSellx">
                 <hr />
                 <prices-tree
+                  @remove="removeFromCustomArray"
                   :priceArray="customSell.subsells"
                   :editMode="true"
+                  :priceMode="false"
                 ></prices-tree>
               </b-collapse>
             </div>
@@ -41,7 +42,7 @@
               v-b-popover.hover.top="'Add this sell'"
               variant="outline-success"
               @click="$emit('add', customSell)"
-              :disabled="customSell.subsells.length < 1"
+              :disabled="customSell.subsells.length < 1 || customSell.price < 1"
               ><i class="fas fa-plus"></i> Finish</b-button
             ><b-button
               class="ml-2"
@@ -66,6 +67,7 @@
             @add="addToCustomArray"
             :priceArray="priceArray"
             :editMode="false"
+            :priceMode="false"
           ></prices-tree>
         </b-col>
       </b-row>
@@ -101,6 +103,11 @@ export default {
       priceSheat.push(this.customSell);
       localStorage.setItem("prices", JSON.stringify(priceSheat));
       this.$emit("update");
+    },
+    removeFromCustomArray(value) {
+      console.log(value);
+      this.customSell.price -= value;
+      this.lastTotalPrice -= value;
     },
     addToCustomArray(sell) {
       let newSell = JSON.parse(JSON.stringify(sell));
