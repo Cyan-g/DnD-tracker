@@ -3,10 +3,10 @@
     <b-form-group v-for="(sell, i) in priceArray" :key="i">
       <b-card>
         <b-row
-          ><b-col cols="2"
+          ><b-col cols="4"
             ><label>{{ sell.name }}</label></b-col
           >
-          <b-col cols="3"
+          <b-col cols="4"
             ><b-form-input
               :disabled="!editMode"
               v-model.number="priceArray[i].price"
@@ -14,33 +14,37 @@
           ></b-col>
           <b-col cols="1">
             <b-button
+              v-if="editMode"
               v-b-popover.hover.top="'Add this sell'"
-              v-if="sell.price > 0"
+              variant="outline-danger"
+              @click="removeSell(sell.price, i)"
+              ><i class="fas fa-times"></i></b-button
+          ></b-col>
+          <b-col cols="1">
+            <b-button
+              v-if="sell.price > 0 && !editMode"
+              v-b-popover.hover.top="'Add this sell'"
               variant="outline-success"
-              @click="addSells(sell)"
+              @click="$emit('add', sell)"
               ><i class="fas fa-plus"></i></b-button
           ></b-col>
-          <b-col cols="2"
-            ><b-button
-              v-b-popover.hover.top="'Add with discount'"
-              variant="outline-info"
-              class="ml-2"
-              @click="discountModal(sell)"
-              ><i class="fas fa-gift"></i></b-button
-          ></b-col>
           <b-col cols="1"
             ><b-button
-              v-if="sell.subsells"
-              v-b-toggle="sell.name.replace(/\s/g, '') + String(i)"
-              ><i class="fas fa-chevron-down"></i></b-button
-          ></b-col>
-          <b-col cols="1"
-            ><b-button
-              v-if="editMode"
-              @click="deletePackage(i)"
-              variant="outline-danger"
-              ><i class="fas fa-times"></i></b-button></b-col
+              class="ml-1"
+              v-if="sell.subsells.length > 0"
+              v-b-toggle="sell.name.replace(/\s/g, '') + String(i) + editMode"
+              ><i class="fas fa-chevron-down"></i></b-button></b-col
         ></b-row>
+        <div v-if="sell.subsells.length > 0">
+          <b-collapse :id="sell.name.replace(/\s/g, '') + String(i) + editMode"
+            ><hr />
+            <prices-tree
+              @add="addSell"
+              :priceArray="sell.subsells"
+              :editMode="editMode"
+            ></prices-tree>
+          </b-collapse>
+        </div>
       </b-card>
     </b-form-group>
   </div>
@@ -49,5 +53,14 @@
 <script>
 export default {
   props: ["editMode", "priceArray"],
+  methods: {
+    addSell(sell) {
+      this.$emit("add", sell);
+    },
+    removeSell(value, index) {
+      this.priceArray.splice(index, 1);
+      this.$emit("remove", value);
+    },
+  },
 };
 </script>

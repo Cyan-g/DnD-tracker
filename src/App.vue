@@ -24,7 +24,10 @@
     </b-modal>
 
     <!-- add sell form  -->
-    <sell-generator :priceArray="prices"></sell-generator>
+    <sell-generator
+      @update="updatePriceData()"
+      :priceArray="prices"
+    ></sell-generator>
     <!-- new package form  -->
     <b-modal
       ref="new-package"
@@ -514,17 +517,20 @@ export default {
       this.totalPrice -= this.sells[index].price;
       this.sells.splice(index, 1);
     },
+    updatePriceData() {
+      let storedPrices = localStorage.getItem("prices");
+      let version = JSON.parse(localStorage.getItem("version"));
+      if (!storedPrices || !version || version < this.version) {
+        this.prices = priceJSON;
+        localStorage.setItem("prices", JSON.stringify(this.prices));
+        localStorage.setItem("version", JSON.stringify(this.version));
+      } else {
+        this.prices = JSON.parse(storedPrices);
+      }
+    },
   },
   created() {
-    let storedPrices = localStorage.getItem("prices");
-    let version = JSON.parse(localStorage.getItem("version"));
-    if (!storedPrices || !version || version < this.version) {
-      this.prices = priceJSON;
-      localStorage.setItem("prices", JSON.stringify(this.prices));
-      localStorage.setItem("version", JSON.stringify(this.version));
-    } else {
-      this.prices = JSON.parse(storedPrices);
-    }
+    this.updatePriceData();
   },
 };
 </script>
