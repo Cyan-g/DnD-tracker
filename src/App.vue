@@ -2,186 +2,13 @@
   <div id="app">
     <b-card> <h1>Coinculator</h1></b-card>
     <hr />
-    <!-- discount modal -->
-    <b-modal ref="discount-input" title="Add discounted deal" hide-footer>
-      <label>Discounted Price:</label>
-      <b-form-input v-model.number="discount"></b-form-input>
-      <hr />
-      <b-row>
-        <b-col cols="8"></b-col>
-        <b-button
-          variant="outline-secondary"
-          @click="$refs['discount-input'].hide()"
-          >Cancel</b-button
-        >
-        <b-button
-          class="ml-2"
-          variant="outline-success"
-          @click="addSellPackage()"
-          >Add</b-button
-        >
-      </b-row>
-    </b-modal>
 
     <!-- add sell form  -->
     <sell-generator
       @update="updatePriceData()"
+      @add="addSell"
       :priceArray="prices"
     ></sell-generator>
-    <!-- new package form  -->
-    <b-modal
-      ref="new-package"
-      id="new-package"
-      hide-footer
-      title="Add a new package"
-    >
-      <b-card>
-        <b-row>
-          <b-col cols="5">
-            <b-form-input v-model.trim="newSellPackage.name"></b-form-input>
-          </b-col>
-          <b-col cols="2">
-            <b-form-input v-model.number="newSellPackage.price"></b-form-input>
-          </b-col>
-          <b-col cols="1">
-            <b-col cols="1"
-              ><b-button
-                v-b-toggle="newSellPackage.name.replace(/\s/g, '') + 'x1'"
-                ><i class="fas fa-chevron-down"></i></b-button
-            ></b-col>
-          </b-col>
-        </b-row>
-        <hr />
-        <b-collapse :id="newSellPackage.name.replace(/\s/g, '') + 'x1'">
-          <b-row
-            class="mt-2"
-            v-for="(sell, i) in newSellPackage.subsells"
-            :key="i"
-          >
-            <b-col cols="1"></b-col>
-            <b-col cols="5">
-              <b-form-input
-                v-model.trim="newSellPackage.subsells[i].name"
-              ></b-form-input>
-            </b-col>
-            <b-col cols="2">
-              <b-form-input
-                v-model.number="newSellPackage.subsells[i].price"
-              ></b-form-input>
-            </b-col>
-            <b-col cols="1" class="mr-1"
-              ><b-button
-                variant="outline-danger"
-                @click="newSellPackage.subsells.splice(i, 1)"
-                ><i class="fas fa-times"></i></b-button
-            ></b-col>
-            <b-col cols="1"
-              ><b-button
-                v-b-toggle="
-                  newSellPackage.subsells[i].name.replace(/\s/g, '') +
-                    String(i) +
-                    'x1'
-                "
-                ><i class="fas fa-chevron-down"></i></b-button
-            ></b-col>
-            <hr />
-            <b-collapse
-              :id="
-                newSellPackage.subsells[i].name.replace(/\s/g, '') +
-                  String(i) +
-                  'x1'
-              "
-            >
-              <hr />
-              <b-col
-                ><b-row
-                  class="mt-2"
-                  v-for="(sells, j) in newSellPackage.subsells[i].subsells"
-                  :key="j"
-                >
-                  <b-col cols="2"></b-col>
-                  <b-col cols="5">
-                    <b-form-input
-                      v-model.trim="newSellPackage.subsells[i].subsells[j].name"
-                    ></b-form-input>
-                  </b-col>
-                  <b-col cols="2">
-                    <b-form-input
-                      v-model.number="
-                        newSellPackage.subsells[i].subsells[j].price
-                      "
-                    ></b-form-input>
-                  </b-col>
-                  <b-col cols="1" class="mr-1"
-                    ><b-button
-                      variant="outline-danger"
-                      @click="newSellPackage.subsells[i].subsells.splice(j, 1)"
-                      ><i class="fas fa-times"></i></b-button
-                  ></b-col>
-                </b-row>
-                <b-row
-                  ><b-col cols="1"></b-col>
-                  <b-col>
-                    <b-button
-                      class="mt-2"
-                      pill
-                      variant="outline-success"
-                      @click="
-                        newSellPackage.subsells[i].subsells.push({
-                          name: '',
-                          price: 0,
-                        })
-                      "
-                      ><i class="fas fa-plus"></i></b-button></b-col></b-row
-              ></b-col>
-
-              <hr />
-            </b-collapse>
-          </b-row>
-          <hr />
-          <b-row>
-            <b-col cols="10"></b-col>
-            <b-col
-              ><b-button
-                class="mt-2"
-                pill
-                variant="outline-success"
-                @click="
-                  newSellPackage.subsells.push({
-                    name: '',
-                    price: 0,
-                    subsells: [],
-                  })
-                "
-                ><i class="fas fa-plus"></i></b-button
-            ></b-col>
-          </b-row>
-        </b-collapse>
-
-        <b-row class="mt-2">
-          <b-col cols="8"
-            ><b-form-invalid-feedback
-              v-if="$v.newSellPackage.$invalid"
-              class="text-danger d-block mt-1"
-              >All Sell Names must be 3 Symbols or more</b-form-invalid-feedback
-            ></b-col
-          >
-          <b-button
-            variant="outline-secondary"
-            @click="$refs['new-package'].hide()"
-            >Cancel</b-button
-          >
-          <b-button
-            class="ml-2"
-            :disabled="$v.newSellPackage.$invalid"
-            variant="outline-success"
-            @click="createSellPackage()"
-            >Add</b-button
-          >
-        </b-row>
-      </b-card>
-    </b-modal>
-
     <!-- players -->
     <b-card>
       <b-row
@@ -220,8 +47,8 @@
       <hr />
 
       <!-- sells -->
-
-      <player-tree :sells="sells"> </player-tree>
+      <player-tree @toggle="toggleValue" :sellArray="sells" :depth="0">
+      </player-tree>
 
       <!-- payments -->
       <hr />
@@ -230,7 +57,7 @@
           ><b-row
             ><b-col cols="1">
               <b-row
-                >Total: {{ calcLeftover().total }}
+                >Total: {{ calcTotalRecursive(sells) }}
                 <img
                   class="ml-1"
                   style="border-radius: 50%; height: 1.5rem"
@@ -239,7 +66,7 @@
                   "
               /></b-row>
               <b-row
-                >Rest: {{ calcLeftover().rest }}
+                >Rest: {{ calcLeftover() }}
                 <img
                   class="ml-1"
                   style="border-radius: 50%; height: 1.5rem"
@@ -250,7 +77,9 @@
               <b-form-input v-model.trim="players[index].name"></b-form-input>
               <div class="mt-2">
                 <span style="font-size: 2rem">
-                  {{ calcPayment(index) || 0 }}</span
+                  {{
+                    Math.floor(calcPaymentRecursive(sells, index)) || 0
+                  }}</span
                 >
                 <img
                   class="mb-3 ml-1"
@@ -310,31 +139,28 @@
 <script>
 import priceJSON from "./data/prices.json";
 import { required, minLength } from "vuelidate/lib/validators";
-import PlayerTree from "./components/PlayerTree.vue";
 import SellGenerator from "./components/SellGenerator.vue";
 
 export default {
-  components: { PlayerTree, SellGenerator },
+  created() {
+    this.updatePriceData();
+  },
+  components: { SellGenerator },
   name: "App",
   data() {
     return {
-      provisionpercent: 0,
       provision: 0,
-      editMode: false,
-      newSellPackage: { name: "", price: 0, subsells: [] },
-      originalPackage: null,
-      discount: 0,
       version: 1.23,
       prices: [],
       players: [
-        { name: "Player1", coins: 0 },
-        { name: "Player2", coins: 0 },
-        { name: "Player3", coins: 0 },
-        { name: "Player4", coins: 0 },
-        { name: "Player5", coins: 0 },
-        { name: "Player6", coins: 0 },
-        { name: "Player7", coins: 0 },
-        { name: "Player8", coins: 0 },
+        { name: "Player1" },
+        { name: "Player2" },
+        { name: "Player3" },
+        { name: "Player4" },
+        { name: "Player5" },
+        { name: "Player6" },
+        { name: "Player7" },
+        { name: "Player8" },
       ],
       sells: [],
     };
@@ -378,140 +204,103 @@ export default {
     },
   },
   methods: {
-    applyProvision() {
-      if (this.provisionpercent >= 0) {
-        var percent = this.provisionpercent * 0.01;
-        var delta = this.calcLeftover().total + this.calcLeftover().rest;
-        delta *= percent;
-        return delta;
+    toggleValue(payload) {
+      let sellObject = this.sells[payload.sellIndex];
+      this.toggleValueRecursive(payload, sellObject);
+      this.$forceUpdate;
+    },
+    toggleValueRecursive(payload, sellObject) {
+      console.log(payload, sellObject);
+      if (payload.playerIndex) {
+        sellObject.players[payload.playerIndex] = !sellObject.players[
+          payload.playerIndex
+        ];
+      } else {
+        let subSell = sellObject.subsells[payload.sellIndex];
+        this.toggleValueRecursive(payload.payload, subSell);
       }
     },
     resetPrices() {
       this.prices = priceJSON;
     },
-    deletePackage(index) {
-      this.$bvModal.msgBoxConfirm(`Delete Package?`).then((res) => {
-        if (res) {
-          this.prices.splice(index, 1);
-        }
-      });
-    },
-    createSellPackage() {
-      this.$refs["new-package"].hide();
-      this.prices.push(this.newSellPackage);
-      this.newSellPackage = { name: "", price: 0, subsells: [] };
-    },
     clearSells() {
       this.sells = [];
-      this.discount = 0;
-      this.originalPackage = null;
     },
-    discountModal(pack) {
-      this.discount = Math.ceil(pack.price);
-      this.originalPackage = JSON.parse(JSON.stringify(pack));
-      this.$refs["discount-input"].show();
-      this.originalPackage.price = 0;
-      this.originalPackage.subsells.forEach((sell) => {
-        if (sell.subsells) {
-          sell.subsells.forEach((subsell) => {
-            this.originalPackage.price += subsell.price;
-          });
+    calcTotalRecursive(sellArray) {
+      let sum = 0;
+      sellArray.forEach((sell) => {
+        if (sell.subsells.length > 0) {
+          sum += this.calcTotalRecursive(sell.subsells);
         } else {
-          this.originalPackage.price += sell.price;
+          sum += sell.price;
         }
       });
-    },
-    addSellPackage() {
-      this.$refs["discount-input"].hide();
-      let modifier = this.discount / this.originalPackage.price;
-
-      let oldTotal = 0;
-      this.sells.forEach((x) => {
-        oldTotal += x.price;
-      });
-
-      if (this.originalPackage.subsells) {
-        this.originalPackage.subsells.forEach((sell) => {
-          if (sell.subsells) {
-            sell.subsells.forEach((subsell) => {
-              this.addSells({
-                name: subsell.name,
-                price: Math.ceil(subsell.price * modifier),
-              });
-            });
-          } else {
-            this.addSells({
-              name: sell.name,
-              price: Math.ceil(sell.price * modifier),
-            });
-          }
-        });
-      } else
-        this.addSells({
-          name: this.originalPackage.name,
-          price: this.originalPackage.price * modifier,
-        });
-
-      let newTotal = 0;
-      this.sells.forEach((x) => {
-        newTotal += x.price;
-      });
-
-      let delta = newTotal - (this.discount + oldTotal);
-      for (let i = 0; i < delta; i++) {
-        this.sells[this.sells.length - 1 - i].price--;
-      }
+      return sum;
     },
     calcLeftover() {
-      let total = 0;
-      let playerTotal = 0;
-      this.sells.forEach((x) => {
-        total += x.price;
+      let total = this.calcTotalRecursive(this.sells);
+      let playerSum = 0;
+      this.players.forEach((player, index) => {
+        playerSum += this.calcPaymentRecursive(this.sells, index);
       });
-      this.players.forEach((x) => {
-        playerTotal += x.coins;
-      });
-      return { total: total, rest: total - playerTotal };
+      return total - playerSum;
     },
-    calcPayment(playerindex) {
-      let coins = 0;
-      this.sells.forEach((sell) => {
-        if (sell.players[playerindex]) {
-          let totalPlayers = 0;
-          sell.players.forEach((x) => {
-            if (x) totalPlayers++;
-          });
-          coins += sell.price / totalPlayers;
+    calcPaymentRecursive(sellArray, playerindex) {
+      let sum = 0;
+      sellArray.forEach((sell) => {
+        if (sell.subsells.length > 0) {
+          sum += this.calcPaymentRecursive(sell.subsells, playerindex);
+        } else {
+          if (sell.players[playerindex]) {
+            let totalPlayers = 0;
+            sell.players.forEach((player) => {
+              if (player) totalPlayers++;
+            });
+            sum += sell.price / totalPlayers;
+          }
         }
       });
-      this.players[playerindex].coins = Math.floor(coins);
-      return Math.floor(coins);
-    },
-    toggleValue(i, j) {
-      this.sells[i].players[j] = !this.sells[i].players[j];
-      this.$forceUpdate();
+      return sum;
     },
     removePlayer() {
       if (this.players.length > 1) {
         this.players.pop();
-        this.sells.forEach((sell) => sell.players.pop());
+        this.removePlayerRecursive(this.sells);
       }
     },
-    addPlayer() {
-      this.players.push({
-        name: "Player" + (this.players.length + 1),
-        coins: 0,
+    removePlayerRecursive(sellArray) {
+      sellArray.forEach((sell) => {
+        sell.players.pop();
+        this.removePlayerRecursive(sell.subsells);
       });
-      this.sells.forEach((sell) => sell.players.push(true));
     },
-    addSells(sell) {
-      let newSell = { name: sell.name, price: sell.price, players: [] };
-      newSell.price = Math.ceil(newSell.price);
-      this.players.forEach(() => {
-        newSell.players.push(true);
+    addPlayer() {
+      let name = "Player" + (this.players.length + 1);
+      this.players.push({
+        name: name,
       });
-
-      this.sells.push(newSell);
+      this.addPlayerRecursive(this.sells);
+    },
+    addPlayerRecursive(sellArray) {
+      sellArray.forEach((sell) => {
+        sell.players.push(true);
+        this.addPlayerRecursive(sell.subsells);
+      });
+    },
+    addSell(sell) {
+      this.populateSellRecursive(sell);
+      this.sells.push(sell);
+    },
+    populateSellRecursive(sell) {
+      sell.players = [];
+      this.players.forEach(() => {
+        sell.players.push(true);
+        if (sell.subsells.length > 0) {
+          sell.subsells.forEach((subsell) => {
+            this.populateSellRecursive(subsell);
+          });
+        }
+      });
     },
     removeSell(index) {
       this.totalPrice -= this.sells[index].price;
@@ -528,9 +317,6 @@ export default {
         this.prices = JSON.parse(storedPrices);
       }
     },
-  },
-  created() {
-    this.updatePriceData();
   },
 };
 </script>

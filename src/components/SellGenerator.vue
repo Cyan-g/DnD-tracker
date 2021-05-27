@@ -36,31 +36,6 @@
               </b-collapse>
             </div>
           </b-card>
-          <b-row class="mt-2">
-            <b-col cols="5"></b-col>
-            <b-button
-              v-b-popover.hover.top="'Add this sell'"
-              variant="outline-success"
-              @click="$emit('add', customSell)"
-              :disabled="customSell.subsells.length < 1 || customSell.price < 1"
-              ><i class="fas fa-plus"></i> Finish</b-button
-            ><b-button
-              class="ml-2"
-              v-b-popover.hover.top="'Reset Template'"
-              variant="outline-danger"
-              @click="reset()"
-              ><i class="fas fa-times"></i> Reset</b-button
-            ><b-button
-              class="ml-2"
-              :disabled="
-                customSell.subsells.length < 1 || customSell.name.length < 1
-              "
-              v-b-popover.hover.top="'Remember this Template'"
-              variant="outline-success"
-              @click="saveToLocalStorage()"
-              ><i class="fas fa-save"></i> Save</b-button
-            >
-          </b-row>
         </b-col>
         <b-col>
           <prices-tree
@@ -71,6 +46,32 @@
           ></prices-tree>
         </b-col>
       </b-row>
+      <hr />
+      <b-form-group class="mt-2">
+        <b-col cols="5"></b-col>
+        <b-button
+          v-b-popover.hover.top="'Add this sell'"
+          variant="outline-success"
+          @click="$emit('add', customSell)"
+          :disabled="customSell.subsells.length < 1 || customSell.price < 1"
+          ><i class="fas fa-plus"></i> Finish</b-button
+        ><b-button
+          class="ml-2"
+          v-b-popover.hover.top="'Reset Template'"
+          variant="outline-danger"
+          @click="reset()"
+          ><i class="fas fa-times"></i> Reset</b-button
+        ><b-button
+          class="ml-2"
+          :disabled="
+            customSell.subsells.length < 1 || customSell.name.length < 1
+          "
+          v-b-popover.hover.top="'Remember this Template'"
+          variant="outline-success"
+          @click="saveToLocalStorage()"
+          ><i class="fas fa-save"></i> Save</b-button
+        >
+      </b-form-group>
     </b-form-group>
   </b-modal>
 </template>

@@ -33,7 +33,14 @@
               class="ml-1"
               v-if="sell.subsells.length > 0"
               v-b-toggle="sell.name.replace(/\s/g, '') + String(i) + editMode"
-              ><i class="fas fa-chevron-down"></i></b-button></b-col
+              ><span class="when-opened">
+                <i class="fa fa-minus" aria-hidden="true"></i
+              ></span>
+              <span class="when-closed">
+                <i
+                  class="fa fa-plus"
+                  aria-hidden="true"
+                ></i></span></b-button></b-col
         ></b-row>
         <div v-if="sell.subsells.length > 0">
           <b-collapse :id="sell.name.replace(/\s/g, '') + String(i) + editMode"
@@ -75,3 +82,10 @@ export default {
   },
 };
 </script>
+
+<style>
+.collapsed > .when-opened,
+:not(.collapsed) > .when-closed {
+  display: none;
+}
+</style>
