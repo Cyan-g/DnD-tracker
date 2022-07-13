@@ -180,7 +180,6 @@
             >
           </b-dropdown>
         </b-col>
-
         <b-col>
           <h5>Modifiers</h5>
           Elder Dragon Blessings
@@ -280,7 +279,7 @@
             v-model="info.mightSeed"
           ></b-checkbox>
         </b-col>
-        <b-col>
+        <b-col style="border-left: solid white 1px">
           <b> Effective Raw: {{ effectiveRaw.toFixed() }} </b><br />
           <b> Effective Element: {{ effectiveElement.toFixed() }} </b><br />
           <b> Effective Affinity: {{ (effectiveAffinity * 100).toFixed() }} </b
@@ -505,8 +504,8 @@ export default {
         mailOfHellfire: { label: "None", element: 0, raw: 0 },
         dereliction: { label: "None", element: 0, raw: 0 },
         sharpness: { label: "white", raw: 1.32, element: 1.15 },
-        partPhys: 0.3,
-        partEle: 0.25,
+        partPhys: 1,
+        partEle: 1,
         motionvaluePhys: 0.3,
         motionValueEle: 0.25,
       },
