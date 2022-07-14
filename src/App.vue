@@ -322,7 +322,7 @@ export default {
     effectiveRaw() {
       if (!this.info) return 0;
       //Total
-      let total = this.info.raw;
+      let total = parseInt(this.info.raw);
       //mods
       if (this.info.species) total += this.info.raw * 0.05;
       if (this.info.powerCharm) total += 6;
@@ -364,7 +364,7 @@ export default {
     effectiveElement() {
       if (!this.info) return 0;
       //Total Element
-      let total = this.info.element;
+      let total = parseInt(this.info.element);
       //multipliers
       if (this.info.valstrax && this.info.dragonHeart.label != "None")
         total += this.info.element * 0.2;
