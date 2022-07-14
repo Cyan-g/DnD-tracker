@@ -292,6 +292,17 @@
         { "label": "Level 2", "mod": 0.1, "bow": 0.05 },
         { "label": "Level 3", "mod": 0.15, "bow": 0.1 }
       ]
+    },
+    {
+      "label": "Grinder S",
+      "key": "grinder",
+      "description": "Modifies elemental and raw damage after recovering 2 or more levels of sharpness",
+      "values": [
+        { "label": "None", "raw": 0, "element": 0 },
+        { "label": "Level 1", "raw": 0.1, "element": 0.075 },
+        { "label": "Level 2", "raw": 0.1, "element": 0.075 },
+        { "label": "Level 3", "raw": 0.1, "element": 0.075 }
+      ]
     }
   ]
 }

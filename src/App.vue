@@ -269,6 +269,7 @@ export default {
         foray: { label: "None", affinity: 0, raw: 0 },
         agitator: { label: "None", affinity: 0, raw: 0 },
         chainCrit: { label: "None", raw: 0, element: 0 },
+        grinder: { label: "None", raw: 0, element: 0 },
         elementAttack: { label: "None", mod: 0, element: 0 },
         attackBoost: { label: "None", mod: 0, raw: 0 },
         heroics: { label: "None", mod: 0 },
@@ -332,6 +333,7 @@ export default {
       if (this.info.demonPowder) total += 10;
       if (this.info.mightSeed) total += 10;
 
+      total += this.info.raw * this.info.grinder.raw;
       total += this.info.raw * this.info.attackBoost.mod;
       total += this.info.raw * this.info.dragonHeart.mod;
       total += this.info.raw * this.info.heroics.mod;
@@ -374,6 +376,7 @@ export default {
       else if (this.chargeMasterWeapons.includes(this.info.weaponType))
         total += this.info.element * this.info.chargeMaster.mod;
 
+      total += this.info.element * this.info.grinder.element;
       total += this.info.element * this.info.elementAttack.mod;
       total += this.info.element * this.info.elderBlessing.mod;
       //total extra
