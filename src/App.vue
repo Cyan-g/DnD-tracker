@@ -7,6 +7,14 @@
       <b-row>
         <b-col style="border-right: solid white 1px">
           <h5>Weapon</h5>
+          <b-dropdown style="width:100%" :text="info.weaponType">
+            <b-dropdown-item
+              v-for="item in data.weaponArray"
+              :key="item"
+              @click="info.weaponType = item"
+              >{{ item }}</b-dropdown-item
+            >
+          </b-dropdown>
           Raw Damage
           <b-form-input v-model="info.raw" type="number"></b-form-input>
           Element Damage
@@ -33,7 +41,15 @@
             >{{ info.scroll }}</b-button
           >
           <hr />
-          <h5>Monster Part</h5>
+          <h5>
+            Monster Part
+            <b-badge
+              v-b-popover.hover.top="
+                'Monster Part Data can be found in the Hunters Notes. Leave at 100 to ignore.'
+              "
+              ><i class="fas fa-question"></i
+            ></b-badge>
+          </h5>
           Raw Modifier
           <b-form-input v-model="info.partPhys" type="number"></b-form-input>
           Element Modifier
@@ -43,6 +59,9 @@
           <h5>Stat Boost</h5>
           <div v-for="skill in data.statBoost" :key="skill.key">
             {{ skill.label }}
+            <b-badge v-b-popover.hover.top="skill.description"
+              ><i class="fas fa-question"></i
+            ></b-badge>
             <b-dropdown style="width:100%" :text="info[skill.key].label">
               <b-dropdown-item
                 v-for="item in skill.values"
@@ -57,6 +76,9 @@
           <h5>Crit</h5>
           <div v-for="skill in data.crit" :key="skill.key">
             {{ skill.label }}
+            <b-badge v-b-popover.hover.top="skill.description"
+              ><i class="fas fa-question"></i
+            ></b-badge>
             <b-dropdown style="width:100%" :text="info[skill.key].label">
               <b-dropdown-item
                 v-for="item in skill.values"
@@ -69,8 +91,18 @@
         </b-col>
         <b-col>
           <h5>Modifiers</h5>
-          <div v-for="skill in data.modifiers" :key="skill.key">
+          <div
+            v-for="skill in data.modifiers"
+            :key="skill.key"
+            v-show="
+              skill.key != 'chargeMaster' ||
+                chargeMasterWeapons.includes(info.weaponType)
+            "
+          >
             {{ skill.label }}
+            <b-badge v-b-popover.hover.top="skill.description"
+              ><i class="fas fa-question"></i
+            ></b-badge>
             <b-dropdown style="width:100%" :text="info[skill.key].label">
               <b-dropdown-item
                 v-for="item in skill.values"
@@ -159,6 +191,10 @@
           <b>Total: {{ total.toFixed() }}</b>
           <hr />
           <h5>Move Dependant Modifier</h5>
+          <a
+            href="https://docs.google.com/spreadsheets/d/1KSH0Uf-DsbFixdldQvcH-5zFXpX303dIzThTYMVH33Q/edit#gid=0"
+            >Motion Value Data Sheet</a
+          ><br />
           Motion Value
           <b-form-input
             v-model="info.motionValuePhys"
@@ -196,9 +232,20 @@ export default {
   name: "App",
   data() {
     return {
+      chargeMasterWeapons: [
+        "Greatsword",
+        "Longsword",
+        "Sword n Shield",
+        "Hammer",
+        "Lance",
+        "Charge Blade",
+        "Gun Lance",
+        "Heavy Bowgun",
+      ],
       data: null,
       info: null,
       template: {
+        weaponType: "Sword n Shield",
         scroll: "red",
         valstrax: false,
         species: false,
@@ -230,6 +277,7 @@ export default {
         peakPerformance: { label: "None", raw: 0 },
         resentment: { label: "None", raw: 0 },
         elderBlessing: { label: "None", mod: 0 },
+        chargeMaster: { label: "None", mod: 0, bow: 0 },
         dragonHeart: { label: "None", mod: 0 },
         mailOfHellfire: { label: "None", element: 0, raw: 0 },
         dereliction: { label: "None", element: 0, raw: 0 },
@@ -320,6 +368,12 @@ export default {
       //multipliers
       if (this.info.valstrax && this.info.dragonHeart.label != "None")
         total += this.info.element * 0.2;
+
+      if (this.info.weaponType == "bow")
+        total += this.info.element * this.info.chargeMaster.bow;
+      else if (this.chargeMasterWeapons.includes(this.info.weaponType))
+        total += this.info.element * this.info.chargeMaster.mod;
+
       total += this.info.element * this.info.elementAttack.mod;
       total += this.info.element * this.info.elderBlessing.mod;
       //total extra
