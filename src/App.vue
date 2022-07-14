@@ -2,7 +2,7 @@
   <div id="app">
     <b-card> <h1>Damage Calculator</h1></b-card>
     <hr />
-    <b-card>
+    <b-card v-if="info">
       <!-- <b-button size="xs" @click="info.key = !key">Load</b-button> -->
       <b-row>
         <b-col style="border-right: solid white 1px">
@@ -14,7 +14,7 @@
           <span>Sharpness</span>
           <b-dropdown style="width:100%" :text="info.sharpness.label">
             <b-dropdown-item
-              v-for="item in sharpnessArray"
+              v-for="item in data.sharpnessArray"
               :key="item.label"
               @click="info.sharpness = item"
               >{{ item.label }}</b-dropdown-item
@@ -41,186 +41,68 @@
         </b-col>
         <b-col>
           <h5>Stat Boost</h5>
-          Chain Crit
-          <b-dropdown style="width:100%" :text="info.chainCrit.label">
-            <b-dropdown-item
-              v-for="item in chainCritArray"
-              :key="item.label"
-              @click="info.chainCrit = item"
-              >{{ item.label }}</b-dropdown-item
-            >
-          </b-dropdown>
-          Element Attack
-          <b-dropdown style="width:100%" :text="info.elementAttack.label">
-            <b-dropdown-item
-              v-for="item in elementAttackArray"
-              :key="item.label"
-              @click="info.elementAttack = item"
-              >{{ item.label }}</b-dropdown-item
-            >
-          </b-dropdown>
-          Attack Boost
-          <b-dropdown style="width:100%" :text="info.attackBoost.label">
-            <b-dropdown-item
-              v-for="item in attackBoostArray"
-              :key="item.label"
-              @click="info.attackBoost = item"
-              >{{ item.label }}</b-dropdown-item
-            >
-          </b-dropdown>
-          Peak Performance
-          <b-dropdown style="width:100%" :text="info.peakPerformance.label">
-            <b-dropdown-item
-              v-for="item in peakPerformanceArray"
-              :key="item.label"
-              @click="info.peakPerformance = item"
-              >{{ item.label }}</b-dropdown-item
-            >
-          </b-dropdown>
-          Resentment
-          <b-dropdown style="width:100%" :text="info.resentment.label">
-            <b-dropdown-item
-              v-for="item in resentmentArray"
-              :key="item.label"
-              @click="info.resentment = item"
-              >{{ item.label }}</b-dropdown-item
-            >
-          </b-dropdown>
-          Resuscitate
-          <b-dropdown style="width:100%" :text="info.resuscitate.label">
-            <b-dropdown-item
-              v-for="item in resuscitateArray"
-              :key="item.label"
-              @click="info.resuscitate = item"
-              >{{ item.label }}</b-dropdown-item
-            >
-          </b-dropdown>
-          Mail of Hellfire
-          <b-dropdown style="width:100%" :text="info.mailOfHellfire.label">
-            <b-dropdown-item
-              v-for="item in mailOfHellfireArray"
-              :key="item.label"
-              @click="info.mailOfHellfire = item"
-              >{{ item.label }}</b-dropdown-item
-            >
-          </b-dropdown>
-          Dereliction
-          <b-dropdown style="width:100%" :text="info.dereliction.label">
-            <b-dropdown-item
-              v-for="item in derelictionArray"
-              :key="item.label"
-              @click="info.dereliction = item"
-              >{{ item.label }}</b-dropdown-item
-            >
-          </b-dropdown>
+          <div v-for="skill in data.statBoost" :key="skill.key">
+            {{ skill.label }}
+            <b-dropdown style="width:100%" :text="info[skill.key].label">
+              <b-dropdown-item
+                v-for="item in skill.values"
+                :key="item.label"
+                @click="info[skill.key] = item"
+                >{{ item.label }}</b-dropdown-item
+              >
+            </b-dropdown>
+          </div>
         </b-col>
         <b-col>
           <h5>Crit</h5>
-          Crit Element
-          <b-dropdown style="width:100%" :text="info.critElement.label">
-            <b-dropdown-item
-              v-for="item in critElementArray"
-              :key="item.label"
-              @click="info.critElement = item"
-              >{{ item.label }}</b-dropdown-item
-            >
-          </b-dropdown>
-          Crit Boost
-          <b-dropdown style="width:100%" :text="info.critBoost.label">
-            <b-dropdown-item
-              v-for="item in critBoostArray"
-              :key="item.label"
-              @click="info.critBoost = item"
-              >{{ item.label }}</b-dropdown-item
-            >
-          </b-dropdown>
-          Crit Eye
-          <b-dropdown style="width:100%" :text="info.critEye.label">
-            <b-dropdown-item
-              v-for="item in critEyeArray"
-              :key="item.label"
-              @click="info.critEye = item"
-              >{{ item.label }}</b-dropdown-item
-            >
-          </b-dropdown>
-          Weakness Ex
-          <b-dropdown style="width:100%" :text="info.wex.label">
-            <b-dropdown-item
-              v-for="item in wexArray"
-              :key="item.label"
-              @click="info.wex = item"
-              >{{ item.label }}</b-dropdown-item
-            >
-          </b-dropdown>
-          Maximum Might
-          <b-dropdown style="width:100%" :text="info.maxMight.label">
-            <b-dropdown-item
-              v-for="item in maxMightArray"
-              :key="item.label"
-              @click="info.maxMight = item"
-              >{{ item.label }}</b-dropdown-item
-            >
-          </b-dropdown>
-          Latent Power
-          <b-dropdown style="width:100%" :text="info.latentPower.label">
-            <b-dropdown-item
-              v-for="item in latentPowerArray"
-              :key="item.label"
-              @click="info.latentPower = item"
-              >{{ item.label }}</b-dropdown-item
-            >
-          </b-dropdown>
-          Foray
-          <b-dropdown style="width:100%" :text="info.foray.label">
-            <b-dropdown-item
-              v-for="item in forayArray"
-              :key="item.label"
-              @click="info.foray = item"
-              >{{ item.label }}</b-dropdown-item
-            >
-          </b-dropdown>
+          <div v-for="skill in data.crit" :key="skill.key">
+            {{ skill.label }}
+            <b-dropdown style="width:100%" :text="info[skill.key].label">
+              <b-dropdown-item
+                v-for="item in skill.values"
+                :key="item.label"
+                @click="info[skill.key] = item"
+                >{{ item.label }}</b-dropdown-item
+              >
+            </b-dropdown>
+          </div>
         </b-col>
         <b-col>
           <h5>Modifiers</h5>
-          Elder Dragon Blessings
-          <b-dropdown style="width:100%" :text="info.elderBlessing.label">
-            <b-dropdown-item
-              v-for="item in elderBlessingArray"
-              :key="item.label"
-              @click="info.elderBlessing = item"
-              >{{ item.label }}</b-dropdown-item
-            >
-          </b-dropdown>
-          Dragon Heart
-          <b-dropdown style="width:100%" :text="info.dragonHeart.label">
-            <b-dropdown-item
-              v-for="item in dragonHeartArray"
-              :key="item.label"
-              @click="info.dragonHeart = item"
-              >{{ item.label }}</b-dropdown-item
-            >
-          </b-dropdown>
-          Heroics
-          <b-dropdown style="width:100%" :text="info.heroics.label">
-            <b-dropdown-item
-              v-for="item in heroicsArray"
-              :key="item.label"
-              @click="info.heroics = item"
-              >{{ item.label }}</b-dropdown-item
-            >
-          </b-dropdown>
-          Fortify
-          <b-dropdown style="width:100%" :text="info.fortify.label">
-            <b-dropdown-item
-              v-for="item in fortifyArray"
-              :key="item.label"
-              @click="info.fortify = item"
-              >{{ item.label }}</b-dropdown-item
-            >
-          </b-dropdown>
+          <div v-for="skill in data.modifiers" :key="skill.key">
+            {{ skill.label }}
+            <b-dropdown style="width:100%" :text="info[skill.key].label">
+              <b-dropdown-item
+                v-for="item in skill.values"
+                :key="item.label"
+                @click="info[skill.key] = item"
+                >{{ item.label }}</b-dropdown-item
+              >
+            </b-dropdown>
+          </div>
         </b-col>
         <b-col>
           <h5>Rampage Skills</h5>
+          <span>Narwa Soul (Affinity)</span>
+          <b-dropdown style="width:100%" :text="info.narwaSoul.label">
+            <b-dropdown-item
+              :disabled="info.species || info.valstrax"
+              v-for="item in data.narwaSoulArray"
+              :key="item.label"
+              @click="info.narwaSoul = item"
+              >{{ item.label }}</b-dropdown-item
+            >
+          </b-dropdown>
+          <span>Daora Soul (Affinity)</span>
+          <b-dropdown style="width:100%" :text="info.kushalaSoul.label">
+            <b-dropdown-item
+              :disabled="info.species || info.valstrax"
+              v-for="item in data.kushalaSoulArray"
+              :key="item.label"
+              @click="info.kushalaSoul = item"
+              >{{ item.label }}</b-dropdown-item
+            >
+          </b-dropdown>
           Valstrax Soul (Dragon)
           <b-checkbox
             :disabled="info.species || info.narwaSoul.label != 'None'"
@@ -233,16 +115,6 @@
             style="margin-bottom: 1rem"
             v-model="info.species"
           ></b-checkbox>
-          <span>Narwa Soul (Affinity)</span>
-          <b-dropdown style="width:100%" :text="info.narwaSoul.label">
-            <b-dropdown-item
-              :disabled="info.species || info.valstrax"
-              v-for="item in narwaSoulArray"
-              :key="item.label"
-              @click="info.narwaSoul = item"
-              >{{ item.label }}</b-dropdown-item
-            >
-          </b-dropdown>
         </b-col>
         <b-col>
           <h5>Buffs</h5>
@@ -286,23 +158,31 @@
           ><br />
           <b>Total: {{ total.toFixed() }}</b>
           <hr />
-          <h5>Motion Values</h5>
-          Raw
+          <h5>Move Dependant Modifier</h5>
+          Motion Value
           <b-form-input
-            v-model="info.motionvaluePhys"
+            v-model="info.motionValuePhys"
             type="number"
           ></b-form-input>
-          Element
+          Element Modifier
           <b-form-input
             v-model="info.motionValueEle"
             type="number"
           ></b-form-input>
           <hr />
 
-          Attack Raw: {{ (effectiveRaw * info.motionValueEle).toFixed() }}
+          Attack Raw:
+          {{ (effectiveRaw * (info.motionValuePhys / 100.0)).toFixed() }}
           <br />
           Attack Element:
-          {{ (effectiveElement * info.motionValueEle).toFixed() }} <br />
+          {{ (effectiveElement * info.motionValueEle).toFixed() }}
+          <br />
+          Attack Total:
+          {{
+            effectiveRaw * (info.motionValuePhys / 100.0).toFixed(0) +
+              effectiveElement * info.motionValueEle.toFixed(0)
+          }}
+          <br />
         </b-col>
       </b-row>
     </b-card>
@@ -310,166 +190,15 @@
 </template>
 
 <script>
+import arrayFile from "./data/data.json";
+
 export default {
   name: "App",
   data() {
     return {
-      sharpnessArray: [
-        { label: "purple", raw: 1.39, element: 1.25 },
-        { label: "white", raw: 1.32, element: 1.15 },
-        { label: "blue", raw: 1.2, element: 1.0625 },
-        { label: "green", raw: 1.05, element: 1 },
-        { label: "yellow", raw: 1, element: 0.75 },
-        { label: "orange", raw: 0.75, element: 0.5 },
-      ],
-      critElementArray: [
-        { label: "None", value: 1 },
-        { label: "Level 1", value: 1.05 },
-        { label: "Level 2", value: 1.1 },
-        { label: "Level 3", value: 1.15 },
-      ],
-      critBoostArray: [
-        { label: "None", value: 1.25 },
-        { label: "Level 1", value: 1.3 },
-        { label: "Level 2", value: 1.35 },
-        { label: "Level 3", value: 1.4 },
-      ],
-      wexArray: [
-        { label: "None", value: 0 },
-        { label: "Level 1", value: 15.0 },
-        { label: "Level 2", value: 30.0 },
-        { label: "Level 3", value: 50.0 },
-      ],
-      latentPowerArray: [
-        { label: "None", value: 0 },
-        { label: "Level 1", value: 10.0 },
-        { label: "Level 2", value: 20.0 },
-        { label: "Level 3", value: 30.0 },
-        { label: "Level 4", value: 40.0 },
-        { label: "Level 5", value: 50.0 },
-      ],
-      maxMightArray: [
-        { label: "None", value: 0 },
-        { label: "Level 1", value: 10.0 },
-        { label: "Level 2", value: 20.0 },
-        { label: "Level 3", value: 30.0 },
-      ],
-      critEyeArray: [
-        { label: "None", value: 0 },
-        { label: "Level 1", value: 5.0 },
-        { label: "Level 2", value: 10.0 },
-        { label: "Level 3", value: 15.0 },
-        { label: "Level 4", value: 20.0 },
-        { label: "Level 5", value: 25.0 },
-        { label: "Level 6", value: 30.0 },
-        { label: "Level 7", value: 40.0 },
-      ],
-      chainCritArray: [
-        { label: "None", raw: 0, element: 0 },
-        { label: "Level 1", raw: 15, element: 12 },
-        { label: "Level 2", raw: 17, element: 15 },
-        { label: "Level 3", raw: 20, element: 20 },
-      ],
-      elementAttackArray: [
-        { label: "None", mod: 0, element: 0 },
-        { label: "Level 1", mod: 0, element: 2 },
-        { label: "Level 2", mod: 0, element: 3 },
-        { label: "Level 3", mod: 0.05, element: 4 },
-        { label: "Level 4", mod: 0.1, element: 4 },
-        { label: "Level 5", mod: 0.2, element: 4 },
-      ],
-      elderBlessingArray: [
-        { label: "None", mod: 0 },
-        { label: "Level 1", mod: 0.05 },
-        { label: "Level 2", mod: 0.1 },
-        { label: "Level 3 (Thunder/Dragon only)", mod: 0.15 },
-      ],
-      dragonHeartArray: [
-        { label: "None", mod: 0 },
-        { label: "Level 1", mod: 0 },
-        { label: "Level 2", mod: 0 },
-        { label: "Level 3", mod: 0 },
-        { label: "Level 4", mod: 0.05 },
-        { label: "Level 5", mod: 0.1 },
-      ],
-      attackBoostArray: [
-        { label: "None", mod: 0, raw: 0 },
-        { label: "Level 1", mod: 0, raw: 3 },
-        { label: "Level 2", mod: 0, raw: 6 },
-        { label: "Level 3", mod: 0, raw: 9 },
-        { label: "Level 4", mod: 0.05, raw: 7 },
-        { label: "Level 5", mod: 0.06, raw: 8 },
-        { label: "Level 6", mod: 0.08, raw: 9 },
-        { label: "Level 7", mod: 0.1, raw: 10 },
-      ],
-      heroicsArray: [
-        { label: "None", mod: 0 },
-        { label: "Level 1", mod: 0 },
-        { label: "Level 2", mod: 0.05 },
-        { label: "Level 3", mod: 0.05 },
-        { label: "Level 4", mod: 0.1 },
-        { label: "Level 5", mod: 0.3 },
-      ],
-      fortifyArray: [
-        { label: "None", mod: 0 },
-        { label: "1 Death", mod: 0.1 },
-        { label: "2 Death's", mod: 0.2 },
-      ],
-      peakPerformanceArray: [
-        { label: "None", raw: 0 },
-        { label: "Level 1", raw: 5 },
-        { label: "Level 2", raw: 10 },
-        { label: "Level 3", raw: 20 },
-      ],
-      resuscitateArray: [
-        { label: "None", raw: 0 },
-        { label: "Level 1", raw: 5 },
-        { label: "Level 2", raw: 10 },
-        { label: "Level 3", raw: 20 },
-      ],
-      resentmentArray: [
-        { label: "None", raw: 0 },
-        { label: "Level 1", raw: 5 },
-        { label: "Level 2", raw: 10 },
-        { label: "Level 3", raw: 15 },
-        { label: "Level 4", raw: 20 },
-        { label: "Level 5", raw: 25 },
-      ],
-      forayArray: [
-        { label: "None", affinity: 0, raw: 0 },
-        { label: "Level 1", affinity: 0, raw: 10 },
-        { label: "Level 2", affinity: 10, raw: 10 },
-        { label: "Level 3", affinity: 20, raw: 15 },
-      ],
-      agitatorArray: [
-        { label: "None", affinity: 0, raw: 0 },
-        { label: "Level 1", affinity: 3, raw: 4 },
-        { label: "Level 2", affinity: 5, raw: 8 },
-        { label: "Level 3", affinity: 7, raw: 12 },
-        { label: "Level 4", affinity: 10, raw: 16 },
-        { label: "Level 5", affinity: 15, raw: 20 },
-      ],
-      mailOfHellfireArray: [
-        { label: "None", element: 0, raw: 0 },
-        { label: "Level 1", element: 3, raw: 15 },
-        { label: "Level 2", element: 7, raw: 25 },
-        { label: "Level 3", element: 11, raw: 35 },
-      ],
-      derelictionArray: [
-        { label: "None", element: 0, raw: 0 },
-        { label: "Level 1", element: 12, raw: 25 },
-        { label: "Level 2", element: 15, raw: 30 },
-        { label: "Level 3", element: 20, raw: 35 },
-      ],
-      narwaSoulArray: [
-        { label: "None", value: 0 },
-        { label: "1 Ibushi Piece", value: 5 },
-        { label: "2 Ibushi Pieces", value: 10 },
-        { label: "3 Ibushi Pieces", value: 15 },
-        { label: "4 Ibushi Pieces", value: 20 },
-        { label: "5 Ibushi Pieces", value: 25 },
-      ],
-      info: {
+      data: null,
+      info: null,
+      template: {
         scroll: "red",
         valstrax: false,
         species: false,
@@ -488,6 +217,7 @@ export default {
         latentPower: { label: "None", value: 0 },
         maxMight: { label: "None", value: 0 },
         narwaSoul: { label: "None", value: 0 },
+        kushalaSoul: { label: "None", value: 0 },
         critEye: { label: "None", value: 0 },
         foray: { label: "None", affinity: 0, raw: 0 },
         agitator: { label: "None", affinity: 0, raw: 0 },
@@ -504,10 +234,10 @@ export default {
         mailOfHellfire: { label: "None", element: 0, raw: 0 },
         dereliction: { label: "None", element: 0, raw: 0 },
         sharpness: { label: "white", raw: 1.32, element: 1.15 },
-        partPhys: 1,
-        partEle: 1,
-        motionvaluePhys: 0.3,
-        motionValueEle: 0.25,
+        partPhys: 100,
+        partEle: 100,
+        motionValuePhys: 100,
+        motionValueEle: 1,
       },
     };
   },
@@ -520,16 +250,16 @@ export default {
     },
   },
   created() {
-    let stored = localStorage.getItem("monhun");
-    if (stored) {
-      this.info = JSON.parse(stored);
-    }
+    this.data = arrayFile;
+    this.info = this.template;
   },
   computed: {
     effectiveAffinity() {
+      if (!this.info) return 0;
       let total = (
         (parseInt(this.info.affinity) +
           parseInt(this.info.wex.value) +
+          parseInt(this.info.kushalaSoul.value) +
           parseInt(this.info.latentPower.value) +
           parseInt(this.info.narwaSoul.value) +
           parseInt(this.info.maxMight.value) +
@@ -542,6 +272,7 @@ export default {
       return total;
     },
     effectiveRaw() {
+      if (!this.info) return 0;
       //Total
       let total = this.info.raw;
       //mods
@@ -578,11 +309,12 @@ export default {
 
       //Sharpness / Hitzone
       total *= this.info.sharpness.raw;
-      total *= this.info.partPhys;
+      total *= this.info.partPhys / 100.0;
 
       return total;
     },
     effectiveElement() {
+      if (!this.info) return 0;
       //Total Element
       let total = this.info.element;
       //multipliers
@@ -606,7 +338,7 @@ export default {
 
       //Sharpness / Hitzone
       total *= this.info.sharpness.element;
-      total *= this.info.partEle;
+      total *= this.info.partEle / 100.0;
       if (total > 110) return 110;
       return total;
     },
