@@ -9,8 +9,8 @@
   ],
   "kushalaSoulArray": [
     { "label": "None", "value": 0 },
-    { "label": "Base only", "value": 25 },
-    { "label": "Full", "value": 30 }
+    { "label": "Base only", "value": 5 },
+    { "label": "Full", "value": 15 }
   ],
   "sharpnessArray": [
     { "label": "purple", "raw": 1.39, "element": 1.25 },
@@ -151,6 +151,17 @@
       ]
     },
     {
+      "label": "Counterstrike",
+      "key": "counterStrike",
+      "description": "Raw attack after being knocked back, for 30 seconds",
+      "values": [
+        { "label": "None", "raw": 0 },
+        { "label": "Level 1", "raw": 10 },
+        { "label": "Level 2", "raw": 15 },
+        { "label": "Level 3", "raw": 20 }
+      ]
+    },
+    {
       "label": "Chain Crit",
       "key": "chainCrit",
       "description": "Raw attack and element on hit, more after 5 hits depending on level",
@@ -160,6 +171,17 @@
         { "label": "Level 1", "raw": 15, "element": 13 },
         { "label": "Level 2", "raw": 17, "element": 15 },
         { "label": "Level 3", "raw": 20, "element": 20 }
+      ]
+    },
+    {
+      "label": "Coalescence",
+      "key": "coalescence",
+      "description": "Raw attack, element and status buildup after status/blight recovery for 30 seconds",
+      "values": [
+        { "label": "None", "raw": 0, "element": 0 },
+        { "label": "Level 1", "raw": 12, "element": 2 },
+        { "label": "Level 2", "raw": 15, "element": 3 },
+        { "label": "Level 3", "raw": 18, "element": 4 }
       ]
     },
     {

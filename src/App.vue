@@ -215,8 +215,10 @@
           <br />
           Attack Total:
           {{
-            effectiveRaw * (info.motionValuePhys / 100.0).toFixed(0) +
-              effectiveElement * info.motionValueEle.toFixed(0)
+            (
+              effectiveRaw * (info.motionValuePhys / 100.0) +
+              effectiveElement * info.motionValueEle
+            ).toFixed()
           }}
           <br />
         </b-col>
@@ -275,12 +277,14 @@ export default {
         heroics: { label: "None", mod: 0 },
         fortify: { label: "None", mod: 0 },
         resuscitate: { label: "None", raw: 0 },
+        coalescence: { label: "None", raw: 0, element: 0 },
         peakPerformance: { label: "None", raw: 0 },
         resentment: { label: "None", raw: 0 },
         elderBlessing: { label: "None", mod: 0 },
         chargeMaster: { label: "None", mod: 0, bow: 0 },
         dragonHeart: { label: "None", mod: 0 },
         mailOfHellfire: { label: "None", element: 0, raw: 0 },
+        counterStrike: { label: "None", raw: 0 },
         dereliction: { label: "None", element: 0, raw: 0 },
         sharpness: { label: "white", raw: 1.32, element: 1.15 },
         partPhys: 100,
@@ -339,6 +343,8 @@ export default {
       total += this.info.raw * this.info.heroics.mod;
       total += this.info.raw * this.info.fortify.mod;
       //extra
+      total += this.info.counterStrike.raw;
+      total += this.info.coalescence.raw;
       total += this.info.chainCrit.raw;
       total += this.info.foray.raw;
       total += this.info.peakPerformance.raw;
@@ -381,6 +387,7 @@ export default {
       total += this.info.element * this.info.elderBlessing.mod;
       //total extra
       total += this.info.chainCrit.element;
+      total += this.info.coalescence.element;
       total += this.info.elementAttack.element;
 
       //Scroll
