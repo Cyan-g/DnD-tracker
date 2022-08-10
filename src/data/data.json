@@ -36,6 +36,7 @@
     "Heavy Bowgun",
     "Bow"
   ],
+  "elementArray": ["none", "dragon", "fire", "water", "thunder", "ice"],
   "crit": [
     {
       "label": "Crit Element",

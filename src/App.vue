@@ -19,6 +19,18 @@
           <b-form-input v-model="info.raw" type="number"></b-form-input>
           Element Damage
           <b-form-input v-model="info.element" type="number"></b-form-input>
+          <b-dropdown
+            :disabled="!info.element"
+            style="width:100%"
+            :text="info.type"
+          >
+            <b-dropdown-item
+              v-for="item in data.elementArray"
+              :key="item"
+              @click="info.type = item"
+              >{{ item }}</b-dropdown-item
+            >
+          </b-dropdown>
           <span>Sharpness</span>
           <b-dropdown style="width:100%" :text="info.sharpness.label">
             <b-dropdown-item
@@ -41,19 +53,6 @@
             >{{ info.scroll }}</b-button
           >
           <hr />
-          <h5>
-            Monster Part
-            <b-badge
-              v-b-popover.hover.top="
-                'Monster Part Data can be found in the Hunters Notes. Leave at 100 to ignore.'
-              "
-              ><i class="fas fa-question"></i
-            ></b-badge>
-          </h5>
-          Raw Modifier
-          <b-form-input v-model="info.partPhys" type="number"></b-form-input>
-          Element Modifier
-          <b-form-input v-model="info.partEle" type="number"></b-form-input>
         </b-col>
         <b-col>
           <h5>Stat Boost</h5>
@@ -184,11 +183,73 @@
           ></b-checkbox>
         </b-col>
         <b-col style="border-left: solid white 1px">
-          <b> Effective Raw: {{ effectiveRaw.toFixed() }} </b><br />
-          <b> Effective Element: {{ effectiveElement.toFixed() }} </b><br />
-          <b> Effective Affinity: {{ (effectiveAffinity * 100).toFixed() }} </b
-          ><br />
-          <b>Total: {{ total.toFixed() }}</b>
+          <h5>Stats</h5>
+          <div style="text-align: left">
+            <b>Raw Attack: {{ effectiveRaw.toFixed() }}</b
+            ><br />
+            <b>Element: {{ effectiveElement.toFixed() }}</b
+            ><br />
+            <b>Total: {{ effectiveTotal.toFixed() }}</b
+            ><br />
+            <b>Affinity: {{ (effectiveAffinity * 100).toFixed(0) }}</b
+            ><br />
+          </div>
+          <hr />
+          <h5>
+            Monster Part
+            <b-badge
+              v-b-popover.hover.top="
+                'Monster Part Data can be found in the Hunters Notes. Leave at 100 to ignore.'
+              "
+              ><i class="fas fa-question"></i
+            ></b-badge>
+          </h5>
+          Raw Modifier
+          <b-form-input v-model="info.partPhys" type="number"></b-form-input>
+          Element Modifier
+          <b-row>
+            <b-col style="padding-left: 3px;padding-right: 3px" cols="6"
+              ><b-input-group style="padding: 3px;" size="sm" prepend="Dragon">
+                <b-form-input
+                  style="width: 2rem !important; padding-left: 3px"
+                  v-model="info.partEle.dragon"
+                  type="number"
+                ></b-form-input> </b-input-group
+            ></b-col>
+            <b-col style="padding-left: 3px;padding-right: 3px" cols="6"
+              ><b-input-group style="padding: 3px;" size="sm" prepend="Fire">
+                <b-form-input
+                  style="width: 2rem !important; padding-left: 3px"
+                  v-model="info.partEle.fire"
+                  type="number"
+                ></b-form-input> </b-input-group
+            ></b-col>
+            <b-col style="padding-left: 3px;padding-right: 3px" cols="6"
+              ><b-input-group style="padding: 3px;" size="sm" prepend="Water">
+                <b-form-input
+                  style="width: 2rem !important; padding-left: 3px"
+                  v-model="info.partEle.water"
+                  type="number"
+                ></b-form-input> </b-input-group
+            ></b-col>
+
+            <b-col style="padding-left: 3px;padding-right: 3px" cols="6"
+              ><b-input-group style="padding: 3px;" size="sm" prepend="Ice">
+                <b-form-input
+                  style="width: 2rem !important; padding-left: 3px"
+                  v-model="info.partEle.ice"
+                  type="number"
+                ></b-form-input> </b-input-group
+            ></b-col>
+            <b-col style="padding-left: 3px;padding-right: 3px" cols="6"
+              ><b-input-group style="padding: 3px;" size="sm" prepend="Thunder">
+                <b-form-input
+                  style="width: 2rem !important; padding-left: 3px"
+                  v-model="info.partEle.thunder"
+                  type="number"
+                ></b-form-input> </b-input-group
+            ></b-col>
+          </b-row>
           <hr />
           <h5>Move Dependant Modifier</h5>
           <a
@@ -206,21 +267,35 @@
             type="number"
           ></b-form-input>
           <hr />
-
-          Attack Raw:
-          {{ (effectiveRaw * (info.motionValuePhys / 100.0)).toFixed() }}
-          <br />
-          Attack Element:
-          {{ (effectiveElement * info.motionValueEle).toFixed() }}
-          <br />
-          Attack Total:
-          {{
-            (
-              effectiveRaw * (info.motionValuePhys / 100.0) +
-              effectiveElement * info.motionValueEle
-            ).toFixed()
-          }}
-          <br />
+          <h5>Attack Data</h5>
+          <b-table-simple class="text-light">
+            <b-tr>
+              <b-th></b-th>
+              <b-th>base</b-th>
+              <b-th>avg</b-th>
+              <b-th>crit</b-th>
+            </b-tr>
+            <b-tbody>
+              <b-tr>
+                <b-td><b>raw</b></b-td>
+                <b-td>{{ hitRaw.toFixed() }}</b-td>
+                <b-td>{{ hitAverageRaw.toFixed() }}</b-td>
+                <b-td>{{ hitCritRaw.toFixed() }}</b-td>
+              </b-tr>
+              <b-tr>
+                <b-td><b>ele</b></b-td>
+                <b-td>{{ hitElement.toFixed() }}</b-td>
+                <b-td>{{ hitAverageElement.toFixed() }}</b-td>
+                <b-td>{{ hitCritElement.toFixed() }}</b-td>
+              </b-tr>
+              <b-tr>
+                <b-td><b>total</b></b-td>
+                <b-td>{{ hitTotal.toFixed() }}</b-td>
+                <b-td>{{ hitAverageTotal.toFixed() }}</b-td>
+                <b-td>{{ hitCritTotal.toFixed() }}</b-td>
+              </b-tr>
+            </b-tbody>
+          </b-table-simple>
         </b-col>
       </b-row>
     </b-card>
@@ -229,6 +304,19 @@
 
 <script>
 import arrayFile from "./data/data.json";
+
+//Move Hitzone Values after the effective damage calculations liek motion values
+//fix elemental dmg cap
+//split Effective and Actual + crit and non crit damage
+//check correct values for skills again
+//Add element types
+//Make valstrax soul conditional
+//!Add Hunting Horn buffs
+//!Add Petalace choices
+//!Add Weapon Selection For Hammer
+//!Make an optimizer algorithm that tests all of selected weapon type for current setup
+
+//!Add Qurious base stats once you know how they work
 
 export default {
   name: "App",
@@ -248,6 +336,7 @@ export default {
       info: null,
       template: {
         weaponType: "Sword n Shield",
+        type: "dragon",
         scroll: "red",
         valstrax: false,
         species: false,
@@ -288,7 +377,14 @@ export default {
         dereliction: { label: "None", element: 0, raw: 0 },
         sharpness: { label: "white", raw: 1.32, element: 1.15 },
         partPhys: 100,
-        partEle: 100,
+        partEle: {
+          dragon: 30,
+          fire: 30,
+          water: 30,
+          thunder: 30,
+          ice: 30,
+          none: 0,
+        },
         motionValuePhys: 100,
         motionValueEle: 1,
       },
@@ -307,6 +403,7 @@ export default {
     this.info = this.template;
   },
   computed: {
+    // UI STATS
     effectiveAffinity() {
       if (!this.info) return 0;
       let total = (
@@ -357,24 +454,18 @@ export default {
       if (this.info.scroll == "red") total += this.info.mailOfHellfire.raw;
       else total += this.info.dereliction.raw;
 
-      //Crit
-      let critMod =
-        this.effectiveAffinity > 0 ? this.info.critBoost.value : 0.75;
-      let effectiveCrit = (critMod - 1) * Math.abs(this.effectiveAffinity) + 1;
-      total *= effectiveCrit;
-
-      //Sharpness / Hitzone
-      total *= this.info.sharpness.raw;
-      total *= this.info.partPhys / 100.0;
-
       return total;
     },
     effectiveElement() {
-      if (!this.info) return 0;
+      if (!this.info || this.info == 0 || this.info.type == "none") return 0;
       //Total Element
       let total = parseInt(this.info.element);
       //multipliers
-      if (this.info.valstrax && this.info.dragonHeart.label != "None")
+      if (
+        this.info.valstrax &&
+        this.info.dragonHeart.label != "None" &&
+        this.info.type != "none"
+      )
         total += this.info.element * 0.2;
 
       if (this.info.weaponType == "bow")
@@ -384,7 +475,12 @@ export default {
 
       total += this.info.element * this.info.grinder.element;
       total += this.info.element * this.info.elementAttack.mod;
-      total += this.info.element * this.info.elderBlessing.mod;
+
+      if (this.info.type == "thunder" || this.info.type == "dragon")
+        total += this.info.element * this.info.elderBlessing.mod;
+      else if (this.info.elderBlessing.mod > 0.1)
+        total += this.info.element * 0.1;
+
       //total extra
       total += this.info.chainCrit.element;
       total += this.info.coalescence.element;
@@ -394,20 +490,137 @@ export default {
       if (this.info.scroll == "blue") total += this.info.mailOfHellfire.element;
       else total += this.info.dereliction.element;
 
-      //Crit Element
+      if (total > 110) return 110;
+      return total;
+    },
+    effectiveTotal() {
+      return this.effectiveRaw + this.effectiveElement;
+    },
+    // AVERAGE BETWEEN CRIT AND NON CRIT
+    averageRaw() {
+      let total = this.effectiveRaw;
+
+      let critMod =
+        this.effectiveAffinity > 0 ? this.info.critBoost.value : 0.75;
+      let effectiveCrit = (critMod - 1) * Math.abs(this.effectiveAffinity) + 1;
+      total *= effectiveCrit;
+
+      return total;
+    },
+    averageElement() {
+      let total = this.effectiveElement;
+
       let critMod =
         this.effectiveAffinity > 0 ? this.info.critElement.value : 1;
       let effectiveCrit = (critMod - 1) * Math.abs(this.effectiveAffinity) + 1;
       total *= effectiveCrit;
 
-      //Sharpness / Hitzone
-      total *= this.info.sharpness.element;
-      total *= this.info.partEle / 100.0;
-      if (total > 110) return 110;
       return total;
     },
-    total() {
-      return this.effectiveRaw + this.effectiveElement;
+    averageTotal() {
+      return this.averageRaw + this.averageElement;
+    },
+    // CRITICALS
+    critRaw() {
+      let total = this.effectiveRaw;
+
+      let critMod =
+        this.effectiveAffinity >= 0 ? this.info.critBoost.value : 0.75;
+      if (this.effectiveAffinity == 0) critMod = 1;
+      total *= critMod;
+
+      return total;
+    },
+    critElement() {
+      let total = this.effectiveElement;
+
+      let critMod =
+        this.effectiveAffinity > 0 ? this.info.critElement.value : 1;
+      total *= critMod;
+
+      return total;
+    },
+    critTotal() {
+      return this.critRaw + this.critElement;
+    },
+    // HITZONE / MOTION VALUE / SHARPNESS
+    hitRaw() {
+      var total = this.effectiveRaw;
+      // Sharpness
+      total *= this.info.sharpness.raw;
+      // Hitzone
+      total *= this.info.partPhys / 100.0;
+      // MotionValue
+      total *= this.info.motionValuePhys / 100.0;
+
+      return total;
+    },
+    hitElement() {
+      var total = this.effectiveElement;
+
+      // Sharpness
+      total *= this.info.sharpness.element;
+      // Hitzone
+      total *= this.info.partEle[this.info.type] / 100.0;
+      // MotionValue
+      total *= this.info.motionValueEle;
+
+      return total;
+    },
+    hitTotal() {
+      return this.hitRaw + this.hitElement;
+    },
+    hitAverageRaw() {
+      var total = this.averageRaw;
+      // Sharpness
+      total *= this.info.sharpness.raw;
+      // Hitzone
+      total *= this.info.partPhys / 100.0;
+      // MotionValue
+      total *= this.info.motionValuePhys / 100.0;
+
+      return total;
+    },
+    hitAverageElement() {
+      var total = this.averageElement;
+
+      // Sharpness
+      total *= this.info.sharpness.element;
+      // Hitzone
+      total *= this.info.partEle[this.info.type] / 100.0;
+      // MotionValue
+      total *= this.info.motionValueEle;
+
+      return total;
+    },
+    hitAverageTotal() {
+      return this.hitAverageRaw + this.hitAverageElement;
+    },
+    hitCritRaw() {
+      var total = this.critRaw;
+      // Sharpness
+      total *= this.info.sharpness.raw;
+      // Hitzone
+      total *= this.info.partPhys / 100.0;
+      // MotionValue
+      total *= this.info.motionValuePhys / 100.0;
+
+      return total;
+    },
+    hitCritElement() {
+      var total = this.critElement;
+
+      // Sharpness
+      total *= this.info.sharpness.element;
+      // Hitzone
+      total *= this.info.partEle[this.info.type] / 100.0;
+      // MotionValue
+      total *= this.info.motionValueEle;
+
+      return total;
+    },
+    hitCritTotal() {
+      return this.hitCritRaw + this.hitCritElement;
     },
   },
 };
