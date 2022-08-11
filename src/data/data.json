@@ -248,9 +248,9 @@
       "description": "Raw attack in red scroll, element in blue, reduces defenses corresponding",
       "values": [
         { "label": "None", "element": 0, "raw": 0 },
-        { "label": "Level 1", "element": 3, "raw": 15 },
-        { "label": "Level 2", "element": 7, "raw": 25 },
-        { "label": "Level 3", "element": 11, "raw": 35 }
+        { "label": "Level 1", "element": 0.05, "raw": 15 },
+        { "label": "Level 2", "element": 0.1, "raw": 25 },
+        { "label": "Level 3", "element": 0.2, "raw": 35 }
       ]
     },
     {

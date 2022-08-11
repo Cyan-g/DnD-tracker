@@ -247,11 +247,11 @@
         <b-col style="border-left: solid white 1px">
           <h5>Stats</h5>
           <div style="text-align: left">
-            <b>Raw Attack: {{ effectiveRaw.toFixed() }}</b
+            <b>Raw Attack: {{ Math.floor(effectiveRaw) }}</b
             ><br />
-            <b>Element: {{ effectiveElement.toFixed() }}</b
+            <b>Element: {{ Math.floor(effectiveElement) }}</b
             ><br />
-            <b>Total: {{ effectiveTotal.toFixed() }}</b
+            <b>Total: {{ Math.floor(effectiveTotal) }}</b
             ><br />
             <b>Affinity: {{ (effectiveAffinity * 100).toFixed(0) }}</b
             ><br />
@@ -340,21 +340,21 @@
             <b-tbody>
               <b-tr>
                 <b-td><b>raw</b></b-td>
-                <b-td>{{ hitRaw.toFixed() }}</b-td>
-                <b-td>{{ hitAverageRaw.toFixed() }}</b-td>
-                <b-td>{{ hitCritRaw.toFixed() }}</b-td>
+                <b-td>{{ Math.floor(hitRaw) }}</b-td>
+                <b-td>{{ Math.floor(hitAverageRaw) }}</b-td>
+                <b-td>{{ Math.floor(hitCritRaw) }}</b-td>
               </b-tr>
               <b-tr>
                 <b-td><b>ele</b></b-td>
-                <b-td>{{ hitElement.toFixed() }}</b-td>
-                <b-td>{{ hitAverageElement.toFixed() }}</b-td>
-                <b-td>{{ hitCritElement.toFixed() }}</b-td>
+                <b-td>{{ Math.floor(hitElement) }}</b-td>
+                <b-td>{{ Math.floor(hitAverageElement) }}</b-td>
+                <b-td>{{ Math.floor(hitCritElement) }}</b-td>
               </b-tr>
               <b-tr>
                 <b-td><b>total</b></b-td>
-                <b-td>{{ hitTotal.toFixed() }}</b-td>
-                <b-td>{{ hitAverageTotal.toFixed() }}</b-td>
-                <b-td>{{ hitCritTotal.toFixed() }}</b-td>
+                <b-td>{{ Math.floor(hitTotal) }}</b-td>
+                <b-td>{{ Math.floor(hitAverageTotal) }}</b-td>
+                <b-td>{{ Math.floor(hitCritTotal) }}</b-td>
               </b-tr>
             </b-tbody>
           </b-table-simple>
@@ -600,7 +600,8 @@ export default {
       total += this.info.elementAttack.element;
 
       //Scroll
-      if (this.info.scroll == "blue") total += this.info.mailOfHellfire.element;
+      if (this.info.scroll == "blue")
+        total += this.info.element * this.info.mailOfHellfire.element;
       else total += this.info.dereliction.element;
 
       if (total > 110) return 110;
@@ -658,28 +659,28 @@ export default {
     },
     // HITZONE / MOTION VALUE / SHARPNESS
     hitRaw() {
-      return this.applyHitzoneRaw(this.effectiveRaw);
+      return Math.floor(this.applyHitzoneRaw(this.effectiveRaw));
     },
     hitElement() {
-      return this.applyHitzoneElement(this.effectiveElement);
+      return Math.floor(this.applyHitzoneElement(this.effectiveElement));
     },
     hitTotal() {
       return this.hitRaw + this.hitElement;
     },
     hitAverageRaw() {
-      return this.applyHitzoneRaw(this.averageRaw);
+      return Math.floor(this.applyHitzoneRaw(this.averageRaw));
     },
     hitAverageElement() {
-      return this.applyHitzoneElement(this.averageElement);
+      return Math.floor(this.applyHitzoneElement(this.averageElement));
     },
     hitAverageTotal() {
       return this.hitAverageRaw + this.hitAverageElement;
     },
     hitCritRaw() {
-      return this.applyHitzoneRaw(this.critRaw);
+      return Math.floor(this.applyHitzoneRaw(this.critRaw));
     },
     hitCritElement() {
-      return this.applyHitzoneElement(this.critElement);
+      return Math.floor(this.applyHitzoneElement(this.critElement));
     },
     hitCritTotal() {
       return this.hitCritRaw + this.hitCritElement;
