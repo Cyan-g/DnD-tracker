@@ -20,6 +20,15 @@
     { "label": "yellow", "raw": 1, "element": 0.75 },
     { "label": "orange", "raw": 0.75, "element": 0.5 }
   ],
+  "songs": [{ "label": "Greatsword", "raw": 0, "mod": 0 }],
+  "petalace": [
+    { "label": "Hunting", "raw": 15 },
+    { "label": "Strength", "raw": 10 },
+    { "label": "Fortitude", "raw": 8 },
+    { "label": "Demon", "raw": 20 },
+    { "label": "Absolute", "raw": 15 },
+    { "label": "Underworld", "raw": 15 }
+  ],
   "weaponArray": [
     "Greatsword",
     "Longsword",
@@ -314,6 +323,17 @@
         { "label": "Level 1", "mod": 0.05, "bow": 0.025 },
         { "label": "Level 2", "mod": 0.1, "bow": 0.05 },
         { "label": "Level 3", "mod": 0.15, "bow": 0.1 }
+      ]
+    },
+    {
+      "label": "Element Exploit",
+      "key": "elementExploit",
+      "description": "Elemental Modifier against hitzones of 20 or above",
+      "values": [
+        { "label": "None", "mod": 0 },
+        { "label": "Level 1", "mod": 0.05 },
+        { "label": "Level 2", "mod": 0.1 },
+        { "label": "Level 3", "mod": 0.15 }
       ]
     },
     {

@@ -2,6 +2,7 @@
   <div id="app">
     <b-card> <h1>Damage Calculator</h1></b-card>
     <hr />
+    <b-modal title="Weapon List" id="weaponModal" hideFooter> </b-modal>
     <b-card v-if="info">
       <!-- <b-button size="xs" @click="info.key = !key">Load</b-button> -->
       <b-row>
@@ -15,6 +16,10 @@
               >{{ item }}</b-dropdown-item
             >
           </b-dropdown>
+          <b-button style="width:100%; margin-top: 1rem" @click="showModal()"
+            >Choose Weapon</b-button
+          >
+          <hr />
           Raw Damage
           <b-form-input v-model="info.raw" type="number"></b-form-input>
           Element Damage
@@ -53,6 +58,15 @@
             >{{ info.scroll }}</b-button
           >
           <hr />
+          <h5>Petalace</h5>
+          <b-dropdown style="width:100%" :text="info.petalace.label">
+            <b-dropdown-item
+              v-for="item in data.petalace"
+              :key="item.label"
+              @click="info.petalace = item"
+              >{{ item.label }}</b-dropdown-item
+            >
+          </b-dropdown>
         </b-col>
         <b-col>
           <h5>Stat Boost</h5>
@@ -114,37 +128,85 @@
         </b-col>
         <b-col>
           <h5>Rampage Skills</h5>
-          <span>Narwa Soul (Affinity)</span>
+          <span
+            >Narwa Soul (Affinity)
+            <b-badge
+              v-b-popover.hover.top="'5% Affinity per Ibushi armor piece'"
+              ><i class="fas fa-question"></i></b-badge
+          ></span>
           <b-dropdown style="width:100%" :text="info.narwaSoul.label">
             <b-dropdown-item
-              :disabled="info.species || info.valstrax"
               v-for="item in data.narwaSoulArray"
               :key="item.label"
               @click="info.narwaSoul = item"
               >{{ item.label }}</b-dropdown-item
             >
           </b-dropdown>
-          <span>Daora Soul (Affinity)</span>
+          <span
+            >Daora Soul (Affinity)
+            <b-badge
+              v-b-popover.hover.top="'3-slot Active after 1 hit, full at 5'"
+              ><i class="fas fa-question"></i></b-badge
+          ></span>
           <b-dropdown style="width:100%" :text="info.kushalaSoul.label">
             <b-dropdown-item
-              :disabled="info.species || info.valstrax"
               v-for="item in data.kushalaSoulArray"
               :key="item.label"
               @click="info.kushalaSoul = item"
               >{{ item.label }}</b-dropdown-item
             >
           </b-dropdown>
-          Valstrax Soul (Dragon)
+          <span
+            >Valstrax Soul (Dragon)
+            <b-badge v-b-popover.hover.top="'2-slot Active during dragonblight'"
+              ><i class="fas fa-question"></i></b-badge
+          ></span>
           <b-checkbox
-            :disabled="info.species || info.narwaSoul.label != 'None'"
             style="margin-bottom: 1rem"
             v-model="info.valstrax"
           ></b-checkbox>
-          Species Jewel
+          <span
+            >Magnamalo Soul
+            <b-badge
+              v-b-popover.hover.top="'2-slot Active during hellfireblight'"
+              ><i class="fas fa-question"></i></b-badge
+          ></span>
           <b-checkbox
-            :disabled="info.valstrax || info.narwaSoul.label != 'None'"
+            style="margin-bottom: 1rem"
+            v-model="info.magna"
+          ></b-checkbox>
+          <span
+            >Species Jewel
+            <b-badge
+              v-b-popover.hover.top="'2-slot 5% Raw against specific species'"
+              ><i class="fas fa-question"></i></b-badge
+          ></span>
+          <b-checkbox
             style="margin-bottom: 1rem"
             v-model="info.species"
+          ></b-checkbox>
+          <span
+            >Elembane Jewel
+            <b-badge
+              v-b-popover.hover.top="
+                '3-slot 15% Element on hitzones with 25 or above of that element'
+              "
+              ><i class="fas fa-question"></i></b-badge
+          ></span>
+          <b-checkbox
+            style="margin-bottom: 1rem"
+            v-model="info.elembane"
+          ></b-checkbox>
+          <span v-if="info.weaponType == 'Dual Blades'"
+            >Raging Jewel
+            <b-badge
+              v-b-popover.hover.top="'3-slot 20% Affinity while in demon mode'"
+              ><i class="fas fa-question"></i></b-badge
+          ></span>
+          <b-checkbox
+            v-if="info.weaponType == 'Dual Blades'"
+            style="margin-bottom: 1rem"
+            v-model="info.raging"
           ></b-checkbox>
         </b-col>
         <b-col>
@@ -311,8 +373,9 @@ import arrayFile from "./data/data.json";
 //check correct values for skills again
 //Add element types
 //Make valstrax soul conditional
+//Elembane, Raging, Switcher, Magnamalo Soul, Brutal Strike
+//Add Petalace choices
 //!Add Hunting Horn buffs
-//!Add Petalace choices
 //!Add Weapon Selection For Hammer
 //!Make an optimizer algorithm that tests all of selected weapon type for current setup
 
@@ -336,9 +399,13 @@ export default {
       info: null,
       template: {
         weaponType: "Sword n Shield",
+        petalace: { label: "Absolute", raw: 15 },
         type: "dragon",
         scroll: "red",
         valstrax: false,
+        magna: false,
+        elembane: false,
+        raging: false,
         species: false,
         powerCharm: false,
         powerTalon: false,
@@ -370,6 +437,7 @@ export default {
         peakPerformance: { label: "None", raw: 0 },
         resentment: { label: "None", raw: 0 },
         elderBlessing: { label: "None", mod: 0 },
+        elementExploit: { label: "None", mod: 0 },
         chargeMaster: { label: "None", mod: 0, bow: 0 },
         dragonHeart: { label: "None", mod: 0 },
         mailOfHellfire: { label: "None", element: 0, raw: 0 },
@@ -402,6 +470,42 @@ export default {
     this.data = arrayFile;
     this.info = this.template;
   },
+  methods: {
+    applyHitzoneRaw(base) {
+      var total = base;
+
+      // Sharpness
+      total *= this.info.sharpness.raw;
+      // Hitzone
+      total *= this.info.partPhys / 100.0;
+      // MotionValue
+      total *= this.info.motionValuePhys / 100.0;
+
+      return total;
+    },
+    applyHitzoneElement(base) {
+      var total = base;
+
+      //Element Exploit
+      if (this.info.partEle[this.info.type] >= 20)
+        total += this.info.element * this.info.elementExploit.mod; //! TO BE TESTED
+      //Elembane
+      if (this.info.elemBane && this.info.partEle[this.info.type] >= 25)
+        total += this.info.element * 0.15; //! TO BE TESTED
+
+      // Sharpness
+      total *= this.info.sharpness.element;
+      // Hitzone
+      total *= this.info.partEle[this.info.type] / 100.0;
+      // MotionValue
+      total *= this.info.motionValueEle;
+
+      return total;
+    },
+    showModal() {
+      this.$bvModal.show("weaponModal");
+    },
+  },
   computed: {
     // UI STATS
     effectiveAffinity() {
@@ -409,6 +513,10 @@ export default {
       let total = (
         (parseInt(this.info.affinity) +
           parseInt(this.info.wex.value) +
+          //Raging Jewel
+          parseInt(
+            this.info.raging && this.info.weaponType == "Dual Blades" ? 20 : 0
+          ) +
           parseInt(this.info.kushalaSoul.value) +
           parseInt(this.info.latentPower.value) +
           parseInt(this.info.narwaSoul.value) +
@@ -425,8 +533,8 @@ export default {
       if (!this.info) return 0;
       //Total
       let total = parseInt(this.info.raw);
-      //mods
-      if (this.info.species) total += this.info.raw * 0.05;
+
+      //Buffs
       if (this.info.powerCharm) total += 6;
       if (this.info.powerTalon) total += 9;
       if (this.info.megaDemonDrug) total += 7;
@@ -434,12 +542,17 @@ export default {
       if (this.info.demonPowder) total += 10;
       if (this.info.mightSeed) total += 10;
 
+      //mods
+      if (this.info.species) total += this.info.raw * 0.05;
       total += this.info.raw * this.info.grinder.raw;
       total += this.info.raw * this.info.attackBoost.mod;
       total += this.info.raw * this.info.dragonHeart.mod;
       total += this.info.raw * this.info.heroics.mod;
       total += this.info.raw * this.info.fortify.mod;
+
       //extra
+      if (this.info.magna) total += 12;
+      total += this.info.petalace.raw; //! TO BE TESTED
       total += this.info.counterStrike.raw;
       total += this.info.coalescence.raw;
       total += this.info.chainCrit.raw;
@@ -464,7 +577,7 @@ export default {
       if (
         this.info.valstrax &&
         this.info.dragonHeart.label != "None" &&
-        this.info.type != "none"
+        this.info.type == "dragon"
       )
         total += this.info.element * 0.2;
 
@@ -545,79 +658,28 @@ export default {
     },
     // HITZONE / MOTION VALUE / SHARPNESS
     hitRaw() {
-      var total = this.effectiveRaw;
-      // Sharpness
-      total *= this.info.sharpness.raw;
-      // Hitzone
-      total *= this.info.partPhys / 100.0;
-      // MotionValue
-      total *= this.info.motionValuePhys / 100.0;
-
-      return total;
+      return this.applyHitzoneRaw(this.effectiveRaw);
     },
     hitElement() {
-      var total = this.effectiveElement;
-
-      // Sharpness
-      total *= this.info.sharpness.element;
-      // Hitzone
-      total *= this.info.partEle[this.info.type] / 100.0;
-      // MotionValue
-      total *= this.info.motionValueEle;
-
-      return total;
+      return this.applyHitzoneElement(this.effectiveElement);
     },
     hitTotal() {
       return this.hitRaw + this.hitElement;
     },
     hitAverageRaw() {
-      var total = this.averageRaw;
-      // Sharpness
-      total *= this.info.sharpness.raw;
-      // Hitzone
-      total *= this.info.partPhys / 100.0;
-      // MotionValue
-      total *= this.info.motionValuePhys / 100.0;
-
-      return total;
+      return this.applyHitzoneRaw(this.averageRaw);
     },
     hitAverageElement() {
-      var total = this.averageElement;
-
-      // Sharpness
-      total *= this.info.sharpness.element;
-      // Hitzone
-      total *= this.info.partEle[this.info.type] / 100.0;
-      // MotionValue
-      total *= this.info.motionValueEle;
-
-      return total;
+      return this.applyHitzoneElement(this.averageElement);
     },
     hitAverageTotal() {
       return this.hitAverageRaw + this.hitAverageElement;
     },
     hitCritRaw() {
-      var total = this.critRaw;
-      // Sharpness
-      total *= this.info.sharpness.raw;
-      // Hitzone
-      total *= this.info.partPhys / 100.0;
-      // MotionValue
-      total *= this.info.motionValuePhys / 100.0;
-
-      return total;
+      return this.applyHitzoneRaw(this.critRaw);
     },
     hitCritElement() {
-      var total = this.critElement;
-
-      // Sharpness
-      total *= this.info.sharpness.element;
-      // Hitzone
-      total *= this.info.partEle[this.info.type] / 100.0;
-      // MotionValue
-      total *= this.info.motionValueEle;
-
-      return total;
+      return this.applyHitzoneElement(this.critElement);
     },
     hitCritTotal() {
       return this.hitCritRaw + this.hitCritElement;
