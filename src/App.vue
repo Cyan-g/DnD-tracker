@@ -1,11 +1,87 @@
 <template>
   <div id="app">
-    <b-card> <h1>Damage Calculator</h1></b-card>
+    <b-card>
+      <h1>Damage Calculator</h1>
+    </b-card>
     <hr />
-    <b-modal title="Weapon List" id="weaponModal" hideFooter> </b-modal>
+    <!-- WEAPON MODAL -->
+    <b-modal title="Weapon List" id="weaponModal" hideFooter>
+      <b-row class="mb-2">
+        <b-col>
+          <b-input-group prepend="Search">
+            <b-form-input
+              v-model="info.filter"
+              type="text"
+            ></b-form-input> </b-input-group
+        ></b-col>
+      </b-row>
+      <b-row :key="info.filter" v-if="weapons">
+        <b-col
+          v-for="(weapon, index) in weapons[info.weaponType].filter(
+            (x) => !info.filter || x.label.includes(info.filter)
+          )"
+          :key="index"
+          cols="6"
+        >
+          <b-input-group class="mb-1">
+            <b-button @click="loadWeapon(weapon)" style="width: 70%">{{
+              weapon.label
+            }}</b-button></b-input-group
+          >
+        </b-col>
+      </b-row>
+    </b-modal>
+    <!-- SAVE MODAL -->
+    <b-modal title="Saved Configs" id="saveModal" hideFooter>
+      <b-row class="mb-2">
+        <b-col>
+          <b-input-group prepend="Title of current setup">
+            <b-form-input v-model="info.title" type="text"></b-form-input>
+            <b-button :disabled="!info.title" @click="saveSetup()" class="ml-1"
+              >Save</b-button
+            ></b-input-group
+          ></b-col
+        >
+      </b-row>
+      <b-row class="mb-2">
+        <b-col>
+          <b-input-group prepend="Search">
+            <b-form-input
+              v-model="info.filter"
+              type="text"
+            ></b-form-input> </b-input-group
+        ></b-col>
+      </b-row>
+      <b-row :key="info.filter" v-if="saves">
+        <b-col
+          v-for="(save, index) in saves.filter(
+            (x) => !info.filter || x.title.includes(info.filter)
+          )"
+          :key="index"
+          cols="6"
+        >
+          <b-input-group class="mb-1">
+            <b-button
+              @click="
+                info = save;
+                $bvModal.hide('saveModal');
+              "
+              style="width: 70%"
+              >{{ save.title }}</b-button
+            >
+            <b-button
+              variant="dark"
+              @click="deleteSetup(index)"
+              style="width: 20%"
+              ><i class="fas fa-times"></i></b-button
+          ></b-input-group>
+        </b-col>
+      </b-row>
+    </b-modal>
+    <!-- MAIN INTERFACE -->
     <b-card v-if="info">
-      <!-- <b-button size="xs" @click="info.key = !key">Load</b-button> -->
       <b-row>
+        <!-- WEAPON -->
         <b-col style="border-right: solid white 1px">
           <h5>Weapon</h5>
           <b-dropdown style="width:100%" :text="info.weaponType">
@@ -19,6 +95,8 @@
           <b-button style="width:100%; margin-top: 1rem" @click="showModal()"
             >Choose Weapon</b-button
           >
+          {{ info.weaponName }}
+          <br />
           <hr />
           Raw Damage
           <b-form-input v-model="info.raw" type="number"></b-form-input>
@@ -67,7 +145,21 @@
               >{{ item.label }}</b-dropdown-item
             >
           </b-dropdown>
+          <hr />
+          <b-button @click="optimizeWeapon()">Optimise Weapon</b-button>
+          <b-button
+            class="mt-1"
+            variant="dark"
+            v-for="entry in optimizedArray"
+            :key="entry.weapon.label"
+            @click="loadWeapon(entry.weapon)"
+          >
+            {{ entry.weapon.label }} <br />
+            base: {{ entry.base }} avg: {{ entry.average }} crit:
+            {{ entry.crit }}
+          </b-button>
         </b-col>
+        <!-- STATS -->
         <b-col>
           <h5>Stat Boost</h5>
           <div v-for="skill in data.statBoost" :key="skill.key">
@@ -85,6 +177,7 @@
             </b-dropdown>
           </div>
         </b-col>
+        <!-- CRIT -->
         <b-col>
           <h5>Crit</h5>
           <div v-for="skill in data.crit" :key="skill.key">
@@ -102,6 +195,7 @@
             </b-dropdown>
           </div>
         </b-col>
+        <!-- MODIFIERS -->
         <b-col>
           <h5>Modifiers</h5>
           <div
@@ -126,6 +220,7 @@
             </b-dropdown>
           </div>
         </b-col>
+        <!-- RAMPAGE SKILLS -->
         <b-col>
           <h5>Rampage Skills</h5>
           <span
@@ -209,6 +304,7 @@
             v-model="info.raging"
           ></b-checkbox>
         </b-col>
+        <!-- BUFFS -->
         <b-col>
           <h5>Buffs</h5>
           Powercharm
@@ -243,7 +339,50 @@
             style="margin-bottom: 1rem"
             v-model="info.mightSeed"
           ></b-checkbox>
+          <hr />
+          <h5>Songs</h5>
+          <span
+            >Affinity Up
+            <b-badge v-b-popover.hover.top="'20% Affinity'"
+              ><i class="fas fa-question"></i></b-badge
+          ></span>
+          <b-checkbox
+            style="margin-bottom: 1rem"
+            v-model="info.affinityUp"
+          ></b-checkbox>
+          <span
+            >Attack Up
+            <b-badge v-b-popover.hover.top="'10% more physical damage'"
+              ><i class="fas fa-question"></i></b-badge
+          ></span>
+          <b-checkbox
+            style="margin-bottom: 1rem"
+            v-model="info.attackUp"
+          ></b-checkbox>
+          <span
+            >Element Up
+            <b-badge
+              v-b-popover.hover.top="'10% more elemental damage (uncapped)'"
+              ><i class="fas fa-question"></i></b-badge
+          ></span>
+          <b-checkbox
+            style="margin-bottom: 1rem"
+            v-model="info.affinityUp"
+          ></b-checkbox>
+          <span
+            >Infernal Melody
+            <b-badge
+              v-b-popover.hover.top="
+                '20% more raw attack (overwrites attack up, lasts 30 seconds)'
+              "
+              ><i class="fas fa-question"></i></b-badge
+          ></span>
+          <b-checkbox
+            style="margin-bottom: 1rem"
+            v-model="info.affinityUp"
+          ></b-checkbox>
         </b-col>
+        <!-- ANALYSIS -->
         <b-col style="border-left: solid white 1px">
           <h5>Stats</h5>
           <div style="text-align: left">
@@ -358,6 +497,9 @@
               </b-tr>
             </b-tbody>
           </b-table-simple>
+          <b-button @click="$bvModal.show('saveModal')" class="float-right"
+            >Saves</b-button
+          >
         </b-col>
       </b-row>
     </b-card>
@@ -366,6 +508,7 @@
 
 <script>
 import arrayFile from "./data/data.json";
+import weapons from "./data/weapons.json";
 
 //Move Hitzone Values after the effective damage calculations liek motion values
 //fix elemental dmg cap
@@ -375,7 +518,8 @@ import arrayFile from "./data/data.json";
 //Make valstrax soul conditional
 //Elembane, Raging, Switcher, Magnamalo Soul, Brutal Strike
 //Add Petalace choices
-//!Add Hunting Horn buffs
+//Save Feature
+//Add Hunting Horn buffs
 //!Add Weapon Selection For Hammer
 //!Make an optimizer algorithm that tests all of selected weapon type for current setup
 
@@ -396,8 +540,14 @@ export default {
         "Heavy Bowgun",
       ],
       data: null,
+      filter: "",
+      weapons: [],
+      optimizedArray: [],
+      saves: [],
       info: null,
       template: {
+        title: "",
+        weaponName: "",
         weaponType: "Sword n Shield",
         petalace: { label: "Absolute", raw: 15 },
         type: "dragon",
@@ -413,9 +563,14 @@ export default {
         demonDrug: false,
         demonPowder: false,
         mightSeed: false,
+        affinityUp: false,
+        attackUp: false,
+        elementUp: false,
+        infernalMelody: false,
         raw: 300,
         element: 25,
         affinity: 0,
+        rampageSlot: 0,
         critElement: { label: "None", value: 1 },
         critBoost: { label: "None", value: 1.25 },
         wex: { label: "None", value: 0 },
@@ -458,21 +613,55 @@ export default {
       },
     };
   },
-  watch: {
-    total: {
-      handler() {
-        localStorage.setItem("monhun", JSON.stringify(this.info));
-      },
-      deep: true,
-    },
-  },
   created() {
     this.data = arrayFile;
+    this.weapons = weapons;
     this.info = this.template;
+    this.loadSaves();
   },
   methods: {
+    loadWeapon(weapon) {
+      this.info.raw = weapon.raw;
+      this.info.element = weapon.element;
+      this.info.affinity = weapon.affinity;
+      this.info.rampageSlot = weapon.rampageSlot;
+      this.info.type = weapon.type;
+      this.info.weaponName = weapon.label;
+      this.info.sharpness = this.data.sharpnessArray.find(
+        (x) => x.label == weapon.sharpness
+      );
+      this.$bvModal.hide("weaponModal");
+    },
+    optimizeWeapon() {
+      let oldSetup = {
+        raw: this.info.raw,
+        element: this.info.element,
+        affinity: this.info.affinity,
+        rampageSlot: this.info.rampageSlot,
+        type: this.info.type,
+        weaponName: this.info.label,
+        sharpness: this.info.sharpness.label,
+      };
+      let resultArray = [];
+      this.weapons[this.info.weaponType].forEach((weapon) => {
+        this.loadWeapon(weapon);
+        resultArray.push({
+          weapon: weapon,
+          base: this.hitTotal,
+          average: this.hitAverageTotal,
+          crit: this.hitCritTotal,
+        });
+      });
+      resultArray.sort((x, y) => y.average - x.average);
+      resultArray = resultArray.splice(0, 3);
+      this.optimizedArray = resultArray;
+      this.loadWeapon(oldSetup);
+    },
     applyHitzoneRaw(base) {
       var total = base;
+
+      if (this.info.species && this.info.rampageSlot >= 2)
+        total += this.info.raw * 0.05;
 
       // Sharpness
       total *= this.info.sharpness.raw;
@@ -490,7 +679,11 @@ export default {
       if (this.info.partEle[this.info.type] >= 20)
         total += this.info.element * this.info.elementExploit.mod; //! TO BE TESTED
       //Elembane
-      if (this.info.elemBane && this.info.partEle[this.info.type] >= 25)
+      if (
+        this.info.rampageSlot >= 3 &&
+        this.info.elemBane &&
+        this.info.partEle[this.info.type] >= 25
+      )
         total += this.info.element * 0.15; //! TO BE TESTED
 
       // Sharpness
@@ -505,6 +698,18 @@ export default {
     showModal() {
       this.$bvModal.show("weaponModal");
     },
+    loadSaves() {
+      let saveFile = localStorage.getItem("monHunSaves");
+      if (saveFile) this.saves = JSON.parse(saveFile);
+    },
+    saveSetup() {
+      this.saves.push(this.info);
+      localStorage.setItem("monHunSaves", JSON.stringify(this.saves));
+    },
+    deleteSetup(index) {
+      this.saves.splice(index, 1);
+      localStorage.setItem("monHunSaves", JSON.stringify(this.saves));
+    },
   },
   computed: {
     // UI STATS
@@ -517,9 +722,12 @@ export default {
           parseInt(
             this.info.raging && this.info.weaponType == "Dual Blades" ? 20 : 0
           ) +
-          parseInt(this.info.kushalaSoul.value) +
+          parseInt(this.info.affinityUp ? 20 : 0) +
+          parseInt(
+            this.info.rampageSlot >= 3 ? this.info.kushalaSoul.value : 0
+          ) +
           parseInt(this.info.latentPower.value) +
-          parseInt(this.info.narwaSoul.value) +
+          parseInt(this.info.rampageSlot >= 2 ? this.info.narwaSoul.value : 0) +
           parseInt(this.info.maxMight.value) +
           parseInt(this.info.foray.affinity) +
           parseInt(this.info.agitator.affinity) +
@@ -543,7 +751,6 @@ export default {
       if (this.info.mightSeed) total += 10;
 
       //mods
-      if (this.info.species) total += this.info.raw * 0.05;
       total += this.info.raw * this.info.grinder.raw;
       total += this.info.raw * this.info.attackBoost.mod;
       total += this.info.raw * this.info.dragonHeart.mod;
@@ -552,7 +759,7 @@ export default {
 
       //extra
       if (this.info.magna) total += 12;
-      total += this.info.petalace.raw; //! TO BE TESTED
+      total += this.info.petalace.raw;
       total += this.info.counterStrike.raw;
       total += this.info.coalescence.raw;
       total += this.info.chainCrit.raw;
@@ -567,6 +774,10 @@ export default {
       if (this.info.scroll == "red") total += this.info.mailOfHellfire.raw;
       else total += this.info.dereliction.raw;
 
+      //Songs
+      if (this.info.infernalMelody) total += this.info.raw * 0.2;
+      else if (this.info.attackUp) total *= 1.1;
+
       return total;
     },
     effectiveElement() {
@@ -575,6 +786,7 @@ export default {
       let total = parseInt(this.info.element);
       //multipliers
       if (
+        this.info.rampageSlot >= 2 &&
         this.info.valstrax &&
         this.info.dragonHeart.label != "None" &&
         this.info.type == "dragon"
@@ -604,7 +816,12 @@ export default {
         total += this.info.element * this.info.mailOfHellfire.element;
       else total += this.info.dereliction.element;
 
-      if (total > 110) return 110;
+      //CAP
+      if (total > 110) total = 110;
+
+      //Songs
+      if (this.info.elementUp) total *= 1.1;
+
       return total;
     },
     effectiveTotal() {

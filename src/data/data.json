@@ -20,7 +20,6 @@
     { "label": "yellow", "raw": 1, "element": 0.75 },
     { "label": "orange", "raw": 0.75, "element": 0.5 }
   ],
-  "songs": [{ "label": "Greatsword", "raw": 0, "mod": 0 }],
   "petalace": [
     { "label": "Hunting", "raw": 15 },
     { "label": "Strength", "raw": 10 },

@@ -1,0 +1,53 @@
+{
+  "Hammer": [
+    {
+      "label": "test",
+      "raw": 300,
+      "element": 11,
+      "type": "fire",
+      "affinity": 0,
+      "sharpness": "white",
+      "rampageSlot": 2
+    },
+    {
+      "label": "test2",
+      "raw": 310,
+      "element": 9,
+      "type": "dragon",
+      "affinity": 0,
+      "sharpness": "purple",
+      "rampageSlot": 2
+    },
+    {
+      "label": "test3",
+      "raw": 300,
+      "element": 11,
+      "type": "water",
+      "affinity": 0,
+      "sharpness": "white",
+      "rampageSlot": 2
+    },
+    {
+      "label": "test4",
+      "raw": 290,
+      "element": 42,
+      "type": "fire",
+      "affinity": 0,
+      "sharpness": "white",
+      "rampageSlot": 2
+    }
+  ],
+  "Greatsword": [],
+  "Longsword": [],
+  "Sword n Shield": [],
+  "Dual Blades": [],
+  "Lance": [],
+  "Hunting Horn": [],
+  "Insect Glaive": [],
+  "Charge Blade": [],
+  "Switch Axe": [],
+  "Gun Lance": [],
+  "Light Bowgun": [],
+  "Heavy Bowgun": [],
+  "Bow": []
+}
