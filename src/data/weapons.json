@@ -1,39 +1,525 @@
 {
   "Hammer": [
     {
-      "label": "test",
-      "raw": 300,
-      "element": 11,
+      "label": "Fine Kamura Hammer",
+      "raw": 320,
+      "element": 0,
+      "type": "none",
+      "affinity": 0,
+      "sharpness": "purple",
+      "rampageSlot": 2
+    },
+    {
+      "label": "Tooth Grinder",
+      "raw": 320,
+      "element": 33,
+      "type": "dragon",
+      "affinity": 0,
+      "sharpness": "purple",
+      "rampageSlot": 1
+    },
+    {
+      "label": "Enlightenment Hammer+",
+      "raw": 310,
+      "element": 38,
+      "type": "water",
+      "affinity": 20,
+      "sharpness": "purple",
+      "rampageSlot": 2
+    },
+    {
+      "label": "Armored Megagogue+",
+      "raw": 320,
+      "element": 0,
+      "type": "none",
+      "affinity": 0,
+      "sharpness": "white",
+      "rampageSlot": 1
+    },
+    {
+      "label": "Doomsday Hammer",
+      "raw": 310,
+      "element": 74,
+      "type": "water",
+      "affinity": 0,
+      "sharpness": "white",
+      "rampageSlot": 3
+    },
+    {
+      "label": "Volcanic Impact",
+      "raw": 310,
+      "element": 75,
       "type": "fire",
+      "affinity": 0,
+      "sharpness": "white",
+      "rampageSlot": 3
+    },
+    {
+      "label": "Hallowed Pronged Hammer",
+      "raw": 330,
+      "element": 0,
+      "type": "none",
+      "affinity": 0,
+      "sharpness": "white",
+      "rampageSlot": 3
+    },
+    {
+      "label": "Peak Pronged Hammer",
+      "raw": 320,
+      "element": 0,
+      "type": "none",
+      "affinity": 0,
+      "sharpness": "purple",
+      "rampageSlot": 3
+    },
+    {
+      "label": "Heavy Hammer",
+      "raw": 320,
+      "element": 0,
+      "type": "none",
+      "affinity": 0,
+      "sharpness": "white",
+      "rampageSlot": 1
+    },
+    {
+      "label": "Burst Revolver",
+      "raw": 320,
+      "element": 61,
+      "type": "fire",
+      "affinity": 0,
+      "sharpness": "white",
+      "rampageSlot": 3
+    },
+    {
+      "label": "Astalos Striker",
+      "raw": 310,
+      "element": 36,
+      "type": "thunder",
+      "affinity": 20,
+      "sharpness": "purple",
+      "rampageSlot": 2
+    },
+    {
+      "label": "Hyper Nova+",
+      "raw": 320,
+      "element": 59,
+      "type": "thunder",
+      "affinity": 0,
+      "sharpness": "white",
+      "rampageSlot": 3
+    },
+    {
+      "label": "Huge Tigrex Hammer+",
+      "raw": 350,
+      "element": 0,
+      "type": "none",
+      "affinity": -20,
+      "sharpness": "purple",
+      "rampageSlot": 2
+    },
+    {
+      "label": "Phoenix Testament+",
+      "raw": 350,
+      "element": 32,
+      "type": "fire",
+      "affinity": -20,
+      "sharpness": "purple",
+      "rampageSlot": 2
+    },
+    {
+      "label": "Avalanche Ritter",
+      "raw": 300,
+      "element": 38,
+      "type": "ice",
+      "affinity": 35,
+      "sharpness": "white",
+      "rampageSlot": 1
+    },
+    {
+      "label": "Kulu Katolos Stick",
+      "raw": 320,
+      "element": 0,
+      "type": "none",
+      "affinity": 20,
+      "sharpness": "white",
+      "rampageSlot": 1
+    },
+    {
+      "label": "Iron Giant's Soul",
+      "raw": 330,
+      "element": 0,
+      "type": "none",
+      "affinity": 20,
+      "sharpness": "white",
+      "rampageSlot": 2
+    },
+    {
+      "label": "Bearly Eyhammer",
+      "raw": 340,
+      "element": 0,
+      "type": "none",
+      "affinity": 0,
+      "sharpness": "white",
+      "rampageSlot": 1
+    },
+    {
+      "label": "Nightmare Frilled Blow+",
+      "raw": 320,
+      "element": 0,
+      "type": "none",
       "affinity": 0,
       "sharpness": "white",
       "rampageSlot": 2
     },
     {
-      "label": "test2",
+      "label": "Flicker Blizzard Blow",
       "raw": 310,
-      "element": 9,
+      "element": 76,
+      "type": "ice",
+      "affinity": 0,
+      "sharpness": "white",
+      "rampageSlot": 2
+    },
+    {
+      "label": "Bag o' Booms+",
+      "raw": 310,
+      "element": 50,
+      "type": "thunder",
+      "affinity": 0,
+      "sharpness": "purple",
+      "rampageSlot": 1
+    },
+    {
+      "label": "Pykrete Punisher",
+      "raw": 320,
+      "element": 54,
+      "type": "ice",
+      "affinity": 0,
+      "sharpness": "white",
+      "rampageSlot": 3
+    },
+    {
+      "label": "Hammer of Snowfallen",
+      "raw": 320,
+      "element": 28,
+      "type": "ice",
+      "affinity": 0,
+      "sharpness": "purple",
+      "rampageSlot": 2
+    },
+    {
+      "label": "Finishing Hammer+",
+      "raw": 360,
+      "element": 0,
+      "type": "none",
+      "affinity": -25,
+      "sharpness": "white",
+      "rampageSlot": 2
+    },
+    {
+      "label": "Atlas Crusher+",
+      "raw": 340,
+      "element": 0,
+      "type": "none",
+      "affinity": 0,
+      "sharpness": "white",
+      "rampageSlot": 1
+    },
+    {
+      "label": "Big Blue Chopper",
+      "raw": 320,
+      "element": 18,
+      "type": "water",
+      "affinity": 0,
+      "sharpness": "purple",
+      "rampageSlot": 2
+    },
+    {
+      "label": "Argyl Hammer",
+      "raw": 320,
+      "element": 0,
+      "type": "none",
+      "affinity": 10,
+      "sharpness": "purple",
+      "rampageSlot": 2
+    },
+    {
+      "label": "Datora Pounder+",
+      "raw": 310,
+      "element": 0,
+      "type": "none",
+      "affinity": 0,
+      "sharpness": "purple",
+      "rampageSlot": 3
+    },
+    {
+      "label": "Rathalos Cosh",
+      "raw": 310,
+      "element": 45,
+      "type": "fire",
+      "affinity": 10,
+      "sharpness": "purple",
+      "rampageSlot": 3
+    },
+    {
+      "label": "Leonid Starcrusher",
+      "raw": 300,
+      "element": 68,
+      "type": "fire",
+      "affinity": 35,
+      "sharpness": "white",
+      "rampageSlot": 2
+    },
+    {
+      "label": "Rosenunwetter",
+      "raw": 310,
+      "element": 23,
+      "type": "fire",
+      "affinity": 20,
+      "sharpness": "purple",
+      "rampageSlot": 2
+    },
+    {
+      "label": "Abominable Avalanche",
+      "raw": 350,
+      "element": 31,
+      "type": "ice",
+      "affinity": -15,
+      "sharpness": "purple",
+      "rampageSlot": 2
+    },
+    {
+      "label": "Oppressor's Sway",
+      "raw": 320,
+      "element": 42,
+      "type": "thunder",
+      "affinity": 0,
+      "sharpness": "purple",
+      "rampageSlot": 2
+    },
+    {
+      "label": "Cataclysmic Portent",
+      "raw": 320,
+      "element": 0,
+      "type": "none",
+      "affinity": 15,
+      "sharpness": "white",
+      "rampageSlot": 2
+    },
+    {
+      "label": "Lorelei+",
+      "raw": 320,
+      "element": 49,
+      "type": "water",
+      "affinity": 0,
+      "sharpness": "white",
+      "rampageSlot": 3
+    },
+    {
+      "label": "Gornir",
+      "raw": 350,
+      "element": 0,
+      "type": "none",
+      "affinity": 0,
+      "sharpness": "blue",
+      "rampageSlot": 3
+    },
+    {
+      "label": "Blower's Hammer",
+      "raw": 310,
+      "element": 0,
+      "type": "none",
+      "affinity": 20,
+      "sharpness": "white",
+      "rampageSlot": 2
+    },
+    {
+      "label": "Avidya Breaker",
+      "raw": 290,
+      "element": 0,
+      "type": "none",
+      "affinity": 45,
+      "sharpness": "purple",
+      "rampageSlot": 1
+    },
+    {
+      "label": "Ascella's Asterism",
+      "raw": 330,
+      "element": 0,
+      "type": "none",
+      "affinity": 0,
+      "sharpness": "purple",
+      "rampageSlot": 1
+    },
+    {
+      "label": "Barroth Momentum",
+      "raw": 340,
+      "element": 0,
+      "type": "none",
+      "affinity": -5,
+      "sharpness": "white",
+      "rampageSlot": 1
+    },
+    {
+      "label": "Devil's Die",
+      "raw": 320,
+      "element": 0,
+      "type": "none",
+      "affinity": 0,
+      "sharpness": "purple",
+      "rampageSlot": 2
+    },
+    {
+      "label": "Ächtungsblick",
+      "raw": 310,
+      "element": 27,
+      "type": "dragon",
+      "affinity": 20,
+      "sharpness": "purple",
+      "rampageSlot": 2
+    },
+    {
+      "label": "La Terre",
+      "raw": 290,
+      "element": 32,
+      "type": "dragon",
+      "affinity": 40,
+      "sharpness": "purple",
+      "rampageSlot": 1
+    },
+    {
+      "label": "Gargegg Hammer",
+      "raw": 380,
+      "element": 0,
+      "type": "none",
+      "affinity": -25,
+      "sharpness": "green",
+      "rampageSlot": 2
+    },
+    {
+      "label": "Mane Master Hammer",
+      "raw": 340,
+      "element": 23,
+      "type": "thunder",
+      "affinity": -10,
+      "sharpness": "white",
+      "rampageSlot": 2
+    },
+    {
+      "label": "Demonlord Sledge",
+      "raw": 320,
+      "element": 18,
+      "type": "thunder",
+      "affinity": 0,
+      "sharpness": "purple",
+      "rampageSlot": 1
+    },
+    {
+      "label": "Skyfold Boldblow",
+      "raw": 330,
+      "element": 19,
       "type": "dragon",
       "affinity": 0,
       "sharpness": "purple",
       "rampageSlot": 2
     },
     {
-      "label": "test3",
-      "raw": 300,
-      "element": 11,
-      "type": "water",
+      "label": "Skyfold Furyflash",
+      "raw": 310,
+      "element": 73,
+      "type": "thunder",
       "affinity": 0,
       "sharpness": "white",
       "rampageSlot": 2
     },
     {
-      "label": "test4",
-      "raw": 290,
-      "element": 42,
+      "label": "Daora's Hyperborea",
+      "raw": 310,
+      "element": 50,
+      "type": "ice",
+      "affinity": 10,
+      "sharpness": "white",
+      "rampageSlot": 3
+    },
+    {
+      "label": "Teostra da la Torre",
+      "raw": 310,
+      "element": 0,
+      "type": "none",
+      "affinity": 10,
+      "sharpness": "white",
+      "rampageSlot": 2
+    },
+    {
+      "label": "Diamgolgo's Phantasm",
+      "raw": 320,
+      "element": 0,
+      "type": "none",
+      "affinity": 0,
+      "sharpness": "purple",
+      "rampageSlot": 2
+    },
+    {
+      "label": "Crimson Forcewing",
+      "raw": 330,
+      "element": 45,
+      "type": "dragon",
+      "affinity": 0,
+      "sharpness": "white",
+      "rampageSlot": 2
+    },
+    {
+      "label": "Abyssal Windstorm",
+      "raw": 340,
+      "element": 21,
+      "type": "dragon",
+      "affinity": -20,
+      "sharpness": "purple",
+      "rampageSlot": 3
+    },
+    {
+      "label": "Dreamy Bear",
+      "raw": 320,
+      "element": 0,
+      "type": "none",
+      "affinity": 0,
+      "sharpness": "white",
+      "rampageSlot": 2
+    },
+    {
+      "label": "Dark Morte",
+      "raw": 320,
+      "element": 52,
+      "type": "dragon",
+      "affinity": 0,
+      "sharpness": "white",
+      "rampageSlot": 3
+    },
+    {
+      "label": "Magic Pumpking",
+      "raw": 330,
+      "element": 27,
       "type": "fire",
       "affinity": 0,
       "sharpness": "white",
+      "rampageSlot": 1
+    },
+    {
+      "label": "Royal Order's Bludgeon",
+      "raw": 310,
+      "element": 0,
+      "type": "none",
+      "affinity": 10,
+      "sharpness": "purple",
+      "rampageSlot": 2
+    },
+    {
+      "label": "Antique Machina H",
+      "raw": 330,
+      "element": 0,
+      "type": "none",
+      "affinity": 0,
+      "sharpness": "purple",
       "rampageSlot": 2
     }
   ],

@@ -21,7 +21,7 @@
             (x) => !info.filter || x.label.includes(info.filter)
           )"
           :key="index"
-          cols="6"
+          cols="12"
         >
           <b-input-group class="mb-1">
             <b-button @click="loadWeapon(weapon)" style="width: 70%">{{
@@ -125,6 +125,8 @@
           </b-dropdown>
           Affinity
           <b-form-input v-model="info.affinity" type="number"></b-form-input>
+          Rampage Slot
+          <b-form-input v-model="info.rampageSlot" type="number"></b-form-input>
           <hr />
           <h5>Scroll</h5>
           <b-button
@@ -367,7 +369,7 @@
           ></span>
           <b-checkbox
             style="margin-bottom: 1rem"
-            v-model="info.affinityUp"
+            v-model="info.elementUp"
           ></b-checkbox>
           <span
             >Infernal Melody
@@ -379,7 +381,7 @@
           ></span>
           <b-checkbox
             style="margin-bottom: 1rem"
-            v-model="info.affinityUp"
+            v-model="info.infernalMelody"
           ></b-checkbox>
         </b-col>
         <!-- ANALYSIS -->
@@ -520,8 +522,8 @@ import weapons from "./data/weapons.json";
 //Add Petalace choices
 //Save Feature
 //Add Hunting Horn buffs
-//!Add Weapon Selection For Hammer
-//!Make an optimizer algorithm that tests all of selected weapon type for current setup
+//Add Weapon Selection For Hammer
+//Make an optimizer algorithm that tests all of selected weapon type for current setup
 
 //!Add Qurious base stats once you know how they work
 
@@ -653,7 +655,7 @@ export default {
         });
       });
       resultArray.sort((x, y) => y.average - x.average);
-      resultArray = resultArray.splice(0, 3);
+      resultArray = resultArray.splice(0, 10);
       this.optimizedArray = resultArray;
       this.loadWeapon(oldSetup);
     },
@@ -720,7 +722,11 @@ export default {
           parseInt(this.info.wex.value) +
           //Raging Jewel
           parseInt(
-            this.info.raging && this.info.weaponType == "Dual Blades" ? 20 : 0
+            this.info.raging &&
+              this.info.rampageSlot >= 3 &&
+              this.info.weaponType == "Dual Blades"
+              ? 20
+              : 0
           ) +
           parseInt(this.info.affinityUp ? 20 : 0) +
           parseInt(
