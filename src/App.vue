@@ -285,7 +285,11 @@
                 <b-badge v-b-popover.hover.top="skill.description"
                   ><i class="fas fa-question"></i
                 ></b-badge>
-                <b-dropdown style="width:100%" :text="info[skill.key].label">
+                <b-dropdown
+                  v-if="skill.key != 'bloodlust'"
+                  style="width:100%"
+                  :text="info[skill.key].label"
+                >
                   <b-dropdown-item
                     v-for="item in skill.values"
                     :key="item.label"
@@ -293,6 +297,27 @@
                     >{{ item.label }}</b-dropdown-item
                   >
                 </b-dropdown>
+                <b-row v-else>
+                  <b-col cols="10">
+                    <b-dropdown
+                      style="width:100%"
+                      :text="info[skill.key].label"
+                    >
+                      <b-dropdown-item
+                        v-for="item in skill.values"
+                        :key="item.label"
+                        @click="info[skill.key] = item"
+                        >{{ item.label }}</b-dropdown-item
+                      >
+                    </b-dropdown>
+                  </b-col>
+                  <b-col cols="1">
+                    <b-checkbox
+                      v-b-popover.hover.top="'recovered state'"
+                      v-model="info.recovered"
+                    ></b-checkbox>
+                  </b-col>
+                </b-row>
               </div>
             </b-col>
             <!-- MODIFIERS -->
@@ -675,6 +700,7 @@ export default {
         "Heavy Bowgun",
       ],
       data: null,
+      recovered: false,
       filter: "",
       weapons: [],
       optimizedArray: [],
@@ -717,6 +743,7 @@ export default {
         critElement: { label: "None", value: 1 },
         critBoost: { label: "None", value: 1.25 },
         wex: { label: "None", value: 0 },
+        bloodlust: { label: "None", raw: 0, element: 0, affinity: 0 },
         latentPower: { label: "None", value: 0 },
         maxMight: { label: "None", value: 0 },
         narwaSoul: { label: "None", value: 0 },
@@ -922,6 +949,7 @@ export default {
           parseInt(
             this.effectiveRampageSlots >= 3 ? this.info.kushalaSoul.value : 0
           ) +
+          parseInt(this.info.recovered ? this.info.bloodlust.affinity : 0) +
           parseInt(this.info.latentPower.value) +
           parseInt(
             this.effectiveRampageSlots >= 2 ? this.info.narwaSoul.value : 0
@@ -960,6 +988,7 @@ export default {
 
       //extra
       if (this.info.magna) total += 12;
+      if (!this.info.recovered) total += this.info.bloodlust.raw;
       total += this.info.petalace.raw;
       total += this.info.counterStrike.raw;
       total += this.info.coalescence.raw;
@@ -1013,6 +1042,7 @@ export default {
         total += this.info.element * 0.1;
 
       //total extra
+      if (!this.info.recovered) total += this.info.bloodlust.element;
       total += this.info.chainCrit.element;
       total += this.info.coalescence.element;
       total += this.info.elementAttack.element;

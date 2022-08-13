@@ -150,6 +150,17 @@
       ]
     },
     {
+      "label": "Bloodlust",
+      "key": "bloodlust",
+      "description": "Raw and Element while afflicted, affinity after recovering (60s-90s)",
+      "values": [
+        { "label": "None", "raw": 0, "element": 0, "affinity": 0 },
+        { "label": "Level 1", "raw": 10, "element": 5, "affinity": 20.0 },
+        { "label": "Level 2", "raw": 15, "element": 7, "affinity": 25.0 },
+        { "label": "Level 3", "raw": 20, "element": 10, "affinity": 25.0 }
+      ]
+    },
+    {
       "label": "Latent Power",
       "key": "latentPower",
       "description": "Crit chance when in combat long enough. (2 min duration)",
