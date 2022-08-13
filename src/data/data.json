@@ -21,12 +21,82 @@
     { "label": "orange", "raw": 0.75, "element": 0.5 }
   ],
   "petalace": [
+    { "label": "None", "raw": 0 },
     { "label": "Hunting", "raw": 15 },
     { "label": "Strength", "raw": 10 },
     { "label": "Fortitude", "raw": 8 },
     { "label": "Demon", "raw": 20 },
     { "label": "Absolute", "raw": 15 },
     { "label": "Underworld", "raw": 15 }
+  ],
+  "augments": [
+    {
+      "label": "Attack Boost",
+      "key": "attackBoostAugment",
+      "values": [
+        { "label": "Attack Boost 0", "raw": 0, "slots": 0 },
+        { "label": "Attack Boost 1", "raw": 5, "slots": 2 },
+        { "label": "Attack Boost 2", "raw": 10, "slots": 4 }
+      ]
+    },
+    {
+      "label": "Affinity Boost",
+      "key": "affinityBoostAugment",
+      "values": [
+        { "label": "Affinity Boost 0", "aff": 0, "slots": 0 },
+        { "label": "Affinity Boost 1", "aff": 5, "slots": 3 }
+      ]
+    },
+    {
+      "label": "Element Boost",
+      "key": "elementBoostAugment",
+      "values": [
+        { "label": "Element Boost 0", "element": 0, "slots": 0 },
+        { "label": "Element Boost 1", "element": 5, "slots": 1 },
+        { "label": "Element Boost 2", "element": 10, "slots": 2 },
+        { "label": "Element Boost 3", "element": 15, "slots": 3 }
+      ]
+    },
+    {
+      "label": "Rampage Slot Upgrade",
+      "key": "rampageSlotAugment",
+      "values": [
+        { "label": "0 Rampage Slots", "rampageSlot": 0, "slots": 0 },
+        { "label": "+1 Rampage Slot", "rampageSlot": 1, "slots": 4 }
+      ]
+    }
+  ],
+  "augmentCombinations": [
+    {
+      "attackBoostAugment": 1,
+      "affinityBoostAugment": 1,
+      "elementBoostAugment": 0,
+      "rampageSlotAugment": 0
+    },
+    {
+      "attackBoostAugment": 2,
+      "affinityBoostAugment": 0,
+      "elementBoostAugment": 1,
+      "rampageSlotAugment": 0
+    },
+    {
+      "attackBoostAugment": 1,
+      "affinityBoostAugment": 0,
+      "elementBoostAugment": 3,
+      "rampageSlotAugment": 0
+    },
+    {
+      "attackBoostAugment": 0,
+      "affinityBoostAugment": 1,
+      "elementBoostAugment": 2,
+      "rampageSlotAugment": 0
+    },
+    {
+      "attackBoostAugment": 0,
+      "affinityBoostAugment": 0,
+      "elementBoostAugment": 1,
+      "rampageSlotAugment": 1
+    }
   ],
   "weaponArray": [
     "Greatsword",

@@ -95,48 +95,156 @@
           <b-button style="width:100%; margin-top: 1rem" @click="showModal()"
             >Choose Weapon</b-button
           >
-          {{ info.weaponName }}
           <br />
           <hr />
-          Raw Damage
-          <b-form-input v-model="info.raw" type="number"></b-form-input>
-          Element Damage
-          <b-form-input v-model="info.element" type="number"></b-form-input>
-          <b-dropdown
-            :disabled="!info.element"
-            style="width:100%"
-            :text="info.type"
-          >
-            <b-dropdown-item
-              v-for="item in data.elementArray"
-              :key="item"
-              @click="info.type = item"
-              >{{ item }}</b-dropdown-item
-            >
-          </b-dropdown>
-          <span>Sharpness</span>
-          <b-dropdown style="width:100%" :text="info.sharpness.label">
-            <b-dropdown-item
-              v-for="item in data.sharpnessArray"
-              :key="item.label"
-              @click="info.sharpness = item"
-              >{{ item.label }}</b-dropdown-item
-            >
-          </b-dropdown>
-          Affinity
-          <b-form-input v-model="info.affinity" type="number"></b-form-input>
-          Rampage Slot
-          <b-form-input v-model="info.rampageSlot" type="number"></b-form-input>
+          <h6>
+            {{ info.weaponName }}
+          </h6>
+          <!-- Damage -->
+          <b-row>
+            <b-col>
+              Raw
+              <b-form-input v-model="info.raw" type="number"></b-form-input>
+            </b-col>
+            <b-col>
+              Element
+              <b-form-input v-model="info.element" type="number"></b-form-input>
+            </b-col>
+          </b-row>
+          <!-- Sharpness and ElementType -->
+          <b-row>
+            <b-col>
+              <b-dropdown style="width:100%" :text="info.sharpness.label">
+                <b-dropdown-item
+                  v-for="item in data.sharpnessArray"
+                  :key="item.label"
+                  @click="info.sharpness = item"
+                  >{{ item.label }}</b-dropdown-item
+                >
+              </b-dropdown>
+            </b-col>
+            <b-col>
+              <b-dropdown
+                :disabled="!info.element"
+                style="width:100%"
+                :text="info.type"
+              >
+                <b-dropdown-item
+                  v-for="item in data.elementArray"
+                  :key="item"
+                  @click="info.type = item"
+                  >{{ item }}</b-dropdown-item
+                >
+              </b-dropdown>
+            </b-col>
+          </b-row>
+          <!-- Affinity and Rampage Slot -->
+          <b-row>
+            <b-col>
+              Affinity
+              <b-form-input
+                v-model="info.affinity"
+                type="number"
+              ></b-form-input>
+            </b-col>
+            <b-col>
+              Rampage Slot
+              <b-badge
+                style="cursor: pointer"
+                @click="
+                  info.rampageSlot == 1
+                    ? (info.rampageSlot = 0)
+                    : (info.rampageSlot = 1)
+                "
+                variant="dark"
+                :class="info.rampageSlot >= 1 ? 'text-danger' : ''"
+                pill
+              >
+                <i class="fas fa-circle"></i
+              ></b-badge>
+              <b-badge
+                style="cursor: pointer"
+                @click="
+                  info.rampageSlot == 2
+                    ? (info.rampageSlot = 0)
+                    : (info.rampageSlot = 2)
+                "
+                variant="dark"
+                :class="info.rampageSlot >= 2 ? 'text-danger' : ''"
+                pill
+              >
+                <i class="fas fa-circle"></i
+              ></b-badge>
+              <b-badge
+                style="cursor: pointer"
+                @click="
+                  info.rampageSlot == 3
+                    ? (info.rampageSlot = 0)
+                    : (info.rampageSlot = 3)
+                "
+                variant="dark"
+                :class="info.rampageSlot >= 3 ? 'text-danger' : ''"
+                pill
+              >
+                <i class="fas fa-circle"></i
+              ></b-badge>
+            </b-col>
+          </b-row>
+
           <hr />
-          <h5>Scroll</h5>
-          <b-button
-            @click="
-              info.scroll == 'red'
-                ? (info.scroll = 'blue')
-                : (info.scroll = 'red')
-            "
-            >{{ info.scroll }}</b-button
+          <h5>Augments</h5>
+          <b-badge
+            variant="dark"
+            :class="augmentSlotsFilled >= 1 ? 'text-danger' : ''"
+            pill
           >
+            <i class="fas fa-circle"></i
+          ></b-badge>
+          <b-badge
+            variant="dark"
+            :class="augmentSlotsFilled >= 2 ? 'text-danger' : ''"
+            pill
+          >
+            <i class="fas fa-circle"></i
+          ></b-badge>
+          <b-badge
+            variant="dark"
+            :class="augmentSlotsFilled >= 3 ? 'text-danger' : ''"
+            pill
+          >
+            <i class="fas fa-circle"></i
+          ></b-badge>
+          <b-badge
+            variant="dark"
+            :class="augmentSlotsFilled >= 4 ? 'text-danger' : ''"
+            pill
+          >
+            <i class="fas fa-circle"></i
+          ></b-badge>
+          <b-badge
+            variant="dark"
+            :class="augmentSlotsFilled >= 5 ? 'text-danger' : ''"
+            pill
+          >
+            <i class="fas fa-circle"></i
+          ></b-badge>
+          <div v-for="augment in data.augments" :key="augment.key">
+            <b-dropdown
+              class="mt-1"
+              style="width:100%"
+              :text="info[augment.key].label"
+            >
+              <b-dropdown-item
+                v-for="item in augment.values"
+                :key="item.label"
+                :disabled="
+                  item.slots + augmentSlotsFilled - info[augment.key].slots > 5
+                "
+                @click="info[augment.key] = item"
+                >{{ item.label }}</b-dropdown-item
+              >
+            </b-dropdown>
+          </div>
           <hr />
           <h5>Petalace</h5>
           <b-dropdown style="width:100%" :text="info.petalace.label">
@@ -147,256 +255,292 @@
               >{{ item.label }}</b-dropdown-item
             >
           </b-dropdown>
-          <hr />
-          <b-button @click="optimizeWeapon()">Optimise Weapon</b-button>
-          <b-button
-            class="mt-1"
-            variant="dark"
-            v-for="entry in optimizedArray"
-            :key="entry.weapon.label"
-            @click="loadWeapon(entry.weapon)"
-          >
-            {{ entry.weapon.label }} <br />
-            base: {{ entry.base }} avg: {{ entry.average }} crit:
-            {{ entry.crit }}
-          </b-button>
         </b-col>
-        <!-- STATS -->
-        <b-col>
-          <h5>Stat Boost</h5>
-          <div v-for="skill in data.statBoost" :key="skill.key">
-            {{ skill.label }}
-            <b-badge v-b-popover.hover.top="skill.description"
-              ><i class="fas fa-question"></i
-            ></b-badge>
-            <b-dropdown style="width:100%" :text="info[skill.key].label">
-              <b-dropdown-item
-                v-for="item in skill.values"
-                :key="item.label"
-                @click="info[skill.key] = item"
-                >{{ item.label }}</b-dropdown-item
+        <!-- SKILL SECTION -->
+        <b-col cols="8">
+          <b-row>
+            <!-- STATS -->
+            <b-col>
+              <h5>Stat Boost</h5>
+              <div v-for="skill in data.statBoost" :key="skill.key">
+                {{ skill.label }}
+                <b-badge v-b-popover.hover.top="skill.description"
+                  ><i class="fas fa-question"></i
+                ></b-badge>
+                <b-dropdown style="width:100%" :text="info[skill.key].label">
+                  <b-dropdown-item
+                    v-for="item in skill.values"
+                    :key="item.label"
+                    @click="info[skill.key] = item"
+                    >{{ item.label }}</b-dropdown-item
+                  >
+                </b-dropdown>
+              </div>
+            </b-col>
+            <!-- CRIT -->
+            <b-col>
+              <h5>Crit</h5>
+              <div v-for="skill in data.crit" :key="skill.key">
+                {{ skill.label }}
+                <b-badge v-b-popover.hover.top="skill.description"
+                  ><i class="fas fa-question"></i
+                ></b-badge>
+                <b-dropdown style="width:100%" :text="info[skill.key].label">
+                  <b-dropdown-item
+                    v-for="item in skill.values"
+                    :key="item.label"
+                    @click="info[skill.key] = item"
+                    >{{ item.label }}</b-dropdown-item
+                  >
+                </b-dropdown>
+              </div>
+            </b-col>
+            <!-- MODIFIERS -->
+            <b-col>
+              <h5>Modifiers</h5>
+              <div
+                v-for="skill in data.modifiers"
+                :key="skill.key"
+                v-show="
+                  skill.key != 'chargeMaster' ||
+                    chargeMasterWeapons.includes(info.weaponType)
+                "
               >
-            </b-dropdown>
-          </div>
-        </b-col>
-        <!-- CRIT -->
-        <b-col>
-          <h5>Crit</h5>
-          <div v-for="skill in data.crit" :key="skill.key">
-            {{ skill.label }}
-            <b-badge v-b-popover.hover.top="skill.description"
-              ><i class="fas fa-question"></i
-            ></b-badge>
-            <b-dropdown style="width:100%" :text="info[skill.key].label">
-              <b-dropdown-item
-                v-for="item in skill.values"
-                :key="item.label"
-                @click="info[skill.key] = item"
-                >{{ item.label }}</b-dropdown-item
+                {{ skill.label }}
+                <b-badge v-b-popover.hover.top="skill.description"
+                  ><i class="fas fa-question"></i
+                ></b-badge>
+                <b-dropdown style="width:100%" :text="info[skill.key].label">
+                  <b-dropdown-item
+                    v-for="item in skill.values"
+                    :key="item.label"
+                    @click="info[skill.key] = item"
+                    >{{ item.label }}</b-dropdown-item
+                  >
+                </b-dropdown>
+              </div>
+            </b-col>
+            <!-- RAMPAGE SKILLS -->
+            <b-col>
+              <h5>Rampage Skills</h5>
+              <span
+                >Narwa Soul (Affinity)
+                <b-badge
+                  v-b-popover.hover.top="'5% Affinity per Ibushi armor piece'"
+                  ><i class="fas fa-question"></i></b-badge
+              ></span>
+              <b-dropdown style="width:100%" :text="info.narwaSoul.label">
+                <b-dropdown-item
+                  v-for="item in data.narwaSoulArray"
+                  :key="item.label"
+                  @click="info.narwaSoul = item"
+                  >{{ item.label }}</b-dropdown-item
+                >
+              </b-dropdown>
+              <span
+                >Daora Soul (Affinity)
+                <b-badge
+                  v-b-popover.hover.top="'3-slot Active after 1 hit, full at 5'"
+                  ><i class="fas fa-question"></i></b-badge
+              ></span>
+              <b-dropdown style="width:100%" :text="info.kushalaSoul.label">
+                <b-dropdown-item
+                  v-for="item in data.kushalaSoulArray"
+                  :key="item.label"
+                  @click="info.kushalaSoul = item"
+                  >{{ item.label }}</b-dropdown-item
+                >
+              </b-dropdown>
+              <span
+                >Valstrax Soul (Dragon)
+                <b-badge
+                  v-b-popover.hover.top="'2-slot Active during dragonblight'"
+                  ><i class="fas fa-question"></i></b-badge
+              ></span>
+              <b-checkbox
+                style="margin-bottom: 1rem"
+                v-model="info.valstrax"
+              ></b-checkbox>
+              <span
+                >Magnamalo Soul
+                <b-badge
+                  v-b-popover.hover.top="'2-slot Active during hellfireblight'"
+                  ><i class="fas fa-question"></i></b-badge
+              ></span>
+              <b-checkbox
+                style="margin-bottom: 1rem"
+                v-model="info.magna"
+              ></b-checkbox>
+              <span
+                >Species Jewel
+                <b-badge
+                  v-b-popover.hover.top="
+                    '2-slot 5% Raw against specific species'
+                  "
+                  ><i class="fas fa-question"></i></b-badge
+              ></span>
+              <b-checkbox
+                style="margin-bottom: 1rem"
+                v-model="info.species"
+              ></b-checkbox>
+              <span
+                >Elembane Jewel
+                <b-badge
+                  v-b-popover.hover.top="
+                    '3-slot 15% Element on hitzones with 25 or above of that element'
+                  "
+                  ><i class="fas fa-question"></i></b-badge
+              ></span>
+              <b-checkbox
+                style="margin-bottom: 1rem"
+                v-model="info.elembane"
+              ></b-checkbox>
+              <span v-if="info.weaponType == 'Dual Blades'"
+                >Raging Jewel
+                <b-badge
+                  v-b-popover.hover.top="
+                    '3-slot 20% Affinity while in demon mode'
+                  "
+                  ><i class="fas fa-question"></i></b-badge
+              ></span>
+              <b-checkbox
+                v-if="info.weaponType == 'Dual Blades'"
+                style="margin-bottom: 1rem"
+                v-model="info.raging"
+              ></b-checkbox>
+              <hr />
+              <h5>Scroll</h5>
+              <b-button
+                @click="
+                  info.scroll == 'red'
+                    ? (info.scroll = 'blue')
+                    : (info.scroll = 'red')
+                "
+                >{{ info.scroll }}</b-button
               >
-            </b-dropdown>
-          </div>
-        </b-col>
-        <!-- MODIFIERS -->
-        <b-col>
-          <h5>Modifiers</h5>
-          <div
-            v-for="skill in data.modifiers"
-            :key="skill.key"
-            v-show="
-              skill.key != 'chargeMaster' ||
-                chargeMasterWeapons.includes(info.weaponType)
-            "
-          >
-            {{ skill.label }}
-            <b-badge v-b-popover.hover.top="skill.description"
-              ><i class="fas fa-question"></i
-            ></b-badge>
-            <b-dropdown style="width:100%" :text="info[skill.key].label">
-              <b-dropdown-item
-                v-for="item in skill.values"
-                :key="item.label"
-                @click="info[skill.key] = item"
-                >{{ item.label }}</b-dropdown-item
+            </b-col>
+            <!-- BUFFS -->
+            <b-col>
+              <h5>Buffs</h5>
+              Powercharm
+              <b-checkbox
+                style="margin-bottom: 1rem"
+                v-model="info.powerCharm"
+              ></b-checkbox>
+              Powertalon
+              <b-checkbox
+                style="margin-bottom: 1rem"
+                v-model="info.powerTalon"
+              ></b-checkbox>
+              Mega Demon Drug
+              <b-checkbox
+                :disabled="info.demonDrug"
+                style="margin-bottom: 1rem"
+                v-model="info.megaDemonDrug"
+              ></b-checkbox>
+              Demon Drug
+              <b-checkbox
+                :disabled="info.megaDemonDrug"
+                style="margin-bottom: 1rem"
+                v-model="info.demonDrug"
+              ></b-checkbox>
+              Demon Powder
+              <b-checkbox
+                style="margin-bottom: 1rem"
+                v-model="info.demonPowder"
+              ></b-checkbox>
+              Might Seed
+              <b-checkbox
+                style="margin-bottom: 1rem"
+                v-model="info.mightSeed"
+              ></b-checkbox>
+              <hr />
+              <h5>Songs</h5>
+              <span
+                >Affinity Up
+                <b-badge v-b-popover.hover.top="'20% Affinity'"
+                  ><i class="fas fa-question"></i></b-badge
+              ></span>
+              <b-checkbox
+                style="margin-bottom: 1rem"
+                v-model="info.affinityUp"
+              ></b-checkbox>
+              <span
+                >Attack Up
+                <b-badge v-b-popover.hover.top="'10% more physical damage'"
+                  ><i class="fas fa-question"></i></b-badge
+              ></span>
+              <b-checkbox
+                style="margin-bottom: 1rem"
+                v-model="info.attackUp"
+              ></b-checkbox>
+              <span
+                >Element Up
+                <b-badge
+                  v-b-popover.hover.top="'10% more elemental damage (uncapped)'"
+                  ><i class="fas fa-question"></i></b-badge
+              ></span>
+              <b-checkbox
+                style="margin-bottom: 1rem"
+                v-model="info.elementUp"
+              ></b-checkbox>
+              <span
+                >Infernal Melody
+                <b-badge
+                  v-b-popover.hover.top="
+                    '20% more raw attack (overwrites attack up, lasts 30 seconds)'
+                  "
+                  ><i class="fas fa-question"></i></b-badge
+              ></span>
+              <b-checkbox
+                style="margin-bottom: 1rem"
+                v-model="info.infernalMelody"
+              ></b-checkbox>
+            </b-col>
+            <!-- Optimiser -->
+            <b-col cols="12">
+              <hr />
+              <b-button @click="optimizeWeapon()">Optimise Weapon</b-button>
+              <br />
+              <b-button
+                class="mt-1 mr-1"
+                variant="dark"
+                v-for="entry in optimizedArray"
+                :key="entry.weapon.label"
+                @click="
+                  loadWeapon(entry.weapon);
+                  loadAugments(entry.augments);
+                "
               >
-            </b-dropdown>
-          </div>
+                {{ entry.weapon.label }} <br />
+                base: {{ entry.base }} avg: {{ entry.average }} crit:
+                {{ entry.crit }}
+              </b-button>
+            </b-col>
+          </b-row>
         </b-col>
-        <!-- RAMPAGE SKILLS -->
-        <b-col>
-          <h5>Rampage Skills</h5>
-          <span
-            >Narwa Soul (Affinity)
-            <b-badge
-              v-b-popover.hover.top="'5% Affinity per Ibushi armor piece'"
-              ><i class="fas fa-question"></i></b-badge
-          ></span>
-          <b-dropdown style="width:100%" :text="info.narwaSoul.label">
-            <b-dropdown-item
-              v-for="item in data.narwaSoulArray"
-              :key="item.label"
-              @click="info.narwaSoul = item"
-              >{{ item.label }}</b-dropdown-item
-            >
-          </b-dropdown>
-          <span
-            >Daora Soul (Affinity)
-            <b-badge
-              v-b-popover.hover.top="'3-slot Active after 1 hit, full at 5'"
-              ><i class="fas fa-question"></i></b-badge
-          ></span>
-          <b-dropdown style="width:100%" :text="info.kushalaSoul.label">
-            <b-dropdown-item
-              v-for="item in data.kushalaSoulArray"
-              :key="item.label"
-              @click="info.kushalaSoul = item"
-              >{{ item.label }}</b-dropdown-item
-            >
-          </b-dropdown>
-          <span
-            >Valstrax Soul (Dragon)
-            <b-badge v-b-popover.hover.top="'2-slot Active during dragonblight'"
-              ><i class="fas fa-question"></i></b-badge
-          ></span>
-          <b-checkbox
-            style="margin-bottom: 1rem"
-            v-model="info.valstrax"
-          ></b-checkbox>
-          <span
-            >Magnamalo Soul
-            <b-badge
-              v-b-popover.hover.top="'2-slot Active during hellfireblight'"
-              ><i class="fas fa-question"></i></b-badge
-          ></span>
-          <b-checkbox
-            style="margin-bottom: 1rem"
-            v-model="info.magna"
-          ></b-checkbox>
-          <span
-            >Species Jewel
-            <b-badge
-              v-b-popover.hover.top="'2-slot 5% Raw against specific species'"
-              ><i class="fas fa-question"></i></b-badge
-          ></span>
-          <b-checkbox
-            style="margin-bottom: 1rem"
-            v-model="info.species"
-          ></b-checkbox>
-          <span
-            >Elembane Jewel
-            <b-badge
-              v-b-popover.hover.top="
-                '3-slot 15% Element on hitzones with 25 or above of that element'
-              "
-              ><i class="fas fa-question"></i></b-badge
-          ></span>
-          <b-checkbox
-            style="margin-bottom: 1rem"
-            v-model="info.elembane"
-          ></b-checkbox>
-          <span v-if="info.weaponType == 'Dual Blades'"
-            >Raging Jewel
-            <b-badge
-              v-b-popover.hover.top="'3-slot 20% Affinity while in demon mode'"
-              ><i class="fas fa-question"></i></b-badge
-          ></span>
-          <b-checkbox
-            v-if="info.weaponType == 'Dual Blades'"
-            style="margin-bottom: 1rem"
-            v-model="info.raging"
-          ></b-checkbox>
-        </b-col>
-        <!-- BUFFS -->
-        <b-col>
-          <h5>Buffs</h5>
-          Powercharm
-          <b-checkbox
-            style="margin-bottom: 1rem"
-            v-model="info.powerCharm"
-          ></b-checkbox>
-          Powertalon
-          <b-checkbox
-            style="margin-bottom: 1rem"
-            v-model="info.powerTalon"
-          ></b-checkbox>
-          Mega Demon Drug
-          <b-checkbox
-            :disabled="info.demonDrug"
-            style="margin-bottom: 1rem"
-            v-model="info.megaDemonDrug"
-          ></b-checkbox>
-          Demon Drug
-          <b-checkbox
-            :disabled="info.megaDemonDrug"
-            style="margin-bottom: 1rem"
-            v-model="info.demonDrug"
-          ></b-checkbox>
-          Demon Powder
-          <b-checkbox
-            style="margin-bottom: 1rem"
-            v-model="info.demonPowder"
-          ></b-checkbox>
-          Might Seed
-          <b-checkbox
-            style="margin-bottom: 1rem"
-            v-model="info.mightSeed"
-          ></b-checkbox>
-          <hr />
-          <h5>Songs</h5>
-          <span
-            >Affinity Up
-            <b-badge v-b-popover.hover.top="'20% Affinity'"
-              ><i class="fas fa-question"></i></b-badge
-          ></span>
-          <b-checkbox
-            style="margin-bottom: 1rem"
-            v-model="info.affinityUp"
-          ></b-checkbox>
-          <span
-            >Attack Up
-            <b-badge v-b-popover.hover.top="'10% more physical damage'"
-              ><i class="fas fa-question"></i></b-badge
-          ></span>
-          <b-checkbox
-            style="margin-bottom: 1rem"
-            v-model="info.attackUp"
-          ></b-checkbox>
-          <span
-            >Element Up
-            <b-badge
-              v-b-popover.hover.top="'10% more elemental damage (uncapped)'"
-              ><i class="fas fa-question"></i></b-badge
-          ></span>
-          <b-checkbox
-            style="margin-bottom: 1rem"
-            v-model="info.elementUp"
-          ></b-checkbox>
-          <span
-            >Infernal Melody
-            <b-badge
-              v-b-popover.hover.top="
-                '20% more raw attack (overwrites attack up, lasts 30 seconds)'
-              "
-              ><i class="fas fa-question"></i></b-badge
-          ></span>
-          <b-checkbox
-            style="margin-bottom: 1rem"
-            v-model="info.infernalMelody"
-          ></b-checkbox>
-        </b-col>
+
         <!-- ANALYSIS -->
         <b-col style="border-left: solid white 1px">
-          <h5>Stats</h5>
-          <div style="text-align: left">
-            <b>Raw Attack: {{ Math.floor(effectiveRaw) }}</b
-            ><br />
-            <b>Element: {{ Math.floor(effectiveElement) }}</b
-            ><br />
-            <b>Total: {{ Math.floor(effectiveTotal) }}</b
-            ><br />
-            <b>Affinity: {{ (effectiveAffinity * 100).toFixed(0) }}</b
-            ><br />
-          </div>
+          <b-row>
+            <b-col>
+              <h5>Stats</h5>
+              <div style="text-align: left">
+                <b>Raw Attack: {{ Math.floor(effectiveRaw) }}</b
+                ><br />
+                <b>Element: {{ Math.floor(effectiveElement) }}</b
+                ><br />
+                <b>Total: {{ Math.floor(effectiveTotal) }}</b
+                ><br />
+                <b>Affinity: {{ (effectiveAffinity * 100).toFixed(0) }}</b
+                ><br /></div
+            ></b-col>
+            <b-col>
+              <b-button @click="$bvModal.show('saveModal')" class="float-right"
+                >Saves</b-button
+              ></b-col
+            >
+          </b-row>
           <hr />
           <h5>
             Monster Part
@@ -459,16 +603,22 @@
             href="https://docs.google.com/spreadsheets/d/1KSH0Uf-DsbFixdldQvcH-5zFXpX303dIzThTYMVH33Q/edit#gid=0"
             >Motion Value Data Sheet</a
           ><br />
-          Motion Value
-          <b-form-input
-            v-model="info.motionValuePhys"
-            type="number"
-          ></b-form-input>
-          Element Modifier
-          <b-form-input
-            v-model="info.motionValueEle"
-            type="number"
-          ></b-form-input>
+          <b-row>
+            <b-col>
+              Motion Value
+              <b-form-input
+                v-model="info.motionValuePhys"
+                type="number"
+              ></b-form-input>
+            </b-col>
+            <b-col>
+              Element Mod
+              <b-form-input
+                v-model="info.motionValueEle"
+                type="number"
+              ></b-form-input
+            ></b-col>
+          </b-row>
           <hr />
           <h5>Attack Data</h5>
           <b-table-simple class="text-light">
@@ -499,9 +649,6 @@
               </b-tr>
             </b-tbody>
           </b-table-simple>
-          <b-button @click="$bvModal.show('saveModal')" class="float-right"
-            >Saves</b-button
-          >
         </b-col>
       </b-row>
     </b-card>
@@ -509,23 +656,9 @@
 </template>
 
 <script>
+import _ from "lodash";
 import arrayFile from "./data/data.json";
 import weapons from "./data/weapons.json";
-
-//Move Hitzone Values after the effective damage calculations liek motion values
-//fix elemental dmg cap
-//split Effective and Actual + crit and non crit damage
-//check correct values for skills again
-//Add element types
-//Make valstrax soul conditional
-//Elembane, Raging, Switcher, Magnamalo Soul, Brutal Strike
-//Add Petalace choices
-//Save Feature
-//Add Hunting Horn buffs
-//Add Weapon Selection For Hammer
-//Make an optimizer algorithm that tests all of selected weapon type for current setup
-
-//!Add Qurious base stats once you know how they work
 
 export default {
   name: "App",
@@ -554,6 +687,14 @@ export default {
         petalace: { label: "Absolute", raw: 15 },
         type: "dragon",
         scroll: "red",
+        attackBoostAugment: { label: "Attack Boost 0", raw: 0, slots: 0 },
+        affinityBoostAugment: { label: "Affinity Boost 0", aff: 0, slots: 0 },
+        elementBoostAugment: { label: "Element Boost 0", element: 0, slots: 0 },
+        rampageSlotAugment: {
+          label: "0 Rampage Slots",
+          rampageSlot: 0,
+          slots: 0,
+        },
         valstrax: false,
         magna: false,
         elembane: false,
@@ -632,37 +773,71 @@ export default {
       this.info.sharpness = this.data.sharpnessArray.find(
         (x) => x.label == weapon.sharpness
       );
+      if (weapon.augments) this.loadAugments(weapon.augments);
       this.$bvModal.hide("weaponModal");
     },
+    loadAugments(combination) {
+      this.info.attackBoostAugment = this.data.augments.find(
+        (x) => x.key == "attackBoostAugment"
+      ).values[combination.attackBoostAugment];
+      this.info.elementBoostAugment = this.data.augments.find(
+        (x) => x.key == "elementBoostAugment"
+      ).values[combination.elementBoostAugment];
+      this.info.affinityBoostAugment = this.data.augments.find(
+        (x) => x.key == "affinityBoostAugment"
+      ).values[combination.affinityBoostAugment];
+      this.info.rampageSlotAugment = this.data.augments.find(
+        (x) => x.key == "rampageSlotAugment"
+      ).values[combination.rampageSlotAugment];
+    },
     optimizeWeapon() {
-      let oldSetup = {
-        raw: this.info.raw,
-        element: this.info.element,
-        affinity: this.info.affinity,
-        rampageSlot: this.info.rampageSlot,
-        type: this.info.type,
-        weaponName: this.info.label,
-        sharpness: this.info.sharpness.label,
-      };
+      // save old setup
+      let oldSetup = _.cloneDeep(this.info);
+
+      //iterate all weapons of selected type
       let resultArray = [];
       this.weapons[this.info.weaponType].forEach((weapon) => {
         this.loadWeapon(weapon);
+
+        // test out augment combinations
+        let augmentTestArray = [];
+        this.data.augmentCombinations.forEach((combination) => {
+          this.loadAugments(combination);
+          augmentTestArray.push({
+            combination: combination,
+            base: this.hitTotal,
+            average: this.hitAverageTotal,
+            crit: this.hitCritTotal,
+          });
+        });
+
+        // find best augment combination
+        augmentTestArray.sort((x, y) => y.average - x.average);
+        let combination = augmentTestArray[0].combination;
+        this.loadAugments(combination);
+
+        // Add to final list
         resultArray.push({
+          augments: combination,
           weapon: weapon,
           base: this.hitTotal,
           average: this.hitAverageTotal,
           crit: this.hitCritTotal,
         });
       });
+
+      // find top 10
       resultArray.sort((x, y) => y.average - x.average);
       resultArray = resultArray.splice(0, 10);
       this.optimizedArray = resultArray;
-      this.loadWeapon(oldSetup);
+
+      // restore old setup
+      this.info = oldSetup;
     },
     applyHitzoneRaw(base) {
       var total = base;
 
-      if (this.info.species && this.info.rampageSlot >= 2)
+      if (this.info.species && this.effectiveRampageSlots >= 2)
         total += this.info.raw * 0.05;
 
       // Sharpness
@@ -682,7 +857,7 @@ export default {
         total += this.info.element * this.info.elementExploit.mod; //! TO BE TESTED
       //Elembane
       if (
-        this.info.rampageSlot >= 3 &&
+        this.effectiveRampageSlots >= 3 &&
         this.info.elemBane &&
         this.info.partEle[this.info.type] >= 25
       )
@@ -714,26 +889,43 @@ export default {
     },
   },
   computed: {
+    augmentSlotsFilled() {
+      let total = 0;
+      total += this.info.attackBoostAugment.slots;
+      total += this.info.affinityBoostAugment.slots;
+      total += this.info.elementBoostAugment.slots;
+      total += this.info.rampageSlotAugment.slots;
+
+      return total;
+    },
     // UI STATS
+    effectiveRampageSlots() {
+      let total = this.info.rampageSlot;
+      total += this.info.rampageSlotAugment.rampageSlot;
+      return total;
+    },
     effectiveAffinity() {
       if (!this.info) return 0;
       let total = (
         (parseInt(this.info.affinity) +
           parseInt(this.info.wex.value) +
+          parseInt(this.info.affinityBoostAugment.aff) +
           //Raging Jewel
           parseInt(
             this.info.raging &&
-              this.info.rampageSlot >= 3 &&
+              this.effectiveRampageSlots >= 3 &&
               this.info.weaponType == "Dual Blades"
               ? 20
               : 0
           ) +
           parseInt(this.info.affinityUp ? 20 : 0) +
           parseInt(
-            this.info.rampageSlot >= 3 ? this.info.kushalaSoul.value : 0
+            this.effectiveRampageSlots >= 3 ? this.info.kushalaSoul.value : 0
           ) +
           parseInt(this.info.latentPower.value) +
-          parseInt(this.info.rampageSlot >= 2 ? this.info.narwaSoul.value : 0) +
+          parseInt(
+            this.effectiveRampageSlots >= 2 ? this.info.narwaSoul.value : 0
+          ) +
           parseInt(this.info.maxMight.value) +
           parseInt(this.info.foray.affinity) +
           parseInt(this.info.agitator.affinity) +
@@ -747,6 +939,9 @@ export default {
       if (!this.info) return 0;
       //Total
       let total = parseInt(this.info.raw);
+
+      //Augment
+      total += this.info.attackBoostAugment.raw;
 
       //Buffs
       if (this.info.powerCharm) total += 6;
@@ -788,11 +983,16 @@ export default {
     },
     effectiveElement() {
       if (!this.info || this.info == 0 || this.info.type == "none") return 0;
+
       //Total Element
       let total = parseInt(this.info.element);
+
+      //Augment
+      total += this.info.elementBoostAugment.element;
+
       //multipliers
       if (
-        this.info.rampageSlot >= 2 &&
+        this.effectiveRampageSlots >= 2 &&
         this.info.valstrax &&
         this.info.dragonHeart.label != "None" &&
         this.info.type == "dragon"
@@ -821,9 +1021,6 @@ export default {
       if (this.info.scroll == "blue")
         total += this.info.element * this.info.mailOfHellfire.element;
       else total += this.info.dereliction.element;
-
-      //CAP
-      if (total > 110) total = 110;
 
       //Songs
       if (this.info.elementUp) total *= 1.1;
