@@ -92,7 +92,9 @@
               >{{ item }}</b-dropdown-item
             >
           </b-dropdown>
-          <b-button style="width:100%; margin-top: 1rem" @click="showModal()"
+          <b-button
+            style="width:100%; margin-top: 1rem"
+            @click="$bvModal.show('weaponModal')"
             >Choose Weapon</b-button
           >
           <br />
@@ -947,9 +949,6 @@ export default {
       total *= this.info.motionValueEle;
 
       return total;
-    },
-    showModal() {
-      this.$bvModal.show("weaponModal");
     },
     loadSaves() {
       let saveFile = localStorage.getItem("monHunSaves");
