@@ -327,8 +327,11 @@
                 v-for="skill in data.modifiers"
                 :key="skill.key"
                 v-show="
-                  skill.key != 'chargeMaster' ||
-                    chargeMasterWeapons.includes(info.weaponType)
+                  ((skill.key != 'chargeMaster' ||
+                    chargeMasterWeapons.includes(info.weaponType)) &&
+                    !skill.meleeOnly && !skill.rangedOnly) ||
+                    (skill.meleeOnly && !isRanged) ||
+                    (skill.rangedOnly && isRanged)
                 "
               >
                 {{ skill.label }}
@@ -763,6 +766,8 @@ export default {
         resentment: { label: "None", raw: 0 },
         elderBlessing: { label: "None", mod: 0 },
         elementExploit: { label: "None", mod: 0 },
+        bludgeoner: { label: "None", mod: 1 },
+        mindsEye: { label: "None", mod: 1 },
         chargeMaster: { label: "None", mod: 0, bow: 0 },
         dragonHeart: { label: "None", mod: 0 },
         mailOfHellfire: { label: "None", element: 0, raw: 0 },
@@ -867,6 +872,18 @@ export default {
       if (this.info.species && this.effectiveRampageSlots >= 2)
         total += this.info.raw * 0.05;
 
+      // Melee Hit skills
+      if (!this.isRanged) {
+        if (!this.isWeakspot) total *= this.info.mindsEye.mod;
+
+        if (this.info.sharpness.raw <= 1) total *= this.info.bludgeoner.mod;
+        else if (
+          this.info.sharpness.raw <= 1.05 &&
+          this.info.bludgeoner.label == "Level 3"
+        )
+          total *= this.info.bludgeoner.mod;
+      }
+
       // Sharpness
       total *= this.info.sharpness.raw;
       // Hitzone
@@ -916,6 +933,14 @@ export default {
     },
   },
   computed: {
+    isRanged() {
+      return ["Bow", "Light Bowgun", "Heavy Bowgun"].includes(
+        this.info.weaponType
+      );
+    },
+    isWeakspot() {
+      return (this.info.partPhys / 100.0) * this.info.sharpness.raw >= 0.42;
+    },
     augmentSlotsFilled() {
       let total = 0;
       total += this.info.attackBoostAugment.slots;
@@ -935,7 +960,7 @@ export default {
       if (!this.info) return 0;
       let total = (
         (parseInt(this.info.affinity) +
-          parseInt(this.info.wex.value) +
+          parseInt(this.isWeakspot ? this.info.wex.value : 0) +
           parseInt(this.info.affinityBoostAugment.aff) +
           //Raging Jewel
           parseInt(
