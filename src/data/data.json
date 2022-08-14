@@ -29,6 +29,13 @@
     { "label": "Absolute", "raw": 15 },
     { "label": "Underworld", "raw": 15 }
   ],
+  "dangoBooster": [
+    { "label": "None", "raw": 0 },
+    { "label": "Level 1", "raw": 6 },
+    { "label": "Level 2", "raw": 9 },
+    { "label": "Level 3", "raw": 12 },
+    { "label": "Level 4", "raw": 15 }
+  ],
   "augments": [
     {
       "label": "Attack Boost",
@@ -450,6 +457,30 @@
         { "label": "Level 1", "mod": 1.05 },
         { "label": "Level 2", "mod": 1.1 },
         { "label": "Level 3", "mod": 1.1 }
+      ]
+    },
+    {
+      "label": "Normal - Rapid Up",
+      "key": "normalUp",
+      "rangedOnly": true,
+      "description": "Increases the power of Normal Ammo and Rapid-type arrows",
+      "values": [
+        { "label": "None", "mod": 1 },
+        { "label": "Level 1", "mod": 1.05 },
+        { "label": "Level 2", "mod": 1.1 },
+        { "label": "Level 3", "mod": 1.2 }
+      ]
+    },
+    {
+      "label": "Pierce Up",
+      "key": "pierceUp",
+      "rangedOnly": true,
+      "description": "Increases the power of Piercing Ammo and Piercing-type arrows",
+      "values": [
+        { "label": "None", "mod": 1 },
+        { "label": "Level 1", "mod": 1.05 },
+        { "label": "Level 2", "mod": 1.1 },
+        { "label": "Level 3", "mod": 1.2 }
       ]
     }
   ]

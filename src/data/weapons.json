@@ -526,7 +526,597 @@
   "Greatsword": [],
   "Longsword": [],
   "Sword n Shield": [],
-  "Dual Blades": [],
+  "Dual Blades": [
+    {
+      "label": "Fine Kamura Blades",
+      "raw": 320,
+      "element": 0,
+      "type": "none",
+      "affinity": 0,
+      "sharpness": "purple",
+      "rampageSlot": 2
+    },
+
+    {
+      "label": "Bloody Nails Wunde",
+      "raw": 320,
+      "element": 31,
+      "type": "dragon",
+      "affinity": 0,
+      "sharpness": "purple",
+      "rampageSlot": 1
+    },
+
+    {
+      "label": "Mud Shredders",
+      "raw": 300,
+      "element": 62,
+      "type": "water",
+      "affinity": 0,
+      "sharpness": "white",
+      "rampageSlot": 3
+    },
+
+    {
+      "label": "Magma Shredders",
+      "raw": 300,
+      "element": 64,
+      "type": "fire",
+      "affinity": 0,
+      "sharpness": "white",
+      "rampageSlot": 3
+    },
+
+    {
+      "label": "Oppressors Miracle",
+      "raw": 310,
+      "element": 54,
+      "type": "thunder",
+      "affinity": 0,
+      "sharpness": "purple",
+      "rampageSlot": 2
+    },
+
+    {
+      "label": "Raider's Icecarvers",
+      "raw": 310,
+      "element": 35,
+      "type": "ice",
+      "affinity": 20,
+      "sharpness": "purple",
+      "rampageSlot": 1
+    },
+
+    {
+      "label": "The Legend",
+      "raw": 320,
+      "element": 0,
+      "type": "none",
+      "affinity": 0,
+      "sharpness": "white",
+      "rampageSlot": 2
+    },
+
+    {
+      "label": "Blood Wind Skards +",
+      "raw": 290,
+      "element": 24,
+      "type": "thunder",
+      "affinity": 10,
+      "sharpness": "white",
+      "rampageSlot": 2
+    },
+
+    {
+      "label": "Supercell +",
+      "raw": 330,
+      "element": 0,
+      "type": "none",
+      "affinity": 0,
+      "sharpness": "purple",
+      "rampageSlot": 2
+    },
+
+    {
+      "label": "Huge Tigrex Claws +",
+      "raw": 340,
+      "element": 0,
+      "type": "none",
+      "affinity": -20,
+      "sharpness": "purple",
+      "rampageSlot": 2
+    },
+
+    {
+      "label": "Dark Aurora +",
+      "raw": 320,
+      "element": 30,
+      "type": "water",
+      "affinity": 15,
+      "sharpness": "purple",
+      "rampageSlot": 2
+    },
+
+    {
+      "label": "Dawnmoon Disruptors",
+      "raw": 320,
+      "element": 44,
+      "type": "fire",
+      "affinity": 0,
+      "sharpness": "white",
+      "rampageSlot": 3
+    },
+
+    {
+      "label": "Kulu Katolos Blades",
+      "raw": 310,
+      "element": 0,
+      "type": "none",
+      "affinity": 20,
+      "sharpness": "white",
+      "rampageSlot": 1
+    },
+
+    {
+      "label": "Gelid Heart",
+      "raw": 330,
+      "element": 38,
+      "type": "ice",
+      "affinity": 0,
+      "sharpness": "white",
+      "rampageSlot": 3
+    },
+
+    {
+      "label": "Fengul Frostclaws",
+      "raw": 320,
+      "element": 27,
+      "type": "ice",
+      "affinity": 0,
+      "sharpness": "purple",
+      "rampageSlot": 2
+    },
+
+    {
+      "label": "Avidya Blades",
+      "raw": 300,
+      "element": 0,
+      "type": "none",
+      "affinity": 40,
+      "sharpness": "purple",
+      "rampageSlot": 1
+    },
+
+    {
+      "label": "Alkaid's Asterism",
+      "raw": 330,
+      "element": 0,
+      "type": "none",
+      "affinity": 0,
+      "sharpness": "purple",
+      "rampageSlot": 1
+    },
+
+    {
+      "label": "Final Chainsaws +",
+      "raw": 330,
+      "element": 27,
+      "type": "thunder",
+      "affinity": 0,
+      "sharpness": "white",
+      "rampageSlot": 2
+    },
+
+    {
+      "label": "Twin Wyvern Bolts",
+      "raw": 310,
+      "element": 35,
+      "type": "thunder",
+      "affinity": 20,
+      "sharpness": "purple",
+      "rampageSlot": 2
+    },
+
+    {
+      "label": "Oeyama Axes",
+      "raw": 330,
+      "element": 0,
+      "type": "none",
+      "affinity": 0,
+      "sharpness": "white",
+      "rampageSlot": 1
+    },
+
+    {
+      "label": "Lohenschild +",
+      "raw": 340,
+      "element": 24,
+      "type": "fire",
+      "affinity": -15,
+      "sharpness": "purple",
+      "rampageSlot": 2
+    },
+
+    {
+      "label": "Talon Gemini +",
+      "raw": 340,
+      "element": 0,
+      "type": "none",
+      "affinity": 0,
+      "sharpness": "white",
+      "rampageSlot": 3
+    },
+
+    {
+      "label": "Terrible Twins",
+      "raw": 320,
+      "element": 0,
+      "type": "none",
+      "affinity": 10,
+      "sharpness": "purple",
+      "rampageSlot": 2
+    },
+
+    {
+      "label": "Lobster Piercers",
+      "raw": 320,
+      "element": 26,
+      "type": "water",
+      "affinity": 0,
+      "sharpness": "purple",
+      "rampageSlot": 3
+    },
+
+    {
+      "label": "Limb Cutter",
+      "raw": 320,
+      "element": 18,
+      "type": "water",
+      "affinity": 0,
+      "sharpness": "purple",
+      "rampageSlot": 2
+    },
+
+    {
+      "label": "Flaming Wyvern Lovers",
+      "raw": 310,
+      "element": 51,
+      "type": "fire",
+      "affinity": 0,
+      "sharpness": "purple",
+      "rampageSlot": 3
+    },
+
+    {
+      "label": "Wyvern Strife",
+      "raw": 310,
+      "element": 57,
+      "type": "fire",
+      "affinity": 20,
+      "sharpness": "white",
+      "rampageSlot": 2
+    },
+
+    {
+      "label": "Rosenehrgeiz",
+      "raw": 310,
+      "element": 18,
+      "type": "fire",
+      "affinity": 20,
+      "sharpness": "purple",
+      "rampageSlot": 2
+    },
+
+    {
+      "label": "Diablo Smashers +",
+      "raw": 360,
+      "element": 0,
+      "type": "none",
+      "affinity": -15,
+      "sharpness": "white",
+      "rampageSlot": 1
+    },
+
+    {
+      "label": "Valtos Os +",
+      "raw": 330,
+      "element": 33,
+      "type": "water",
+      "affinity": -10,
+      "sharpness": "purple",
+      "rampageSlot": 2
+    },
+
+    {
+      "label": "Thunderblades +",
+      "raw": 320,
+      "element": 30,
+      "type": "thunder",
+      "affinity": 10,
+      "sharpness": "white",
+      "rampageSlot": 3
+    },
+
+    {
+      "label": "Unquenchable Flames",
+      "raw": 320,
+      "element": 39,
+      "type": "fire",
+      "affinity": -10,
+      "sharpness": "purple",
+      "rampageSlot": 1
+    },
+
+    {
+      "label": "Double Droth Flood +",
+      "raw": 320,
+      "element": 45,
+      "type": "water",
+      "affinity": 0,
+      "sharpness": "white",
+      "rampageSlot": 3
+    },
+
+    {
+      "label": "Binary Gorgoth",
+      "raw": 350,
+      "element": 0,
+      "type": "none",
+      "affinity": 0,
+      "sharpness": "blue",
+      "rampageSlot": 3
+    },
+
+    {
+      "label": "Nightmare Frilled Claws +",
+      "raw": 330,
+      "element": 0,
+      "type": "none",
+      "affinity": 0,
+      "sharpness": "white",
+      "rampageSlot": 2
+    },
+
+    {
+      "label": "Glistening Snow Claws",
+      "raw": 300,
+      "element": 64,
+      "type": "ice",
+      "affinity": 0,
+      "sharpness": "white",
+      "rampageSlot": 2
+    },
+
+    {
+      "label": "Snow Ravines",
+      "raw": 320,
+      "element": 47,
+      "type": "ice",
+      "affinity": 0,
+      "sharpness": "white",
+      "rampageSlot": 3
+    },
+
+    {
+      "label": "Blue Blaze Blades",
+      "raw": 320,
+      "element": 0,
+      "type": "none",
+      "affinity": 0,
+      "sharpness": "purple",
+      "rampageSlot": 2
+    },
+
+    {
+      "label": "Aasklauen",
+      "raw": 310,
+      "element": 25,
+      "type": "dragon",
+      "affinity": 20,
+      "sharpness": "purple",
+      "rampageSlot": 2
+    },
+
+    {
+      "label": "Le Shangri-La",
+      "raw": 290,
+      "element": 43,
+      "type": "dragon",
+      "affinity": 35,
+      "sharpness": "purple",
+      "rampageSlot": 1
+    },
+
+    {
+      "label": "Suzuka Akurou",
+      "raw": 350,
+      "element": 25,
+      "type": "thunder",
+      "affinity": -20,
+      "sharpness": "white",
+      "rampageSlot": 2
+    },
+
+    {
+      "label": "Demonlord Fist",
+      "raw": 320,
+      "element": 20,
+      "type": "thunder",
+      "affinity": 0,
+      "sharpness": "purple",
+      "rampageSlot": 1
+    },
+
+    {
+      "label": "Twin Twisters",
+      "raw": 330,
+      "element": 18,
+      "type": "dragon",
+      "affinity": 0,
+      "sharpness": "purple",
+      "rampageSlot": 2
+    },
+
+    {
+      "label": "Double Discharge",
+      "raw": 300,
+      "element": 69,
+      "type": "thunder",
+      "affinity": 0,
+      "sharpness": "purple",
+      "rampageSlot": 2
+    },
+
+    {
+      "label": "Bazel Bombers",
+      "raw": 340,
+      "element": 0,
+      "type": "none",
+      "affinity": -10,
+      "sharpness": "white",
+      "rampageSlot": 2
+    },
+
+    {
+      "label": "Daoras Ventus",
+      "raw": 310,
+      "element": 54,
+      "type": "ice",
+      "affinity": 0,
+      "sharpness": "purple",
+      "rampageSlot": 3
+    },
+
+    {
+      "label": "Blizzard and Blaze",
+      "raw": 300,
+      "element": 26,
+      "type": "ice",
+      "affinity": 10,
+      "sharpness": "purple",
+      "rampageSlot": 2
+    },
+
+    {
+      "label": "Chameleos Blades",
+      "raw": 310,
+      "element": 0,
+      "type": "none",
+      "affinity": 0,
+      "sharpness": "purple",
+      "rampageSlot": 2
+    },
+
+    {
+      "label": "Crimson Twinwing",
+      "raw": 330,
+      "element": 52,
+      "type": "dragon",
+      "affinity": 0,
+      "sharpness": "white",
+      "rampageSlot": 2
+    },
+
+    {
+      "label": "Abyssal Celestials",
+      "raw": 340,
+      "element": 13,
+      "type": "dragon",
+      "affinity": -25,
+      "sharpness": "purple",
+      "rampageSlot": 3
+    },
+
+    {
+      "label": "Raging Paws",
+      "raw": 320,
+      "element": 0,
+      "type": "none",
+      "affinity": 0,
+      "sharpness": "white",
+      "rampageSlot": 3
+    },
+
+    {
+      "label": "Elegant Jelly",
+      "raw": 300,
+      "element": 0,
+      "type": "none",
+      "affinity": 0,
+      "sharpness": "white",
+      "rampageSlot": 2
+    },
+
+    {
+      "label": "Gila Ro Waga",
+      "raw": 320,
+      "element": 44,
+      "type": "dragon",
+      "affinity": 0,
+      "sharpness": "white",
+      "rampageSlot": 3
+    },
+
+    {
+      "label": "Sacred Espadas",
+      "raw": 310,
+      "element": 51,
+      "type": "water",
+      "affinity": 0,
+      "sharpness": "purple",
+      "rampageSlot": 2
+    },
+
+    {
+      "label": "Auditore Glam",
+      "raw": 310,
+      "element": 27,
+      "type": "dragon",
+      "affinity": 15,
+      "sharpness": "white",
+      "rampageSlot": 2
+    },
+
+    {
+      "label": "Stealth Dango Ultimate",
+      "raw": 340,
+      "element": 0,
+      "type": "none",
+      "affinity": 0,
+      "sharpness": "white",
+      "rampageSlot": 1
+    },
+
+    {
+      "label": "Elder Fugen's Blades +",
+      "raw": 300,
+      "element": 33,
+      "type": "fire",
+      "affinity": 30,
+      "sharpness": "white",
+      "rampageSlot": 2
+    },
+
+    {
+      "label": "Royal Order's Rapiers",
+      "raw": 310,
+      "element": 0,
+      "type": "none",
+      "affinity": 10,
+      "sharpness": "purple",
+      "rampageSlot": 2
+    },
+
+    {
+      "label": "Antique Machina DB",
+      "raw": 310,
+      "element": 0,
+      "type": "none",
+      "affinity": 0,
+      "sharpness": "purple",
+      "rampageSlot": 3
+    }
+  ],
   "Lance": [],
   "Hunting Horn": [],
   "Insect Glaive": [],

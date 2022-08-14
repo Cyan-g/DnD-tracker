@@ -255,6 +255,29 @@
               >{{ item.label }}</b-dropdown-item
             >
           </b-dropdown>
+          <hr />
+          <h5>Misc</h5>
+          <b-row>
+            <b-col cols="12">
+              Dango Booster
+              <b-dropdown style="width:100%" :text="info.dangoBooster.label">
+                <b-dropdown-item
+                  v-for="item in data.dangoBooster"
+                  :key="item.label"
+                  @click="info.dangoBooster = item"
+                  >{{ item.label }}</b-dropdown-item
+                >
+              </b-dropdown>
+            </b-col>
+            <b-col>
+              Power Drum
+              <b-checkbox v-model="info.powerDrum"></b-checkbox>
+            </b-col>
+            <b-col>
+              Rousing Roar
+              <b-checkbox v-model="info.rousingRoar"></b-checkbox>
+            </b-col>
+          </b-row>
         </b-col>
         <!-- SKILL SECTION -->
         <b-col cols="8">
@@ -329,7 +352,8 @@
                 v-show="
                   ((skill.key != 'chargeMaster' ||
                     chargeMasterWeapons.includes(info.weaponType)) &&
-                    !skill.meleeOnly && !skill.rangedOnly) ||
+                    !skill.meleeOnly &&
+                    !skill.rangedOnly) ||
                     (skill.meleeOnly && !isRanged) ||
                     (skill.rangedOnly && isRanged)
                 "
@@ -724,6 +748,8 @@ export default {
           rampageSlot: 0,
           slots: 0,
         },
+        rousingRoar: false,
+        powerDrum: false,
         valstrax: false,
         magna: false,
         elembane: false,
@@ -743,6 +769,7 @@ export default {
         element: 25,
         affinity: 0,
         rampageSlot: 0,
+        dangoBooster: { label: "None", raw: 0 },
         critElement: { label: "None", value: 1 },
         critBoost: { label: "None", value: 1.25 },
         wex: { label: "None", value: 0 },
@@ -766,6 +793,8 @@ export default {
         resentment: { label: "None", raw: 0 },
         elderBlessing: { label: "None", mod: 0 },
         elementExploit: { label: "None", mod: 0 },
+        normalUp: { label: "None", mod: 1 },
+        pierceUp: { label: "None", mod: 1 },
         bludgeoner: { label: "None", mod: 1 },
         mindsEye: { label: "None", mod: 1 },
         chargeMaster: { label: "None", mod: 0, bow: 0 },
@@ -882,6 +911,9 @@ export default {
           this.info.bludgeoner.label == "Level 3"
         )
           total *= this.info.bludgeoner.mod;
+      } else {
+        total *= this.info.normalUp.mod;
+        total *= this.info.pierceUp.mod;
       }
 
       // Sharpness
@@ -971,6 +1003,7 @@ export default {
               : 0
           ) +
           parseInt(this.info.affinityUp ? 20 : 0) +
+          parseInt(this.info.rousingRoar ? 30 : 0) +
           parseInt(
             this.effectiveRampageSlots >= 3 ? this.info.kushalaSoul.value : 0
           ) +
@@ -1005,6 +1038,7 @@ export default {
       if (this.info.mightSeed) total += 10;
 
       //mods
+      if (this.info.powerDrum) total += this.info.raw * 0.05;
       total += this.info.raw * this.info.grinder.raw;
       total += this.info.raw * this.info.attackBoost.mod;
       total += this.info.raw * this.info.dragonHeart.mod;
@@ -1015,6 +1049,7 @@ export default {
       if (this.info.magna) total += 12;
       if (!this.info.recovered) total += this.info.bloodlust.raw;
       total += this.info.petalace.raw;
+      total += this.info.dangoBooster.raw;
       total += this.info.counterStrike.raw;
       total += this.info.coalescence.raw;
       total += this.info.chainCrit.raw;
