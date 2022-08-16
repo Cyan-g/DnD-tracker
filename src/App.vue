@@ -281,8 +281,9 @@
             </b-col>
           </b-row>
         </b-col>
+
         <!-- SKILL SECTION -->
-        <b-col cols="8">
+        <b-col cols="7">
           <b-row>
             <!-- STATS -->
             <b-col>
@@ -575,7 +576,7 @@
         </b-col>
 
         <!-- ANALYSIS -->
-        <b-col style="border-left: solid white 1px">
+        <b-col cols="3" style="border-left: solid white 1px">
           <b-row>
             <b-col>
               <h5>Stats</h5>
@@ -657,20 +658,45 @@
             href="https://docs.google.com/spreadsheets/d/1KSH0Uf-DsbFixdldQvcH-5zFXpX303dIzThTYMVH33Q/edit#gid=0"
             >Motion Value Data Sheet</a
           ><br />
-          <b-row>
-            <b-col>
+          <b-row
+            v-for="(motionValue, index) in info.motionValueArray"
+            :key="index + 'motionValue'"
+          >
+            <b-col cols="4">
               Motion Value
               <b-form-input
-                v-model="info.motionValuePhys"
+                v-model="motionValue.motionValuePhys"
                 type="number"
               ></b-form-input>
             </b-col>
-            <b-col>
+            <b-col cols="2">
+              <small>Can Crit</small>
+              <b-checkbox v-model="motionValue.canCrit"></b-checkbox>
+            </b-col>
+            <b-col cols="4">
               Element Mod
               <b-form-input
-                v-model="info.motionValueEle"
+                v-model="motionValue.motionValueEle"
                 type="number"
               ></b-form-input
+            ></b-col>
+            <b-col v-if="index == 0"
+              ><br /><b-button
+                size="xs"
+                @click="
+                  info.motionValueArray.push({
+                    motionValuePhys: 0,
+                    motionValueEle: 0,
+                    canCrit: true,
+                  })
+                "
+                ><i class="fas fa-plus"></i></b-button
+            ></b-col>
+            <b-col v-else
+              ><br /><b-button
+                @click="info.motionValueArray.splice(index, 1)"
+                size="xs"
+                ><i class="fas fa-minus"></i></b-button
             ></b-col>
           </b-row>
           <hr />
@@ -814,8 +840,9 @@ export default {
           ice: 30,
           none: 0,
         },
-        motionValuePhys: 100,
-        motionValueEle: 1,
+        motionValueArray: [
+          { motionValuePhys: 50, motionValueEle: 1, canCrit: true },
+        ],
       },
     };
   },
@@ -897,7 +924,7 @@ export default {
       // restore old setup
       this.info = oldSetup;
     },
-    applyHitzoneRaw(base) {
+    applyHitzoneRaw(base, index) {
       var total = base;
 
       if (this.info.species && this.effectiveRampageSlots >= 2)
@@ -923,11 +950,11 @@ export default {
       // Hitzone
       total *= this.info.partPhys / 100.0;
       // MotionValue
-      total *= this.info.motionValuePhys / 100.0;
+      total *= this.info.motionValueArray[index].motionValuePhys / 100.0;
 
       return total;
     },
-    applyHitzoneElement(base) {
+    applyHitzoneElement(base, index) {
       var total = base;
 
       //Element Exploit
@@ -946,7 +973,7 @@ export default {
       // Hitzone
       total *= this.info.partEle[this.info.type] / 100.0;
       // MotionValue
-      total *= this.info.motionValueEle;
+      total *= this.info.motionValueArray[index].motionValueEle / 100.0;
 
       return total;
     },
@@ -1140,9 +1167,6 @@ export default {
 
       return total;
     },
-    averageTotal() {
-      return this.averageRaw + this.averageElement;
-    },
     // CRITICALS
     critRaw() {
       let total = this.effectiveRaw;
@@ -1163,34 +1187,83 @@ export default {
 
       return total;
     },
-    critTotal() {
-      return this.critRaw + this.critElement;
-    },
     // HITZONE / MOTION VALUE / SHARPNESS
     hitRaw() {
-      return Math.floor(this.applyHitzoneRaw(this.effectiveRaw));
+      var total = 0;
+      this.info.motionValueArray.forEach((skill, index) => {
+        total += Math.floor(this.applyHitzoneRaw(this.effectiveRaw, index));
+      });
+      return total;
     },
     hitElement() {
-      return Math.floor(this.applyHitzoneElement(this.effectiveElement));
+      var total = 0;
+      this.info.motionValueArray.forEach((skill, index) => {
+        total += Math.floor(
+          this.applyHitzoneElement(this.effectiveElement, index)
+        );
+      });
+      return total;
     },
+
+    hitAverageRaw() {
+      var total = 0;
+      this.info.motionValueArray.forEach((skill, index) => {
+        total += Math.floor(
+          this.applyHitzoneRaw(
+            skill.canCrit ? this.averageRaw : this.effectiveRaw,
+            index
+          )
+        );
+      });
+      return total;
+    },
+    hitAverageElement() {
+      var total = 0;
+      this.info.motionValueArray.forEach((skill, index) => {
+        total += Math.floor(
+          this.applyHitzoneElement(
+            skill.canCrit ? this.averageElement : this.effectiveElement,
+            index
+          )
+        );
+      });
+      return total;
+    },
+
+    hitCritRaw() {
+      var total = 0;
+      this.info.motionValueArray.forEach((skill, index) => {
+        total += Math.floor(
+          this.applyHitzoneRaw(
+            skill.canCrit ? this.critRaw : this.effectiveRaw,
+            index
+          )
+        );
+      });
+      return total;
+    },
+    hitCritElement() {
+      var total = 0;
+      this.info.motionValueArray.forEach((skill, index) => {
+        total += Math.floor(
+          this.applyHitzoneElement(
+            skill.canCrit ? this.critElement : this.effectiveElement,
+            index
+          )
+        );
+      });
+      return total;
+    },
+
+    // Final Values
     hitTotal() {
       return this.hitRaw + this.hitElement;
     },
-    hitAverageRaw() {
-      return Math.floor(this.applyHitzoneRaw(this.averageRaw));
-    },
-    hitAverageElement() {
-      return Math.floor(this.applyHitzoneElement(this.averageElement));
-    },
+
     hitAverageTotal() {
       return this.hitAverageRaw + this.hitAverageElement;
     },
-    hitCritRaw() {
-      return Math.floor(this.applyHitzoneRaw(this.critRaw));
-    },
-    hitCritElement() {
-      return Math.floor(this.applyHitzoneElement(this.critElement));
-    },
+
     hitCritTotal() {
       return this.hitCritRaw + this.hitCritElement;
     },
