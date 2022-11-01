@@ -195,6 +195,14 @@
 
           <hr />
           <h5>Augments</h5>
+          <div
+            :key="lockAugment"
+            :class="lockAugment ? 'text-primary' : 'text-light'"
+            style="float: right; cursor: pointer; width: 1rem"
+            @click="lockAugment = !lockAugment"
+          >
+            <i :class="lockAugment ? 'fas fa-lock' : 'fas fa-lock-open'"></i>
+          </div>
           <b-badge
             variant="dark"
             :class="augmentSlotsFilled >= 1 ? 'text-danger' : ''"
@@ -226,6 +234,13 @@
           <b-badge
             variant="dark"
             :class="augmentSlotsFilled >= 5 ? 'text-danger' : ''"
+            pill
+          >
+            <i class="fas fa-circle"></i
+          ></b-badge>
+          <b-badge
+            variant="dark"
+            :class="augmentSlotsFilled >= 6 ? 'text-danger' : ''"
             pill
           >
             <i class="fas fa-circle"></i
@@ -555,22 +570,24 @@
             <!-- Optimiser -->
             <b-col cols="12">
               <hr />
-              <b-button @click="optimizeWeapon()">Optimise Weapon</b-button>
-              <br />
-              <b-button
-                class="mt-1 mr-1"
-                variant="dark"
-                v-for="entry in optimizedArray"
-                :key="entry.weapon.label"
-                @click="
-                  loadWeapon(entry.weapon);
-                  loadAugments(entry.augments);
-                "
-              >
-                {{ entry.weapon.label }} <br />
-                base: {{ entry.base }} avg: {{ entry.average }} crit:
-                {{ entry.crit }}
-              </b-button>
+              <b-overlay :key="isCalculating" :show="isCalculating">
+                <b-button @click="optimizeWeapon()">Optimise Weapon</b-button>
+                <br />
+                <b-button
+                  class="mt-1 mr-1"
+                  variant="dark"
+                  v-for="entry in optimizedArray"
+                  :key="entry.weapon.label"
+                  @click="
+                    loadWeapon(entry.weapon);
+                    loadAugments(entry.augments);
+                  "
+                >
+                  {{ entry.weapon.label }} <br />
+                  base: {{ entry.base }} avg: {{ entry.average }} crit:
+                  {{ entry.crit }}
+                </b-button>
+              </b-overlay>
             </b-col>
           </b-row>
         </b-col>
@@ -583,8 +600,7 @@
               <div style="text-align: left">
                 <b>Raw Attack: {{ Math.floor(effectiveRaw) }}</b
                 ><br />
-                <b>Element: {{ Math.floor(effectiveElement) }}</b
-                ><br />
+                <b>Element: {{ Math.floor(effectiveElement) }} </b><br />
                 <b>Total: {{ Math.floor(effectiveTotal) }}</b
                 ><br />
                 <b>Affinity: {{ (effectiveAffinity * 100).toFixed(0) }}</b
@@ -756,6 +772,9 @@ export default {
       ],
       data: null,
       recovered: false,
+      isCalculating: false,
+      lockWeapon: false,
+      lockAugment: false,
       filter: "",
       weapons: [],
       optimizedArray: [],
@@ -772,7 +791,7 @@ export default {
         affinityBoostAugment: { label: "Affinity Boost 0", aff: 0, slots: 0 },
         elementBoostAugment: { label: "Element Boost 0", element: 0, slots: 0 },
         rampageSlotAugment: {
-          label: "0 Rampage Slots",
+          label: "Rampage Slot 0",
           rampageSlot: 0,
           slots: 0,
         },
@@ -881,6 +900,7 @@ export default {
       ).values[combination.rampageSlotAugment];
     },
     optimizeWeapon() {
+      this.isCalculating = true;
       // save old setup
       let oldSetup = _.cloneDeep(this.info);
 
@@ -889,22 +909,47 @@ export default {
       this.weapons[this.info.weaponType].forEach((weapon) => {
         this.loadWeapon(weapon);
 
-        // test out augment combinations
-        let augmentTestArray = [];
-        this.data.augmentCombinations.forEach((combination) => {
-          this.loadAugments(combination);
-          augmentTestArray.push({
-            combination: combination,
-            base: this.hitTotal,
-            average: this.hitAverageTotal,
-            crit: this.hitCritTotal,
-          });
-        });
+        var combination = {
+          attackBoostAugment: this.info.attackBoostAugment.label.slice(-1),
+          affinityBoostAugment: this.info.affinityBoostAugment.label.slice(-1),
+          elementBoostAugment: this.info.elementBoostAugment.label.slice(-1),
+          rampageSlotAugment: this.info.rampageSlotAugment.label.slice(-1),
+        };
 
-        // find best augment combination
-        augmentTestArray.sort((x, y) => y.average - x.average);
-        let combination = augmentTestArray[0].combination;
-        this.loadAugments(combination);
+        // test out augment combinations
+        if (!this.lockAugment) {
+          let augmentTestArray = [];
+          for (var atkAug = 0; atkAug <= 3; atkAug++) {
+            for (var eleAug = 0; eleAug <= 5; eleAug++) {
+              for (var slotAug = 0; slotAug <= 1; slotAug++) {
+                for (var affAug = 0; affAug <= 1; affAug++) {
+                  combination = {
+                    attackBoostAugment: atkAug,
+                    affinityBoostAugment: affAug,
+                    elementBoostAugment: eleAug,
+                    rampageSlotAugment: slotAug,
+                  };
+
+                  this.loadAugments(combination);
+
+                  if (this.augmentSlotsFilled <= 6) {
+                    augmentTestArray.push({
+                      combination: combination,
+                      base: this.hitTotal,
+                      average: this.hitAverageTotal,
+                      crit: this.hitCritTotal,
+                    });
+                  }
+                }
+              }
+            }
+          }
+
+          // find best augment combination
+          augmentTestArray.sort((x, y) => y.average - x.average);
+          combination = augmentTestArray[0].combination;
+          this.loadAugments(combination);
+        }
 
         // Add to final list
         resultArray.push({
@@ -923,6 +968,7 @@ export default {
 
       // restore old setup
       this.info = oldSetup;
+      this.isCalculating = false;
     },
     applyHitzoneRaw(base, index) {
       var total = base;
@@ -973,7 +1019,7 @@ export default {
       // Hitzone
       total *= this.info.partEle[this.info.type] / 100.0;
       // MotionValue
-      total *= this.info.motionValueArray[index].motionValueEle / 100.0;
+      total *= this.info.motionValueArray[index].motionValueEle;
 
       return total;
     },

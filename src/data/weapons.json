@@ -28,6 +28,15 @@
       "rampageSlot": 2
     },
     {
+      "label": "Pure Hammer Mitama",
+      "raw": 310,
+      "element": 21,
+      "type": "fire",
+      "affinity": 10,
+      "sharpness": "purple",
+      "rampageSlot": 1
+    },
+    {
       "label": "Armored Megagogue+",
       "raw": 320,
       "element": 0,
@@ -278,6 +287,15 @@
       "affinity": 20,
       "sharpness": "purple",
       "rampageSlot": 2
+    },
+    {
+      "label": "Kaktus Unwetter",
+      "raw": 310,
+      "element": 55,
+      "type": "fire",
+      "affinity": 15,
+      "sharpness": "purple",
+      "rampageSlot": 3
     },
     {
       "label": "Abominable Avalanche",
@@ -638,6 +656,16 @@
     },
 
     {
+      "label": "Pure Blades Tsurugi",
+      "raw": 310,
+      "element": 18,
+      "type": "fire",
+      "affinity": 10,
+      "sharpness": "purple",
+      "rampageSlot": 1
+    },
+
+    {
       "label": "Dawnmoon Disruptors",
       "raw": 320,
       "element": 44,
@@ -805,6 +833,16 @@
       "affinity": 20,
       "sharpness": "purple",
       "rampageSlot": 2
+    },
+
+    {
+      "label": "Kaktus Ehrgeiz",
+      "raw": 300,
+      "element": 41,
+      "type": "fire",
+      "affinity": 15,
+      "sharpness": "purple",
+      "rampageSlot": 3
     },
 
     {
