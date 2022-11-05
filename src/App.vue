@@ -5,7 +5,12 @@
     </b-card>
     <hr />
     <!-- WEAPON MODAL -->
-    <b-modal title="Weapon List" id="weaponModal" hideFooter>
+    <b-modal
+      @close="filter = ''"
+      title="Weapon List"
+      id="weaponModal"
+      hideFooter
+    >
       <b-row class="mb-2">
         <b-col>
           <b-input-group prepend="Search">
@@ -21,18 +26,75 @@
             (x) => !info.filter || x.label.includes(info.filter)
           )"
           :key="index"
-          cols="12"
+          cols="6"
         >
           <b-input-group class="mb-1">
-            <b-button @click="loadWeapon(weapon)" style="width: 70%">{{
+            <b-button @click="loadWeapon(weapon)" style="width: 100%">{{
               weapon.label
             }}</b-button></b-input-group
           >
         </b-col>
       </b-row>
     </b-modal>
+    <!-- MONSTER MODAL -->
+    <b-modal
+      @close="filter = ''"
+      title="Monster List"
+      id="monsterModal"
+      hideFooter
+    >
+      <b-row class="mb-2">
+        <b-col>
+          <b-input-group prepend="Search">
+            <b-form-input
+              v-model="info.filter"
+              type="text"
+            ></b-form-input> </b-input-group
+        ></b-col>
+      </b-row>
+      <b-row :key="info.filter" v-if="monsters">
+        <b-col
+          v-for="(monsterData, index) in monsters.filter(
+            (x) => !info.filter || x.name.includes(info.filter)
+          )"
+          :key="index"
+          cols="4"
+        >
+          <b-input-group class="mb-1">
+            <b-button
+              :disabled="info.monster && info.monster.name == monsterData.name"
+              @click="loadMonster(monsterData)"
+              style="width: 100%"
+              >{{ monsterData.name }}</b-button
+            ></b-input-group
+          >
+        </b-col>
+      </b-row>
+      <hr />
+      <b-row
+        :key="info.monster ? info.monster.name : '_m_'"
+        v-if="info.monster"
+      >
+        <b-col
+          v-for="(hitZone, index) in info.monster.hitZones"
+          :key="index"
+          cols="4"
+        >
+          <b-input-group class="mb-1">
+            <b-button @click="loadHitzones(hitZone)" style="width: 100%">{{
+              hitZone.label
+            }}</b-button></b-input-group
+          >
+        </b-col>
+      </b-row>
+    </b-modal>
     <!-- SAVE MODAL -->
-    <b-modal title="Saved Configs" id="saveModal" hideFooter>
+    <b-modal
+      @close="filter = ''"
+      title="Saved Configs"
+      id="saveModal"
+      hideFooter
+    >
       <b-row class="mb-2">
         <b-col>
           <b-input-group prepend="Title of current setup">
@@ -196,10 +258,24 @@
           <hr />
           <h5>Augments</h5>
           <div
-            :key="lockAugment"
+            :key="showAugments + '_3'"
+            style="float: left; cursor: pointer; width: 1rem"
+            @click="showAugments = !showAugments"
+          >
+            <i
+              :class="
+                showAugments ? 'fas fa-chevron-down' : 'fas fa-chevron-up'
+              "
+            ></i>
+          </div>
+          <div
+            :key="lockAugment + '_4'"
             :class="lockAugment ? 'text-primary' : 'text-light'"
             style="float: right; cursor: pointer; width: 1rem"
             @click="lockAugment = !lockAugment"
+            v-b-popover.hover.top="
+              'Lock to prevent the optimizer from changing the augments'
+            "
           >
             <i :class="lockAugment ? 'fas fa-lock' : 'fas fa-lock-open'"></i>
           </div>
@@ -245,7 +321,11 @@
           >
             <i class="fas fa-circle"></i
           ></b-badge>
-          <div v-for="augment in data.augments" :key="augment.key">
+          <div
+            v-show="showAugments"
+            v-for="augment in data.augments"
+            :key="augment.key"
+          >
             <b-dropdown
               class="mt-1"
               style="width:100%"
@@ -255,7 +335,7 @@
                 v-for="item in augment.values"
                 :key="item.label"
                 :disabled="
-                  item.slots + augmentSlotsFilled - info[augment.key].slots > 5
+                  item.slots + augmentSlotsFilled - info[augment.key].slots > 6
                 "
                 @click="info[augment.key] = item"
                 >{{ item.label }}</b-dropdown-item
@@ -298,7 +378,7 @@
         </b-col>
 
         <!-- SKILL SECTION -->
-        <b-col cols="7">
+        <b-col cols="8">
           <b-row>
             <!-- STATS -->
             <b-col>
@@ -567,33 +647,11 @@
                 v-model="info.infernalMelody"
               ></b-checkbox>
             </b-col>
-            <!-- Optimiser -->
-            <b-col cols="12">
-              <hr />
-              <b-overlay :key="isCalculating" :show="isCalculating">
-                <b-button @click="optimizeWeapon()">Optimise Weapon</b-button>
-                <br />
-                <b-button
-                  class="mt-1 mr-1"
-                  variant="dark"
-                  v-for="entry in optimizedArray"
-                  :key="entry.weapon.label"
-                  @click="
-                    loadWeapon(entry.weapon);
-                    loadAugments(entry.augments);
-                  "
-                >
-                  {{ entry.weapon.label }} <br />
-                  base: {{ entry.base }} avg: {{ entry.average }} crit:
-                  {{ entry.crit }}
-                </b-button>
-              </b-overlay>
-            </b-col>
           </b-row>
         </b-col>
 
         <!-- ANALYSIS -->
-        <b-col cols="3" style="border-left: solid white 1px">
+        <b-col cols="2" style="border-left: solid white 1px">
           <b-row>
             <b-col>
               <h5>Stats</h5>
@@ -613,88 +671,122 @@
             >
           </b-row>
           <hr />
-          <h5>
-            Monster Part
-            <b-badge
-              v-b-popover.hover.top="
-                'Monster Part Data can be found in the Hunters Notes. Leave at 100 to ignore.'
+          <b-button class="mb-2" @click="$bvModal.show('monsterModal')">
+            Monster Part</b-button
+          >
+          <br />
+          <b>
+            {{ info.monster ? info.monster.name : "None" }}
+            {{ info.hitZoneName ? " : " + info.hitZoneName : "" }}
+          </b>
+          <div
+            :key="showHitzones + '_2'"
+            style="float: left; cursor: pointer; width: 1rem"
+            @click="showHitzones = !showHitzones"
+          >
+            <i
+              :class="
+                showHitzones ? 'fas fa-chevron-down' : 'fas fa-chevron-up'
               "
-              ><i class="fas fa-question"></i
-            ></b-badge>
-          </h5>
-          Raw Modifier
-          <b-row>
-            <b-col style="padding-left: 3px;padding-right: 3px" cols="6"
-              ><b-input-group style="padding: 3px;" size="sm" prepend="Blunt">
-                <b-form-input
-                  style="width: 2rem !important; padding-left: 3px"
-                  v-model="info.partPhys.blunt"
-                  type="number"
-                ></b-form-input> </b-input-group
-            ></b-col>
-            <b-col style="padding-left: 3px;padding-right: 3px" cols="6"
-              ><b-input-group style="padding: 3px;" size="sm" prepend="Cut">
-                <b-form-input
-                  style="width: 2rem !important; padding-left: 3px"
-                  v-model="info.partPhys.cut"
-                  type="number"
-                ></b-form-input> </b-input-group
-            ></b-col>
-            <b-col style="padding-left: 3px;padding-right: 3px" cols="6"
-              ><b-input-group style="padding: 3px;" size="sm" prepend="Shot">
-                <b-form-input
-                  style="width: 2rem !important; padding-left: 3px"
-                  v-model="info.partPhys.shot"
-                  type="number"
-                ></b-form-input> </b-input-group
-            ></b-col>
-          </b-row>
-          Element Modifier
-          <b-row>
-            <b-col style="padding-left: 3px;padding-right: 3px" cols="6"
-              ><b-input-group style="padding: 3px;" size="sm" prepend="Dragon">
-                <b-form-input
-                  style="width: 2rem !important; padding-left: 3px"
-                  v-model="info.partEle.dragon"
-                  type="number"
-                ></b-form-input> </b-input-group
-            ></b-col>
-            <b-col style="padding-left: 3px;padding-right: 3px" cols="6"
-              ><b-input-group style="padding: 3px;" size="sm" prepend="Fire">
-                <b-form-input
-                  style="width: 2rem !important; padding-left: 3px"
-                  v-model="info.partEle.fire"
-                  type="number"
-                ></b-form-input> </b-input-group
-            ></b-col>
-            <b-col style="padding-left: 3px;padding-right: 3px" cols="6"
-              ><b-input-group style="padding: 3px;" size="sm" prepend="Water">
-                <b-form-input
-                  style="width: 2rem !important; padding-left: 3px"
-                  v-model="info.partEle.water"
-                  type="number"
-                ></b-form-input> </b-input-group
-            ></b-col>
+            ></i>
+          </div>
+          <div
+            :key="lockHitzones + '_1'"
+            :class="lockHitzones ? 'text-primary' : 'text-light'"
+            style="float: right; cursor: pointer; width: 1rem"
+            @click="lockHitzones = !lockHitzones"
+            v-b-popover.hover.top="
+              'Lock to prevent the optimizer from changing the part of your chosen monster'
+            "
+          >
+            <i :class="lockHitzones ? 'fas fa-lock' : 'fas fa-lock-open'"></i>
+          </div>
 
-            <b-col style="padding-left: 3px;padding-right: 3px" cols="6"
-              ><b-input-group style="padding: 3px;" size="sm" prepend="Ice">
-                <b-form-input
-                  style="width: 2rem !important; padding-left: 3px"
-                  v-model="info.partEle.ice"
-                  type="number"
-                ></b-form-input> </b-input-group
-            ></b-col>
-            <b-col style="padding-left: 3px;padding-right: 3px" cols="6"
-              ><b-input-group style="padding: 3px;" size="sm" prepend="Thunder">
-                <b-form-input
-                  style="width: 2rem !important; padding-left: 3px"
-                  v-model="info.partEle.thunder"
-                  type="number"
-                ></b-form-input> </b-input-group
-            ></b-col>
-          </b-row>
+          <!-- HIT ZONES -->
+          <div v-if="showHitzones">
+            Raw Modifier
+            <b-row>
+              <b-col style="padding-left: 3px;padding-right: 3px" cols="6"
+                ><b-input-group style="padding: 3px;" size="sm" prepend="Blunt">
+                  <b-form-input
+                    style="width: 2rem !important; padding-left: 3px"
+                    v-model="info.partPhys.blunt"
+                    type="number"
+                  ></b-form-input> </b-input-group
+              ></b-col>
+              <b-col style="padding-left: 3px;padding-right: 3px" cols="6"
+                ><b-input-group style="padding: 3px;" size="sm" prepend="Cut">
+                  <b-form-input
+                    style="width: 2rem !important; padding-left: 3px"
+                    v-model="info.partPhys.cut"
+                    type="number"
+                  ></b-form-input> </b-input-group
+              ></b-col>
+              <b-col style="padding-left: 3px;padding-right: 3px" cols="6"
+                ><b-input-group style="padding: 3px;" size="sm" prepend="Shot">
+                  <b-form-input
+                    style="width: 2rem !important; padding-left: 3px"
+                    v-model="info.partPhys.shot"
+                    type="number"
+                  ></b-form-input> </b-input-group
+              ></b-col>
+            </b-row>
+            Element Modifier
+            <b-row>
+              <b-col style="padding-left: 3px;padding-right: 3px" cols="6"
+                ><b-input-group
+                  style="padding: 3px;"
+                  size="sm"
+                  prepend="Dragon"
+                >
+                  <b-form-input
+                    style="width: 2rem !important; padding-left: 3px"
+                    v-model="info.partEle.dragon"
+                    type="number"
+                  ></b-form-input> </b-input-group
+              ></b-col>
+              <b-col style="padding-left: 3px;padding-right: 3px" cols="6"
+                ><b-input-group style="padding: 3px;" size="sm" prepend="Fire">
+                  <b-form-input
+                    style="width: 2rem !important; padding-left: 3px"
+                    v-model="info.partEle.fire"
+                    type="number"
+                  ></b-form-input> </b-input-group
+              ></b-col>
+              <b-col style="padding-left: 3px;padding-right: 3px" cols="6"
+                ><b-input-group style="padding: 3px;" size="sm" prepend="Water">
+                  <b-form-input
+                    style="width: 2rem !important; padding-left: 3px"
+                    v-model="info.partEle.water"
+                    type="number"
+                  ></b-form-input> </b-input-group
+              ></b-col>
+
+              <b-col style="padding-left: 3px;padding-right: 3px" cols="6"
+                ><b-input-group style="padding: 3px;" size="sm" prepend="Ice">
+                  <b-form-input
+                    style="width: 2rem !important; padding-left: 3px"
+                    v-model="info.partEle.ice"
+                    type="number"
+                  ></b-form-input> </b-input-group
+              ></b-col>
+              <b-col style="padding-left: 3px;padding-right: 3px" cols="6"
+                ><b-input-group
+                  style="padding: 3px;"
+                  size="sm"
+                  prepend="Thunder"
+                >
+                  <b-form-input
+                    style="width: 2rem !important; padding-left: 3px"
+                    v-model="info.partEle.thunder"
+                    type="number"
+                  ></b-form-input> </b-input-group
+              ></b-col>
+            </b-row>
+          </div>
           <hr />
-          <h5>Move Dependant Modifier</h5>
+          <!-- MOVE DEPENDANT DATA -->
+          <h5>Move Dependant Modifiers</h5>
           <a
             href="https://docs.google.com/spreadsheets/d/1KSH0Uf-DsbFixdldQvcH-5zFXpX303dIzThTYMVH33Q/edit#gid=0"
             >Motion Value Data Sheet</a
@@ -703,23 +795,27 @@
             v-for="(motionValue, index) in info.motionValueArray"
             :key="index + 'motionValue'"
           >
+            <b-col v-if="index != 0" cols="12">
+              <hr />
+            </b-col>
             <b-col cols="5">
-              Motion Value
+              <small> Motion Value</small>
               <b-form-input
                 v-model="motionValue.motionValuePhys"
                 type="number"
               ></b-form-input>
             </b-col>
 
-            <b-col cols="5">
-              Element Mod
+            <b-col cols="4">
+              <small> Ele Mod</small>
               <b-form-input
                 v-model="motionValue.motionValueEle"
                 type="number"
               ></b-form-input
             ></b-col>
-            <b-col v-if="index == 0"
+            <b-col cols="3" v-if="index == 0"
               ><br /><b-button
+                v-b-popover.hover.top="'Add additional move'"
                 size="xs"
                 @click="
                   info.motionValueArray.push({
@@ -731,7 +827,7 @@
                 "
                 ><i class="fas fa-plus"></i></b-button
             ></b-col>
-            <b-col v-else
+            <b-col cols="3" v-else
               ><br /><b-button
                 @click="info.motionValueArray.splice(index, 1)"
                 size="xs"
@@ -748,13 +844,13 @@
                 >
               </b-dropdown>
             </b-col>
-            <b-col cols="2">
+            <b-col cols="5">
               <small>Can Crit</small>
               <b-checkbox v-model="motionValue.canCrit"></b-checkbox>
             </b-col>
           </b-row>
           <hr />
-          <h5>Attack Data</h5>
+          <h5>Attack Results</h5>
           <b-table-simple class="text-light">
             <b-tr>
               <b-th></b-th>
@@ -784,6 +880,29 @@
             </b-tbody>
           </b-table-simple>
         </b-col>
+
+        <!-- OPTIMIZER -->
+        <b-col cols="12">
+          <hr />
+          <b-overlay variant="secondary" :show="isCalculating">
+            <b-button :disabled="isCalculating" @click="optimize()"
+              >Optimise Weapon</b-button
+            >
+            <br />
+            <b-button
+              class="mt-1 mr-1"
+              variant="dark"
+              v-for="entry in optimizedArray"
+              :key="entry.weapon.label"
+              :disabled="isCalculating"
+              @click="loadSetup(entry)"
+            >
+              {{ entry.weapon.label }} <br />
+              base: {{ entry.base }} avg: {{ entry.average }} crit:
+              {{ entry.crit }}
+            </b-button>
+          </b-overlay>
+        </b-col>
       </b-row>
     </b-card>
   </div>
@@ -793,10 +912,17 @@
 import _ from "lodash";
 import arrayFile from "./data/data.json";
 import weapons from "./data/weapons.json";
-// import monsters from "./data/monsters.json";
+import monsters from "./data/monsters.json";
 
 export default {
   name: "App",
+  created() {
+    this.data = arrayFile;
+    this.weapons = weapons;
+    this.monsters = monsters;
+    this.info = this.template;
+    this.loadSaves();
+  },
   data() {
     return {
       chargeMasterWeapons: [
@@ -812,10 +938,13 @@ export default {
       data: null,
       recovered: false,
       isCalculating: false,
-      lockWeapon: false,
+      showHitzones: false,
+      showAugments: false,
+      lockHitzones: false,
       lockAugment: false,
       filter: "",
       weapons: [],
+      monsters: [],
       optimizedArray: [],
       saves: [],
       info: null,
@@ -834,6 +963,8 @@ export default {
           rampageSlot: 0,
           slots: 0,
         },
+        monster: null,
+        hitZoneName: null,
         rousingRoar: false,
         powerDrum: false,
         valstrax: false,
@@ -913,13 +1044,9 @@ export default {
       },
     };
   },
-  created() {
-    this.data = arrayFile;
-    this.weapons = weapons;
-    this.info = this.template;
-    this.loadSaves();
-  },
+
   methods: {
+    //LOADING
     loadWeapon(weapon) {
       this.info.raw = weapon.raw;
       this.info.element = weapon.element;
@@ -947,8 +1074,39 @@ export default {
         (x) => x.key == "rampageSlotAugment"
       ).values[combination.rampageSlotAugment];
     },
-    optimizeWeapon() {
+    loadHitzones(hitZones) {
+      this.info.partPhys = _.cloneDeep(hitZones.phys);
+      this.info.partEle = _.cloneDeep(hitZones.ele);
+      this.info.hitZoneName = hitZones.label;
+      this.info.partEle.none = 0;
+    },
+    loadSetup(setup) {
+      this.loadWeapon(setup.weapon);
+      this.loadAugments(setup.augments);
+      this.loadHitzones(setup.hitZones);
+    },
+    loadMonster(monster) {
+      this.info.monster = _.cloneDeep(monster);
+    },
+    loadSaves() {
+      let saveFile = localStorage.getItem("monHunSaves");
+      if (saveFile) this.saves = JSON.parse(saveFile);
+    },
+    saveSetup() {
+      this.saves.push(this.info);
+      localStorage.setItem("monHunSaves", JSON.stringify(this.saves));
+    },
+    deleteSetup(index) {
+      this.saves.splice(index, 1);
+      localStorage.setItem("monHunSaves", JSON.stringify(this.saves));
+    },
+
+    //OPTIMIZER
+    async optimize() {
       this.isCalculating = true;
+
+      await new Promise((r) => setTimeout(r, 200));
+
       // save old setup
       let oldSetup = _.cloneDeep(this.info);
 
@@ -957,6 +1115,7 @@ export default {
       this.weapons[this.info.weaponType].forEach((weapon) => {
         this.loadWeapon(weapon);
 
+        //load default data from current setup
         var combination = {
           attackBoostAugment: this.info.attackBoostAugment.label.slice(-1),
           affinityBoostAugment: this.info.affinityBoostAugment.label.slice(-1),
@@ -964,44 +1123,79 @@ export default {
           rampageSlotAugment: this.info.rampageSlotAugment.label.slice(-1),
         };
 
+        var hitZones = {
+          label: this.info.hitZoneName,
+          phys: this.info.partPhys,
+          ele: this.info.partEle,
+        };
+
         // test out augment combinations
-        if (!this.lockAugment) {
-          let augmentTestArray = [];
-          for (var atkAug = 0; atkAug <= 3; atkAug++) {
-            for (var eleAug = 0; eleAug <= 5; eleAug++) {
-              for (var slotAug = 0; slotAug <= 1; slotAug++) {
-                for (var affAug = 0; affAug <= 1; affAug++) {
+        let augmentTestArray = [];
+        for (var atkAug = 0; atkAug <= 3; atkAug++) {
+          for (var eleAug = 0; eleAug <= 5; eleAug++) {
+            for (var slotAug = 0; slotAug <= 1; slotAug++) {
+              for (var affAug = 0; affAug <= 1; affAug++) {
+                if (!this.lockAugment) {
+                  //change current augment if not locked
                   combination = {
                     attackBoostAugment: atkAug,
                     affinityBoostAugment: affAug,
                     elementBoostAugment: eleAug,
                     rampageSlotAugment: slotAug,
                   };
-
                   this.loadAugments(combination);
+                }
 
-                  if (this.augmentSlotsFilled <= 6) {
-                    augmentTestArray.push({
+                // test out hitzones
+                if (!this.lockHitzones && this.info.monster) {
+                  let hitZoneTestArray = [];
+
+                  this.info.monster.hitZones.forEach((testHitZone) => {
+                    this.loadHitzones(testHitZone);
+
+                    //fill test hitZones
+                    hitZoneTestArray.push({
                       combination: combination,
+                      hitZones: testHitZone,
                       base: this.hitTotal,
                       average: this.hitAverageTotal,
                       crit: this.hitCritTotal,
                     });
-                  }
+                  });
+
+                  // find best hitZone
+                  hitZoneTestArray.sort((x, y) => y.average - x.average);
+                  hitZones = hitZoneTestArray[0].hitZones;
+                }
+
+                //fill test augments if not locked
+                if (!this.lockAugment && this.augmentSlotsFilled <= 6) {
+                  augmentTestArray.push({
+                    combination: combination,
+                    hitZones: hitZones,
+                    base: this.hitTotal,
+                    average: this.hitAverageTotal,
+                    crit: this.hitCritTotal,
+                  });
                 }
               }
             }
           }
+        }
 
-          // find best augment combination
+        // find best augment combination if not locked
+        if (!this.lockAugment) {
           augmentTestArray.sort((x, y) => y.average - x.average);
           combination = augmentTestArray[0].combination;
-          this.loadAugments(combination);
         }
+
+        this.loadAugments(combination);
+        this.loadHitzones(hitZones);
 
         // Add to final list
         resultArray.push({
           augments: combination,
+          hitZones: hitZones,
           weapon: weapon,
           base: this.hitTotal,
           average: this.hitAverageTotal,
@@ -1010,7 +1204,7 @@ export default {
       });
 
       // find top 10
-      resultArray.sort((x, y) => y.average - x.average);
+      await resultArray.sort((x, y) => y.average - x.average);
       resultArray = resultArray.splice(0, 10);
       this.optimizedArray = resultArray;
 
@@ -1018,6 +1212,8 @@ export default {
       this.info = oldSetup;
       this.isCalculating = false;
     },
+
+    //CALCULATIONS
     applyHitzoneRaw(base, index) {
       var total = base;
 
@@ -1078,18 +1274,6 @@ export default {
           this.info.sharpness.raw >=
         0.42
       );
-    },
-    loadSaves() {
-      let saveFile = localStorage.getItem("monHunSaves");
-      if (saveFile) this.saves = JSON.parse(saveFile);
-    },
-    saveSetup() {
-      this.saves.push(this.info);
-      localStorage.setItem("monHunSaves", JSON.stringify(this.saves));
-    },
-    deleteSetup(index) {
-      this.saves.splice(index, 1);
-      localStorage.setItem("monHunSaves", JSON.stringify(this.saves));
     },
 
     // UI STATS

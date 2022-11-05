@@ -5,80 +5,108 @@
     "hitZones": [
       {
         "label": "Head",
-        "cut": 65,
-        "blunt": 70,
-        "shot": 60,
-        "fire": 0,
-        "water": 15,
-        "thunder": 20,
-        "ice": 15,
-        "dragon": 30
+        "phys": {
+          "cut": 65,
+          "blunt": 70,
+          "shot": 60
+        },
+        "ele": {
+          "fire": 0,
+          "water": 15,
+          "thunder": 20,
+          "ice": 15,
+          "dragon": 30
+        }
       },
       {
         "label": "Neck",
-        "cut": 35,
-        "blunt": 40,
-        "shot": 300,
-        "fire": 0,
-        "water": 5,
-        "thunder": 10,
-        "ice": 5,
-        "dragon": 20
+        "phys": {
+          "cut": 35,
+          "blunt": 40,
+          "shot": 300
+        },
+        "ele": {
+          "fire": 0,
+          "water": 5,
+          "thunder": 10,
+          "ice": 5,
+          "dragon": 20
+        }
       },
       {
         "label": "Abdomen",
-        "cut": 25,
-        "blunt": 25,
-        "shot": 20,
-        "fire": 0,
-        "water": 5,
-        "thunder": 10,
-        "ice": 5,
-        "dragon": 20
+        "phys": {
+          "cut": 25,
+          "blunt": 25,
+          "shot": 20
+        },
+        "ele": {
+          "fire": 0,
+          "water": 5,
+          "thunder": 10,
+          "ice": 5,
+          "dragon": 20
+        }
       },
       {
         "label": "Back",
-        "cut": 25,
-        "blunt": 25,
-        "shot": 20,
-        "fire": 0,
-        "water": 5,
-        "thunder": 10,
-        "ice": 5,
-        "dragon": 20
+        "phys": {
+          "cut": 25,
+          "blunt": 25,
+          "shot": 20
+        },
+        "ele": {
+          "fire": 0,
+          "water": 5,
+          "thunder": 10,
+          "ice": 5,
+          "dragon": 20
+        }
       },
       {
         "label": "Wing",
-        "cut": 50,
-        "blunt": 45,
-        "shot": 40,
-        "fire": 0,
-        "water": 10,
-        "thunder": 15,
-        "ice": 10,
-        "dragon": 25
+        "phys": {
+          "cut": 50,
+          "blunt": 45,
+          "shot": 40
+        },
+        "ele": {
+          "fire": 0,
+          "water": 10,
+          "thunder": 15,
+          "ice": 10,
+          "dragon": 25
+        }
       },
       {
         "label": "Leg",
-        "cut": 35,
-        "blunt": 35,
-        "shot": 30,
-        "fire": 0,
-        "water": 0,
-        "thunder": 5,
-        "ice": 0,
-        "dragon": 15
+        "phys": {
+          "cut": 35,
+          "blunt": 35,
+          "shot": 30
+        },
+        "ele": {
+          "fire": 0,
+          "water": 0,
+          "thunder": 5,
+          "ice": 0,
+          "dragon": 15
+        }
       },
       {
         "label": "Tail",
-        "cut": 45,
-        "blunt": 40,
-        "shot": 35,
-        "fire": 0,
-        "water": 5,
-        "thunder": 10,
-        "ice": 5,
-        "dragon": 20
+        "phys": {
+          "cut": 45,
+          "blunt": 40,
+          "shot": 35
+        },
+        "ele": {
+          "fire": 0,
+          "water": 5,
+          "thunder": 10,
+          "ice": 5,
+          "dragon": 20
+        }
       }
     ]
   }
