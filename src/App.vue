@@ -603,7 +603,7 @@
                 <b>Element: {{ Math.floor(effectiveElement) }} </b><br />
                 <b>Total: {{ Math.floor(effectiveTotal) }}</b
                 ><br />
-                <b>Affinity: {{ (effectiveAffinity * 100).toFixed(0) }}</b
+                <b>Affinity: {{ (effectiveAffinity() * 100).toFixed(0) }}</b
                 ><br /></div
             ></b-col>
             <b-col>
@@ -623,7 +623,32 @@
             ></b-badge>
           </h5>
           Raw Modifier
-          <b-form-input v-model="info.partPhys" type="number"></b-form-input>
+          <b-row>
+            <b-col style="padding-left: 3px;padding-right: 3px" cols="6"
+              ><b-input-group style="padding: 3px;" size="sm" prepend="Blunt">
+                <b-form-input
+                  style="width: 2rem !important; padding-left: 3px"
+                  v-model="info.partPhys.blunt"
+                  type="number"
+                ></b-form-input> </b-input-group
+            ></b-col>
+            <b-col style="padding-left: 3px;padding-right: 3px" cols="6"
+              ><b-input-group style="padding: 3px;" size="sm" prepend="Cut">
+                <b-form-input
+                  style="width: 2rem !important; padding-left: 3px"
+                  v-model="info.partPhys.cut"
+                  type="number"
+                ></b-form-input> </b-input-group
+            ></b-col>
+            <b-col style="padding-left: 3px;padding-right: 3px" cols="6"
+              ><b-input-group style="padding: 3px;" size="sm" prepend="Shot">
+                <b-form-input
+                  style="width: 2rem !important; padding-left: 3px"
+                  v-model="info.partPhys.shot"
+                  type="number"
+                ></b-form-input> </b-input-group
+            ></b-col>
+          </b-row>
           Element Modifier
           <b-row>
             <b-col style="padding-left: 3px;padding-right: 3px" cols="6"
@@ -678,18 +703,15 @@
             v-for="(motionValue, index) in info.motionValueArray"
             :key="index + 'motionValue'"
           >
-            <b-col cols="4">
+            <b-col cols="5">
               Motion Value
               <b-form-input
                 v-model="motionValue.motionValuePhys"
                 type="number"
               ></b-form-input>
             </b-col>
-            <b-col cols="2">
-              <small>Can Crit</small>
-              <b-checkbox v-model="motionValue.canCrit"></b-checkbox>
-            </b-col>
-            <b-col cols="4">
+
+            <b-col cols="5">
               Element Mod
               <b-form-input
                 v-model="motionValue.motionValueEle"
@@ -704,6 +726,7 @@
                     motionValuePhys: 0,
                     motionValueEle: 0,
                     canCrit: true,
+                    type: 'cut',
                   })
                 "
                 ><i class="fas fa-plus"></i></b-button
@@ -714,6 +737,21 @@
                 size="xs"
                 ><i class="fas fa-minus"></i></b-button
             ></b-col>
+            <b-col cols="5">
+              <small>Type</small>
+              <b-dropdown style="width:100%" :text="motionValue.type">
+                <b-dropdown-item
+                  v-for="item in data.physArray"
+                  :key="item"
+                  @click="motionValue.type = item"
+                  >{{ item }}</b-dropdown-item
+                >
+              </b-dropdown>
+            </b-col>
+            <b-col cols="2">
+              <small>Can Crit</small>
+              <b-checkbox v-model="motionValue.canCrit"></b-checkbox>
+            </b-col>
           </b-row>
           <hr />
           <h5>Attack Data</h5>
@@ -755,6 +793,7 @@
 import _ from "lodash";
 import arrayFile from "./data/data.json";
 import weapons from "./data/weapons.json";
+// import monsters from "./data/monsters.json";
 
 export default {
   name: "App",
@@ -850,7 +889,11 @@ export default {
         counterStrike: { label: "None", raw: 0 },
         dereliction: { label: "None", element: 0, raw: 0 },
         sharpness: { label: "white", raw: 1.32, element: 1.15 },
-        partPhys: 100,
+        partPhys: {
+          blunt: 100,
+          cut: 100,
+          shot: 100,
+        },
         partEle: {
           dragon: 30,
           fire: 30,
@@ -860,7 +903,12 @@ export default {
           none: 0,
         },
         motionValueArray: [
-          { motionValuePhys: 50, motionValueEle: 1, canCrit: true },
+          {
+            motionValuePhys: 50,
+            motionValueEle: 1,
+            canCrit: true,
+            type: "cut",
+          },
         ],
       },
     };
@@ -978,7 +1026,7 @@ export default {
 
       // Melee Hit skills
       if (!this.isRanged) {
-        if (!this.isWeakspot) total *= this.info.mindsEye.mod;
+        if (!this.isWeakspot(index)) total *= this.info.mindsEye.mod;
 
         if (this.info.sharpness.raw <= 1) total *= this.info.bludgeoner.mod;
         else if (
@@ -994,7 +1042,8 @@ export default {
       // Sharpness
       total *= this.info.sharpness.raw;
       // Hitzone
-      total *= this.info.partPhys / 100.0;
+      total *=
+        this.info.partPhys[this.info.motionValueArray[index].type] / 100.0;
       // MotionValue
       total *= this.info.motionValueArray[index].motionValuePhys / 100.0;
 
@@ -1023,6 +1072,13 @@ export default {
 
       return total;
     },
+    isWeakspot(index) {
+      return (
+        (this.info.partPhys[this.info.motionValueArray[index].type] / 100.0) *
+          this.info.sharpness.raw >=
+        0.42
+      );
+    },
     loadSaves() {
       let saveFile = localStorage.getItem("monHunSaves");
       if (saveFile) this.saves = JSON.parse(saveFile);
@@ -1035,36 +1091,13 @@ export default {
       this.saves.splice(index, 1);
       localStorage.setItem("monHunSaves", JSON.stringify(this.saves));
     },
-  },
-  computed: {
-    isRanged() {
-      return ["Bow", "Light Bowgun", "Heavy Bowgun"].includes(
-        this.info.weaponType
-      );
-    },
-    isWeakspot() {
-      return (this.info.partPhys / 100.0) * this.info.sharpness.raw >= 0.42;
-    },
-    augmentSlotsFilled() {
-      let total = 0;
-      total += this.info.attackBoostAugment.slots;
-      total += this.info.affinityBoostAugment.slots;
-      total += this.info.elementBoostAugment.slots;
-      total += this.info.rampageSlotAugment.slots;
 
-      return total;
-    },
     // UI STATS
-    effectiveRampageSlots() {
-      let total = this.info.rampageSlot;
-      total += this.info.rampageSlotAugment.rampageSlot;
-      return total;
-    },
-    effectiveAffinity() {
+    effectiveAffinity(index = 0) {
       if (!this.info) return 0;
       let total = (
         (parseInt(this.info.affinity) +
-          parseInt(this.isWeakspot ? this.info.wex.value : 0) +
+          parseInt(this.isWeakspot(index) ? this.info.wex.value : 0) +
           parseInt(this.info.affinityBoostAugment.aff) +
           //Raging Jewel
           parseInt(
@@ -1091,6 +1124,74 @@ export default {
         100.0
       ).toFixed(2);
       if (total > 1) return 1;
+      return total;
+    },
+
+    // AVERAGE BETWEEN CRIT AND NON CRIT
+    averageRaw(index) {
+      let total = this.effectiveRaw;
+
+      let critMod =
+        this.effectiveAffinity(index) > 0 ? this.info.critBoost.value : 0.75;
+      let effectiveCrit =
+        (critMod - 1) * Math.abs(this.effectiveAffinity(index)) + 1;
+      total *= effectiveCrit;
+
+      return total;
+    },
+    averageElement(index) {
+      let total = this.effectiveElement;
+
+      let critMod =
+        this.effectiveAffinity(index) > 0 ? this.info.critElement.value : 1;
+      let effectiveCrit =
+        (critMod - 1) * Math.abs(this.effectiveAffinity(index)) + 1;
+      total *= effectiveCrit;
+
+      return total;
+    },
+
+    // CRITICALS
+    critRaw(index) {
+      let total = this.effectiveRaw;
+
+      let critMod =
+        this.effectiveAffinity(index) >= 0 ? this.info.critBoost.value : 0.75;
+      if (this.effectiveAffinity(index) == 0) critMod = 1;
+      total *= critMod;
+
+      return total;
+    },
+    critElement(index) {
+      let total = this.effectiveElement;
+
+      let critMod =
+        this.effectiveAffinity(index) > 0 ? this.info.critElement.value : 1;
+      total *= critMod;
+
+      return total;
+    },
+  },
+  computed: {
+    isRanged() {
+      return ["Bow", "Light Bowgun", "Heavy Bowgun"].includes(
+        this.info.weaponType
+      );
+    },
+    augmentSlotsFilled() {
+      let total = 0;
+      total += this.info.attackBoostAugment.slots;
+      total += this.info.affinityBoostAugment.slots;
+      total += this.info.elementBoostAugment.slots;
+      total += this.info.rampageSlotAugment.slots;
+
+      return total;
+    },
+
+    // UI STATS
+    effectiveRampageSlots() {
+      let total = this.info.rampageSlot;
+      total += this.info.rampageSlotAugment.rampageSlot;
       return total;
     },
     effectiveRaw() {
@@ -1192,47 +1293,7 @@ export default {
     effectiveTotal() {
       return this.effectiveRaw + this.effectiveElement;
     },
-    // AVERAGE BETWEEN CRIT AND NON CRIT
-    averageRaw() {
-      let total = this.effectiveRaw;
 
-      let critMod =
-        this.effectiveAffinity > 0 ? this.info.critBoost.value : 0.75;
-      let effectiveCrit = (critMod - 1) * Math.abs(this.effectiveAffinity) + 1;
-      total *= effectiveCrit;
-
-      return total;
-    },
-    averageElement() {
-      let total = this.effectiveElement;
-
-      let critMod =
-        this.effectiveAffinity > 0 ? this.info.critElement.value : 1;
-      let effectiveCrit = (critMod - 1) * Math.abs(this.effectiveAffinity) + 1;
-      total *= effectiveCrit;
-
-      return total;
-    },
-    // CRITICALS
-    critRaw() {
-      let total = this.effectiveRaw;
-
-      let critMod =
-        this.effectiveAffinity >= 0 ? this.info.critBoost.value : 0.75;
-      if (this.effectiveAffinity == 0) critMod = 1;
-      total *= critMod;
-
-      return total;
-    },
-    critElement() {
-      let total = this.effectiveElement;
-
-      let critMod =
-        this.effectiveAffinity > 0 ? this.info.critElement.value : 1;
-      total *= critMod;
-
-      return total;
-    },
     // HITZONE / MOTION VALUE / SHARPNESS
     hitRaw() {
       var total = 0;
@@ -1250,13 +1311,12 @@ export default {
       });
       return total;
     },
-
     hitAverageRaw() {
       var total = 0;
       this.info.motionValueArray.forEach((skill, index) => {
         total += Math.floor(
           this.applyHitzoneRaw(
-            skill.canCrit ? this.averageRaw : this.effectiveRaw,
+            skill.canCrit ? this.averageRaw(index) : this.effectiveRaw,
             index
           )
         );
@@ -1268,20 +1328,19 @@ export default {
       this.info.motionValueArray.forEach((skill, index) => {
         total += Math.floor(
           this.applyHitzoneElement(
-            skill.canCrit ? this.averageElement : this.effectiveElement,
+            skill.canCrit ? this.averageElement(index) : this.effectiveElement,
             index
           )
         );
       });
       return total;
     },
-
     hitCritRaw() {
       var total = 0;
       this.info.motionValueArray.forEach((skill, index) => {
         total += Math.floor(
           this.applyHitzoneRaw(
-            skill.canCrit ? this.critRaw : this.effectiveRaw,
+            skill.canCrit ? this.critRaw(index) : this.effectiveRaw,
             index
           )
         );
@@ -1293,7 +1352,7 @@ export default {
       this.info.motionValueArray.forEach((skill, index) => {
         total += Math.floor(
           this.applyHitzoneElement(
-            skill.canCrit ? this.critElement : this.effectiveElement,
+            skill.canCrit ? this.critElement(index) : this.effectiveElement,
             index
           )
         );
@@ -1305,11 +1364,9 @@ export default {
     hitTotal() {
       return this.hitRaw + this.hitElement;
     },
-
     hitAverageTotal() {
       return this.hitAverageRaw + this.hitAverageElement;
     },
-
     hitCritTotal() {
       return this.hitCritRaw + this.hitCritElement;
     },

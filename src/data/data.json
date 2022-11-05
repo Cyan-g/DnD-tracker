@@ -93,6 +93,7 @@
     "Bow"
   ],
   "elementArray": ["none", "dragon", "fire", "water", "thunder", "ice"],
+  "physArray": ["blunt", "cut", "shot"],
   "crit": [
     {
       "label": "Crit Element",
