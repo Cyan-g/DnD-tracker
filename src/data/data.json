@@ -231,7 +231,7 @@
       ]
     },
     {
-      "label": "Chain Crit",
+      "label": "Burst",
       "key": "chainCrit",
       "description": "Raw attack and element on hit, more after 5 hits depending on level",
       "values": [

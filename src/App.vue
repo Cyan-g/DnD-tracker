@@ -915,6 +915,50 @@ import weapons from "./data/weapons.json";
 import monsters from "./data/monsters.json";
 
 export default {
+  //  var parseWeapons = (weaponArray) => {
+  //       let resultArray = [];
+  //       let statusArray = ["Sleep", "Paralysis", "Blast", "Poison"];
+
+  //       var isStatus = (string) => {
+  //         return statusArray.includes(string);
+  //       };
+
+  //       weaponArray.forEach((weapon) => {
+  //         if (weapon.name.slice(-2) == " I") return;
+  //         if (weapon.name.slice(-2) == "II") return;
+  //         if (weapon.name.slice(-2) == "IV") return;
+  //         if (weapon.name.slice(-2) == " V") return;
+  //         if (weapon.attack < 300) return;
+  //         if (weapon.rampSkills.length > 0) return;
+  //         if(weaponArray.some(x => x.name == weapon.name + " +")) return;
+
+  //         resultArray.push({
+  //           label: weapon.name,
+  //           raw: weapon.attack,
+  //           element:
+  //             weapon.element[0] && !isStatus(weapon.element[0].type)
+  //               ? weapon.element[0].attack
+  //               : 0,
+  //           type:
+  //             weapon.element[0] && !isStatus(weapon.element[0].type)
+  //               ? weapon.element[0].type.toLowerCase()
+  //               : "none",
+  //           status:
+  //             weapon.element[0] && isStatus(weapon.element[0].type)
+  //               ? weapon.element[0].attack
+  //               : 0,
+  //           statusType:
+  //             weapon.element[0] && isStatus(weapon.element[0].type)
+  //               ? weapon.element[0].type.toLowerCase()
+  //               : "none",
+  //           affinity: weapon.affinity,
+  //           sharpness: "purple",
+  //           rampageSlot: weapon.rampSlots[0] ? weapon.rampSlots[0] : 0,
+  //         });
+  //       });
+
+  //       return resultArray;
+  //     };
   name: "App",
   created() {
     this.data = arrayFile;
