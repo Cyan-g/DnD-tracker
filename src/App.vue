@@ -86,7 +86,30 @@
             }}</b-button></b-input-group
           >
         </b-col>
+        <b-col cols="12">
+          <b-input-group prepend="String">
+            <b-form-input v-model="editField" type="text"></b-form-input>
+            <b-button :disabled="!editField" @click="addHitzone()" class="ml-1"
+              >Add HitZone</b-button
+            ></b-input-group
+          >
+        </b-col>
       </b-row>
+      <b-row v-else>
+        <b-input-group prepend="Name">
+          <b-form-input v-model="editField" type="text"></b-form-input>
+          <b-button :disabled="!editField" @click="addMonster()" class="ml-1"
+            >Add Monster</b-button
+          ></b-input-group
+        >
+      </b-row>
+      <b-button
+        style="float: right"
+        class="mt-1"
+        :disabled="!info.monster"
+        @click="logMonster()"
+        >log</b-button
+      >
     </b-modal>
     <!-- SAVE MODAL -->
     <b-modal
@@ -335,7 +358,8 @@
                 v-for="item in augment.values"
                 :key="item.label"
                 :disabled="
-                  item.slots + augmentSlotsFilled - info[augment.key].slots > 6
+                  item.slots + augmentSlotsFilled - info[augment.key].slots >
+                    augmentCap
                 "
                 @click="info[augment.key] = item"
                 >{{ item.label }}</b-dropdown-item
@@ -885,6 +909,12 @@
         <b-col cols="12">
           <hr />
           <b-overlay variant="secondary" :show="isCalculating">
+            <small
+              >Disclaimer: There is more to weapons than just this calculation,
+              like shelling, ammo, phials, higher sharpness through handicraft
+              or decoration slots. Which are all not considered atm, so please
+              do not take results as set in stone.</small
+            ><br />
             <b-button :disabled="isCalculating" @click="optimize()"
               >Optimise Weapon</b-button
             >
@@ -915,50 +945,6 @@ import weapons from "./data/weapons.json";
 import monsters from "./data/monsters.json";
 
 export default {
-  //  var parseWeapons = (weaponArray) => {
-  //       let resultArray = [];
-  //       let statusArray = ["Sleep", "Paralysis", "Blast", "Poison"];
-
-  //       var isStatus = (string) => {
-  //         return statusArray.includes(string);
-  //       };
-
-  //       weaponArray.forEach((weapon) => {
-  //         if (weapon.name.slice(-2) == " I") return;
-  //         if (weapon.name.slice(-2) == "II") return;
-  //         if (weapon.name.slice(-2) == "IV") return;
-  //         if (weapon.name.slice(-2) == " V") return;
-  //         if (weapon.attack < 300) return;
-  //         if (weapon.rampSkills.length > 0) return;
-  //         if(weaponArray.some(x => x.name == weapon.name + " +")) return;
-
-  //         resultArray.push({
-  //           label: weapon.name,
-  //           raw: weapon.attack,
-  //           element:
-  //             weapon.element[0] && !isStatus(weapon.element[0].type)
-  //               ? weapon.element[0].attack
-  //               : 0,
-  //           type:
-  //             weapon.element[0] && !isStatus(weapon.element[0].type)
-  //               ? weapon.element[0].type.toLowerCase()
-  //               : "none",
-  //           status:
-  //             weapon.element[0] && isStatus(weapon.element[0].type)
-  //               ? weapon.element[0].attack
-  //               : 0,
-  //           statusType:
-  //             weapon.element[0] && isStatus(weapon.element[0].type)
-  //               ? weapon.element[0].type.toLowerCase()
-  //               : "none",
-  //           affinity: weapon.affinity,
-  //           sharpness: "purple",
-  //           rampageSlot: weapon.rampSlots[0] ? weapon.rampSlots[0] : 0,
-  //         });
-  //       });
-
-  //       return resultArray;
-  //     };
   name: "App",
   created() {
     this.data = arrayFile;
@@ -969,6 +955,7 @@ export default {
   },
   data() {
     return {
+      augmentCap: 9,
       chargeMasterWeapons: [
         "Greatsword",
         "Longsword",
@@ -980,6 +967,7 @@ export default {
         "Heavy Bowgun",
       ],
       data: null,
+      editField: null,
       recovered: false,
       isCalculating: false,
       showHitzones: false,
@@ -1145,6 +1133,41 @@ export default {
       localStorage.setItem("monHunSaves", JSON.stringify(this.saves));
     },
 
+    //Editor
+    parseHitzone(string) {
+      let array = string.split("\t");
+      return {
+        label: array[0],
+        phys: {
+          cut: parseInt(array[1]),
+          blunt: parseInt(array[2]),
+          shot: parseInt(array[3]),
+        },
+        ele: {
+          fire: parseInt(array[4]),
+          water: parseInt(array[5]),
+          thunder: parseInt(array[6]),
+          ice: parseInt(array[7]),
+          dragon: parseInt(array[8]),
+        },
+      };
+    },
+    logMonster() {
+      console.log(this.info.monster);
+    },
+    addHitzone() {
+      this.info.monster.hitZones.push(this.parseHitzone(this.editField));
+      this.editField = null;
+    },
+    addMonster() {
+      this.monsters.push({
+        name: this.editField,
+        hitZones: [],
+      });
+      this.info.monster = this.monsters.find((x) => x.name == this.editField);
+      this.editField = null;
+    },
+
     //OPTIMIZER
     async optimize() {
       this.isCalculating = true;
@@ -1213,7 +1236,10 @@ export default {
                 }
 
                 //fill test augments if not locked
-                if (!this.lockAugment && this.augmentSlotsFilled <= 6) {
+                if (
+                  !this.lockAugment &&
+                  this.augmentSlotsFilled <= this.augmentCap
+                ) {
                   augmentTestArray.push({
                     combination: combination,
                     hitZones: hitZones,
@@ -1600,6 +1626,51 @@ export default {
     },
   },
 };
+
+//  var parseWeapons = (weaponArray) => {
+//       let resultArray = [];
+//       let statusArray = ["Sleep", "Paralysis", "Blast", "Poison"];
+
+//       var isStatus = (string) => {
+//         return statusArray.includes(string);
+//       };
+
+//       weaponArray.forEach((weapon) => {
+//         if (weapon.name.slice(-2) == " I") return;
+//         if (weapon.name.slice(-2) == "II") return;
+//         if (weapon.name.slice(-2) == "IV") return;
+//         if (weapon.name.slice(-2) == " V") return;
+//         if (weapon.attack < 300) return;
+//         if (weapon.rampSkills.length > 0) return;
+//         if(weaponArray.some(x => x.name == weapon.name + " +")) return;
+
+//         resultArray.push({
+//           label: weapon.name,
+//           raw: weapon.attack,
+//           element:
+//             weapon.element[0] && !isStatus(weapon.element[0].type)
+//               ? weapon.element[0].attack
+//               : 0,
+//           type:
+//             weapon.element[0] && !isStatus(weapon.element[0].type)
+//               ? weapon.element[0].type.toLowerCase()
+//               : "none",
+//           status:
+//             weapon.element[0] && isStatus(weapon.element[0].type)
+//               ? weapon.element[0].attack
+//               : 0,
+//           statusType:
+//             weapon.element[0] && isStatus(weapon.element[0].type)
+//               ? weapon.element[0].type.toLowerCase()
+//               : "none",
+//           affinity: weapon.affinity,
+//           sharpness: "purple",
+//           rampageSlot: weapon.rampSlots[0] ? weapon.rampSlots[0] : 0,
+//         });
+//       });
+
+//       return resultArray;
+//     };
 </script>
 
 <style>

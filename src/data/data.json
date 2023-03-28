@@ -42,9 +42,10 @@
       "key": "attackBoostAugment",
       "values": [
         { "label": "Attack Boost 0", "raw": 0, "slots": 0 },
-        { "label": "Attack Boost 1", "raw": 5, "slots": 2 },
-        { "label": "Attack Boost 2", "raw": 10, "slots": 4 },
-        { "label": "Attack Boost 3", "raw": 15, "slots": 6 }
+        { "label": "Attack Boost 1", "raw": 10, "slots": 2 },
+        { "label": "Attack Boost 2", "raw": 15, "slots": 4 },
+        { "label": "Attack Boost 3", "raw": 20, "slots": 6 },
+        { "label": "Attack Boost 3", "raw": 25, "slots": 8 }
       ]
     },
     {
@@ -52,7 +53,9 @@
       "key": "affinityBoostAugment",
       "values": [
         { "label": "Affinity Boost 0", "aff": 0, "slots": 0 },
-        { "label": "Affinity Boost 1", "aff": 5, "slots": 3 }
+        { "label": "Affinity Boost 1", "aff": 5, "slots": 3 },
+        { "label": "Affinity Boost 2", "aff": 10, "slots": 6 },
+        { "label": "Affinity Boost 3", "aff": 15, "slots": 8 }
       ]
     },
     {
@@ -64,7 +67,9 @@
         { "label": "Element Boost 2", "element": 10, "slots": 2 },
         { "label": "Element Boost 3", "element": 15, "slots": 3 },
         { "label": "Element Boost 4", "element": 20, "slots": 4 },
-        { "label": "Element Boost 5", "element": 25, "slots": 5 }
+        { "label": "Element Boost 5", "element": 25, "slots": 5 },
+        { "label": "Element Boost 6", "element": 33, "slots": 5 },
+        { "label": "Element Boost 7", "element": 43, "slots": 5 }
       ]
     },
     {

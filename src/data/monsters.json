@@ -425,7 +425,7 @@
         "phys": {
           "cut": 35,
           "blunt": 40,
-          "shot": 300
+          "shot": 30
         },
         "ele": {
           "fire": 0,
@@ -508,6 +508,117 @@
           "thunder": 10,
           "ice": 5,
           "dragon": 20
+        }
+      }
+    ]
+  },
+  {
+    "name": "Chameleos",
+    "type": "Elder Dragon",
+    "hitZones": [
+      {
+        "label": "Head",
+        "phys": {
+          "cut": 55,
+          "blunt": 50,
+          "shot": 45
+        },
+        "ele": {
+          "fire": 25,
+          "water": 0,
+          "thunder": 0,
+          "ice": 10,
+          "dragon": 20
+        }
+      },
+      {
+        "label": "Wing",
+        "phys": {
+          "cut": 22,
+          "blunt": 22,
+          "shot": 20
+        },
+        "ele": {
+          "fire": 20,
+          "water": 0,
+          "thunder": 0,
+          "ice": 10,
+          "dragon": 15
+        }
+      },
+      {
+        "label": "Back",
+        "phys": {
+          "cut": 25,
+          "blunt": 22,
+          "shot": 25
+        },
+        "ele": {
+          "fire": 25,
+          "water": 0,
+          "thunder": 0,
+          "ice": 10,
+          "dragon": 20
+        }
+      },
+      {
+        "label": "Abdomen",
+        "phys": {
+          "cut": 25,
+          "blunt": 30,
+          "shot": 22
+        },
+        "ele": {
+          "fire": 20,
+          "water": 5,
+          "thunder": 0,
+          "ice": 10,
+          "dragon": 15
+        }
+      },
+      {
+        "label": "Foreleg",
+        "phys": {
+          "cut": 45,
+          "blunt": 45,
+          "shot": 20
+        },
+        "ele": {
+          "fire": 20,
+          "water": 0,
+          "thunder": 0,
+          "ice": 10,
+          "dragon": 10
+        }
+      },
+      {
+        "label": "Hind Leg",
+        "phys": {
+          "cut": 30,
+          "blunt": 25,
+          "shot": 20
+        },
+        "ele": {
+          "fire": 25,
+          "water": 0,
+          "thunder": 0,
+          "ice": 10,
+          "dragon": 20
+        }
+      },
+      {
+        "label": "Tail",
+        "phys": {
+          "cut": 35,
+          "blunt": 22,
+          "shot": 45
+        },
+        "ele": {
+          "fire": 10,
+          "water": 0,
+          "thunder": 0,
+          "ice": 10,
+          "dragon": 5
         }
       }
     ]
