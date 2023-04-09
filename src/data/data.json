@@ -45,7 +45,7 @@
         { "label": "Attack Boost 1", "raw": 10, "slots": 2 },
         { "label": "Attack Boost 2", "raw": 15, "slots": 4 },
         { "label": "Attack Boost 3", "raw": 20, "slots": 6 },
-        { "label": "Attack Boost 3", "raw": 25, "slots": 8 }
+        { "label": "Attack Boost 4", "raw": 25, "slots": 8 }
       ]
     },
     {

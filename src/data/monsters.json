@@ -21,6 +21,27 @@
     ]
   },
   {
+    "name": "Pukei Pukei",
+    "type": "Bird Wyvern",
+    "hitZones": [
+      {
+        "label": "Head",
+        "phys": {
+          "cut": 75,
+          "blunt": 80,
+          "shot": 70
+        },
+        "ele": {
+          "fire": 15,
+          "water": 0,
+          "thunder": 30,
+          "ice": 20,
+          "dragon": 10
+        }
+      }
+    ]
+  },
+  {
     "name": "Great Izuchi",
     "type": "Bird Wyvern",
     "hitZones": [

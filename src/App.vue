@@ -303,47 +303,14 @@
             <i :class="lockAugment ? 'fas fa-lock' : 'fas fa-lock-open'"></i>
           </div>
           <b-badge
+            v-for="i in augmentCap" :key="i"
             variant="dark"
-            :class="augmentSlotsFilled >= 1 ? 'text-danger' : ''"
+            :class="augmentSlotsFilled >= i ? 'text-danger' : ''"
             pill
           >
             <i class="fas fa-circle"></i
           ></b-badge>
-          <b-badge
-            variant="dark"
-            :class="augmentSlotsFilled >= 2 ? 'text-danger' : ''"
-            pill
-          >
-            <i class="fas fa-circle"></i
-          ></b-badge>
-          <b-badge
-            variant="dark"
-            :class="augmentSlotsFilled >= 3 ? 'text-danger' : ''"
-            pill
-          >
-            <i class="fas fa-circle"></i
-          ></b-badge>
-          <b-badge
-            variant="dark"
-            :class="augmentSlotsFilled >= 4 ? 'text-danger' : ''"
-            pill
-          >
-            <i class="fas fa-circle"></i
-          ></b-badge>
-          <b-badge
-            variant="dark"
-            :class="augmentSlotsFilled >= 5 ? 'text-danger' : ''"
-            pill
-          >
-            <i class="fas fa-circle"></i
-          ></b-badge>
-          <b-badge
-            variant="dark"
-            :class="augmentSlotsFilled >= 6 ? 'text-danger' : ''"
-            pill
-          >
-            <i class="fas fa-circle"></i
-          ></b-badge>
+
           <div
             v-show="showAugments"
             v-for="augment in data.augments"
@@ -1198,10 +1165,10 @@ export default {
 
         // test out augment combinations
         let augmentTestArray = [];
-        for (var atkAug = 0; atkAug <= 3; atkAug++) {
-          for (var eleAug = 0; eleAug <= 5; eleAug++) {
+        for (var atkAug = 0; atkAug <= 4; atkAug++) {
+          for (var eleAug = 0; eleAug <= 7; eleAug++) {
             for (var slotAug = 0; slotAug <= 1; slotAug++) {
-              for (var affAug = 0; affAug <= 1; affAug++) {
+              for (var affAug = 0; affAug <= 3; affAug++) {
                 if (!this.lockAugment) {
                   //change current augment if not locked
                   combination = {
