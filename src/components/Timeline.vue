@@ -5,26 +5,34 @@
             <b-col cols="2" >
                 <h5>Timeline</h5>
                 <hr/>
-                <b-form-input :v-model="searchQuery" placeholder="type to search"></b-form-input>
+                <b-form-input v-model="searchQuery" placeholder="type to search"></b-form-input>
                 <br>
                 <b-button 
                     variant="outline-success"
                     class="mb-1"
                     style="width: 100%;"
                     @click="addNote()"> 
-                    New Day
+                    Add Note
                 </b-button>
 
-                <div style="overflow-y: scroll; height: 30rem;">
+                <div :key="searchQuery" style="overflow-y: scroll; height: 30rem;">
                     <div v-for="(note, index) in filteredTimeline" :key="index + '_TLN'" >
-                        <b-button 
-                        class="mb-1"
-                        style="width: 95%;"
-                        :variant="selectedNote.date == note.date ? 'dark' : 'outline-dark'"
-                        @click="selectNote(index)"
-                        >
-                        {{ note.date }}
-                        </b-button>
+                        <b-button-group 
+                            class="mb-1"
+                            style="width: 100%;"
+                            >
+                            <b-button 
+                                :variant="selectedNote.date == note.date ? 'dark' : 'outline-dark'"
+                                style="width: 90%;"
+                                @click="selectNote(index)"
+                                >
+                                {{ note.date }}
+                            </b-button>
+
+                            <b-button variant="outline-danger" @click="deleteNote(index, note.date)">
+                                <i class="fas fa-lg fa-times mt-2"></i>
+                            </b-button>
+                        </b-button-group>
                     </div>
                 </div>
               
@@ -66,8 +74,17 @@ export default {
         this.searchQuery = "",
         this.selectNote(0);
     },
+    deleteNote(index, name){
+        if(!confirm("Delete Note: " + name + " ?")) return;
+
+        this.timeline.splice(index, 1);
+        if(this.timeline.length == 0)
+            this.timeline.push(_.cloneDeep(this.defaultNote));
+        this.selectNote(0);
+    },
     addNote(){
         let note = _.cloneDeep(this.defaultNote);
+        note.date += " " + this.timeline.length;
         this.timeline.unshift(note);
         this.selectNote(0);
     },
@@ -77,11 +94,11 @@ export default {
   },
   computed: {
     filteredTimeline(){
-        if(!this.searchQuery) return this.timeline;
-        else return this.timeline.filter(x => {
-            x.content.toLower().includes(this.searchQuery.toLower()) ||
-            x.date.toLower().includes(this.searchQuery.toLower())
-        })
+        if(this.searchQuery.length == 0) return this.timeline;
+        else return this.timeline.filter(x => 
+            x.content.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
+            x.date.toLowerCase().includes(this.searchQuery.toLowerCase())
+        )
     }
   },
 };

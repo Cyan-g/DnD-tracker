@@ -3,8 +3,15 @@
         <br>
         <b-form-input style="width: 20%" v-model="note.date"></b-form-input>
         <br>
-        <b-form-textarea style="height: 30rem; width: 40rem" v-model="note.content">
-        </b-form-textarea>
+        <b-row>
+          <b-col cols="7">
+            <b-form-textarea style="height: 35rem; width: 100%" v-model="note.content">
+            </b-form-textarea>
+          </b-col>
+          <b-col cols="5">
+            <h4>Links</h4>
+          </b-col>
+        </b-row>
     </div>
 </template>-
 
