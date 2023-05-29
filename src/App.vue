@@ -10,16 +10,13 @@
     <b-tabs vertical pills>
       <b-tab title="Campaigns">
         <b-card>
-          <h5>Campaigns</h5>
+          <h5>Savedata</h5>
           <hr>
-          <b-row>
-            <b-col cols="3" v-for="(saveState, index) in storedCampaigns" :key="index + '_save'">
-              <b-card :title="saveState.name">
-                <b-button size="lg" variant="success" @click="saveCampaignTo(index)">Save current</b-button>
-                <b-button class="ml-2" size="sm" variant="dark" @click="loadCampaign(index)">Load</b-button>
-              </b-card>
-            </b-col>
-          </b-row>
+          <b-button variant="dark" @click="exportCampaign()">Export</b-button>
+          <b-button class="ml-2" variant="dark" :disabled="campaignText.length < 10" @click="importCampaign()">Import</b-button>
+          <br>
+          <b-form-textarea class="mt-2" style="height: 35rem; width: 100%" v-model="campaignText">
+            </b-form-textarea>
         </b-card>
       </b-tab>
       <b-tab title="Timeline">
@@ -54,7 +51,7 @@ export default {
   data() {
     return {
       campaign: null,
-      storedCampaigns: [],
+      campaignText: "",
       campaignTemplate: {
         name: "New Campaign",
         timeline: [],
@@ -65,28 +62,14 @@ export default {
     };
   },
   created() {
-    this.storedCampaigns = JSON.parse(localStorage.getItem("campaigns"));
-    
-    if (this.storedCampaigns && this.storedCampaigns.length > 0)
-      this.loadCampaign(0);
-    else  {
-      this.campaign = _.cloneDeep(this.campaignTemplate);
-      this.storedCampaigns = [this.campaign];
-      this.saveCampaigns();
-    }
+    this.campaign = _.cloneDeep(this.campaignTemplate);
   },
-
   methods: {
-    loadCampaign(index){
-      this.campaign = _.cloneDeep(this.storedCampaigns[index]);
+    importCampaign(){
+      this.campaign = JSON.parse(this.campaignText);
     },
-    saveCampaignTo(index){
-      this.storedCampaigns[index] = _.cloneDeep(this.campaign);
-      this.saveCampaigns();
-      this.loadCampaign(index);
-    },
-    saveCampaigns(){
-      localStorage.setItem("campaigns", JSON.stringify(this.storedCampaigns));
+    exportCampaign(){
+      this.campaignText = JSON.stringify(this.campaign);
     }
   },
   computed: {
