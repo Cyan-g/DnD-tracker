@@ -8,7 +8,8 @@
     </b-row>
     <br>
     <b-tabs vertical pills>
-      <b-tab title="Campaigns">
+
+      <b-tab title="Savedata">
         <b-card>
           <h5>Savedata</h5>
           <hr>
@@ -19,23 +20,31 @@
             </b-form-textarea>
         </b-card>
       </b-tab>
+
       <b-tab title="Timeline">
         <b-card>
           <Timeline :timeline="campaign.timeline"></Timeline>
         </b-card>
       </b-tab>
+
       <b-tab title="Combat">
-        <b-card></b-card>
+        <b-card>
+          <Combat :combat="campaign.combat"></Combat>
+        </b-card>
       </b-tab>
+
       <b-tab title="Maps">
         <b-card></b-card>
       </b-tab>
+
       <b-tab title="Places">
         <b-card></b-card>
       </b-tab>
+
       <b-tab title="Characters">
         <b-card></b-card>
       </b-tab>
+
     </b-tabs>
   </body>
  </div>
@@ -44,10 +53,14 @@
 <script>
 import _ from "lodash";
 import Timeline from "./components/Timeline.vue";
+import Combat from "./components/Combat.vue";
 
 export default {
   name: "App",
-  components: {Timeline},
+  components: {
+    Timeline,
+    Combat
+  },
   data() {
     return {
       campaign: null,
@@ -57,7 +70,8 @@ export default {
         timeline: [],
         characters: [],
         locations: [],
-        maps: []
+        maps: [],
+        combat: {players: [], enemies: []}
       }
     };
   },
