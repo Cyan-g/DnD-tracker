@@ -13,11 +13,11 @@
           </b-col>
         </b-row>
     </div>
-</template>-
+</template>
 
 <script>
 export default {
-  props: ["note"],
+  props: ["note", "color1", "color2", "color3"],
   data() {
     return {
     };

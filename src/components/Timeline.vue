@@ -39,7 +39,7 @@
             </b-col>
 
             <b-col cols="10">
-                <TimelineNote v-if="timeline.length > 0" :note="selectedNote"></TimelineNote>
+                <TimelineNote v-if="campaign.timeline.length > 0" :note="selectedNote"></TimelineNote>
             </b-col>
 
         </b-row>
@@ -51,7 +51,7 @@ import _ from "lodash";
 import TimelineNote from "./TimelineNote.vue";
 
 export default {
-  props: ["timeline"],
+  props: ["campaign"],
   components: {TimelineNote},
   data() {
     return {
@@ -65,8 +65,8 @@ export default {
     };
   },
   created() {
-    if(this.timeline.length == 0)
-        this.timeline.push(_.cloneDeep(this.defaultNote));
+    if(this.campaign.timeline.length == 0)
+        this.campaign.timeline.push(_.cloneDeep(this.defaultNote));
     this.selectNote(0);
   },
   methods: {
@@ -77,15 +77,15 @@ export default {
     deleteNote(index, name){
         if(!confirm("Delete Note: " + name + " ?")) return;
 
-        this.timeline.splice(index, 1);
-        if(this.timeline.length == 0)
-            this.timeline.push(_.cloneDeep(this.defaultNote));
+        this.campaign.timeline.splice(index, 1);
+        if(this.campaign.timeline.length == 0)
+            this.campaign.timeline.push(_.cloneDeep(this.defaultNote));
         this.selectNote(0);
     },
     addNote(){
         let note = _.cloneDeep(this.defaultNote);
-        note.date += " " + this.timeline.length;
-        this.timeline.unshift(note);
+        note.date += " " + this.campaign.timeline.length;
+        this.campaign.timeline.unshift(note);
         this.selectNote(0);
     },
     selectNote(index){
@@ -94,8 +94,8 @@ export default {
   },
   computed: {
     filteredTimeline(){
-        if(this.searchQuery.length == 0) return this.timeline;
-        else return this.timeline.filter(x => 
+        if(this.searchQuery.length == 0) return this.campaign.timeline;
+        else return this.campaign.timeline.filter(x => 
             x.content.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
             x.date.toLowerCase().includes(this.searchQuery.toLowerCase())
         )
