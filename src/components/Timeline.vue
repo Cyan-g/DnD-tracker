@@ -39,7 +39,7 @@
             </b-col>
 
             <b-col cols="10">
-                <TimelineNote v-if="campaign.timeline.length > 0" :note="selectedNote"></TimelineNote>
+                <TimelineNote v-if="campaign.timeline.length > 0" :note="selectedNote" :campaign="campaign"></TimelineNote>
             </b-col>
 
         </b-row>

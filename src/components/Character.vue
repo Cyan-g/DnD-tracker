@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h5>Combat</h5>
+        <h5>Character</h5>
         <hr>
 
     </div>

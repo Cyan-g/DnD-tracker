@@ -9,15 +9,18 @@
             </b-form-textarea>
           </b-col>
           <b-col cols="5">
-            <h4>Links</h4>
+            <LinkList :linkList="note.links" :campaign="campaign"></LinkList>
           </b-col>
         </b-row>
     </div>
 </template>
 
 <script>
+import LinkList from "./LinkList.vue"
+
 export default {
-  props: ["note", "color1", "color2", "color3"],
+  props: ["note", "campaign"],
+  components: {LinkList},
   data() {
     return {
     };

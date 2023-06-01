@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h5>Combat</h5>
+        <h5>Map</h5>
         <hr>
 
     </div>

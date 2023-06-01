@@ -11,7 +11,6 @@
       vertical 
       pills
       active-nav-item-class="text-light btn-dark"
-      active-tab-class="font-weight-bold text-light"
       >
 
       <b-tab title-link-class="btn-light mb-1" title="Savedata">

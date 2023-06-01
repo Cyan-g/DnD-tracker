@@ -1,24 +1,37 @@
 <template>
     <div>
-        <h5>Combat</h5>
-        <hr>
-
+      <h4>Links</h4> 
+      <b-button @click="addLink()">Add Link</b-button>
+      
+      <div v-for="(link, index) in linkList" :key="index + '_link'" >
+        <Link :link="link" :campaign="campaign"></Link>
+        <br>
+      </div>
     </div>
 </template> 
 
 <script>
-// import _ from "lodash";
+import _ from "lodash";
+import Link from "./Link.vue"
 
 export default {
-  name: "App",
-  components: {},
+  props: ["linkList", "campaign"],
+  components: {Link},
   data() {
     return {
+      linkTemplate: {
+        label: "Day 1",
+        type: "note",
+        number: 0
+      }
     };
   },
   created() {
   },
   methods: {
+    addLink(){
+      this.linkList.push(_.cloneDeep(this.linkTemplate));
+    }
   },
   computed: {
   },
