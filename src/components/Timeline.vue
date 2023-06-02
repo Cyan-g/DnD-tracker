@@ -6,14 +6,14 @@
                 <h5>Timeline</h5>
                 <hr/>
                 <b-form-input v-model="searchQuery" placeholder="type to search"></b-form-input>
-                <br>
                 <b-button 
                     variant="outline-success"
-                    class="mb-1"
+                    class="mb-1 mt-1"
                     style="width: 100%;"
                     @click="addNote()"> 
-                    Add Note
+                    <i class="fas fa-plus"></i> Add Note
                 </b-button>
+                <hr>
 
                 <div :key="searchQuery" style="overflow-y: scroll; height: 30rem;">
                     <div v-for="(note, index) in filteredTimeline" :key="index + '_TLN'" >
@@ -30,7 +30,7 @@
                             </b-button>
 
                             <b-button variant="outline-danger" @click="deleteNote(index, note.date)">
-                                <i class="fas fa-lg fa-times mt-2"></i>
+                                <i class="fas fa-lg fa-trash mt-2"></i>
                             </b-button>
                         </b-button-group>
                     </div>

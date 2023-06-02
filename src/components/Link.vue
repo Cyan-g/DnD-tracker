@@ -1,10 +1,15 @@
 <template>
   <div :name="link.label + '_' + link.number">
-    <a style="cursor: pointer" @click="findContent()">
+    <b-button 
+      size="sm" 
+      variant="outline-dark" 
+      @click="findContent()"
+      v-b-popover.hover.top="'show ' + link.type"
+      >
       <i :class="linkIcon"></i> 
         {{link.label}}
-    </a>
-    <b-modal id="contentModal" size="lg">
+    </b-button>
+    <b-modal id="contentModal" size="lg" v-if="content" hide-footer hide-header>
       <TimelineNote v-if="link.type == 'note'" :note="content"></TimelineNote>
       <Character v-if="link.type == 'character'" :character="content"></Character>
       <Location v-if="link.type == 'location'" :location="content"></Location>
@@ -14,25 +19,13 @@
 </template> 
 
 <script>
-import TimelineNote from "./TimelineNote.vue";
-import Character from "./Character.vue";
-import Location from "./Location.vue";
-import Map from "./Map.vue";
 
 export default {
   props: ["link", "campaign"],
-  components: {
-    TimelineNote,
-    Character,
-    Location,
-    Map
-  },
   data() {
     return {
       content: null
     };
-  },
-  created() {
   },
   methods: {
     findContent(){
@@ -72,22 +65,3 @@ export default {
   },
 };
 </script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: white;
-  background-color: #2c3e50;
-  margin-top: 20px;
-}
-#app > * {
-  background-color: #304152;
-}
-#smallprint {
-  color: black;
-  font-size: 0.8rem;
-}
-</style>
