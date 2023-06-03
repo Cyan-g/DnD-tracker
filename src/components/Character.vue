@@ -1,45 +1,24 @@
 <template>
-    <div>
-        <h5>Character</h5>
-        <hr>
-
-    </div>
-</template> 
+  <div>
+      <br>
+      <b-form-input style="width: 20%" v-model="character.name"></b-form-input>
+      <br>
+      <b-row>
+        <b-col>
+          
+        </b-col>
+        <b-col cols="4" v-if="campaign">
+          <LinkList :linkList="character.links" :campaign="campaign"></LinkList>
+        </b-col>
+      </b-row>
+  </div>
+</template>
 
 <script>
-// import _ from "lodash";
+import LinkList from "./LinkList.vue"
 
 export default {
-  name: "App",
-  components: {},
-  data() {
-    return {
-    };
-  },
-  created() {
-  },
-  methods: {
-  },
-  computed: {
-  },
+props: ["character", "campaign"],
+components: {LinkList},
 };
 </script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: white;
-  background-color: #2c3e50;
-  margin-top: 20px;
-}
-#app > * {
-  background-color: #304152;
-}
-#smallprint {
-  color: black;
-  font-size: 0.8rem;
-}
-</style>

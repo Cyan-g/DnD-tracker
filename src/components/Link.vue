@@ -31,6 +31,7 @@ export default {
     findContent(){
       if(this.link.type == "note"){
         let content = this.campaign.timeline[this.campaign.timeline.length - this.link.number -1];
+        if(content.date != this.link.label) content = this.campaign.timeline.find(x => x.date == this.link.label);
         this.content = content;
       }
       if(this.link.type == "character"){

@@ -3,7 +3,7 @@
         <b-row>
 
             <b-col cols="2" >
-                <h5>Timeline</h5>
+                <h5>Notebook</h5>
                 <hr/>
                 <b-form-input v-model="searchQuery" placeholder="type to search"></b-form-input>
                 <b-button 

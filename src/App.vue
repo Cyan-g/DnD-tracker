@@ -25,7 +25,7 @@
         </b-card>
       </b-tab>
 
-      <b-tab title-link-class="btn-light mb-1" title="Timeline">
+      <b-tab title-link-class="btn-light mb-1" title="Notebook">
         <b-card>
           <Timeline :campaign="campaign"></Timeline>
         </b-card>
@@ -46,7 +46,9 @@
       </b-tab>
 
       <b-tab title-link-class="btn-light mb-1" title="Characters">
-        <b-card></b-card>
+        <b-card>
+          <CharacterList :campaign="campaign"></CharacterList>
+        </b-card>
       </b-tab>
 
     </b-tabs>
@@ -58,10 +60,12 @@
 import _ from "lodash";
 import Timeline from "./components/Timeline.vue";
 import Combat from "./components/Combat.vue";
+import CharacterList from "./components/CharacterList.vue";
 
 export default {
   name: "App",
   components: {
+    CharacterList,
     Timeline,
     Combat
   },

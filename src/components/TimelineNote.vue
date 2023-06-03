@@ -21,15 +21,5 @@ import LinkList from "./LinkList.vue"
 export default {
   props: ["note", "campaign"],
   components: {LinkList},
-  data() {
-    return {
-    };
-  },
-  created() {
-  },
-  methods: {
-  },
-  computed: {
-  },
 };
 </script>
