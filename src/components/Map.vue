@@ -1,8 +1,9 @@
 <template>
     <div>
         <h5>Map</h5>
-        <hr>
-
+        <b-form-file accept="image/*" v-model="map.source" @input="log()"></b-form-file>
+        <img :src="map.source"/>
+        <pre>{{ map.source }}</pre>
     </div>
 </template> 
 
@@ -10,7 +11,7 @@
 // import _ from "lodash";
 
 export default {
-  name: "App",
+  props: ["map", "campaign"],
   components: {},
   data() {
     return {
@@ -19,6 +20,9 @@ export default {
   created() {
   },
   methods: {
+    log(){
+      console.log(this.map.source)
+    }
   },
   computed: {
   },

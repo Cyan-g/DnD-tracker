@@ -46,8 +46,10 @@
         </b-card>
       </b-tab>
 
-      <b-tab title-link-class="btn-light mb-1" title="Maps">
-        <b-card></b-card>
+      <b-tab title-link-class="btn-light mb-1" title="Compass">
+        <b-card>
+          <MapList :campaign="campaign"></MapList>
+        </b-card>
       </b-tab>
 
       <b-tab title-link-class="btn-light mb-1" title="Places">
@@ -64,10 +66,12 @@ import _ from "lodash";
 import Timeline from "./components/Timeline.vue";
 import Combat from "./components/Combat.vue";
 import CharacterList from "./components/CharacterList.vue";
+import MapList from "./components/MapList.vue";
 
 export default {
   name: "App",
   components: {
+    MapList,
     CharacterList,
     Timeline,
     Combat

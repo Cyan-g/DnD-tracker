@@ -1,45 +1,106 @@
 <template>
-    <div>
-        <h5>Combat</h5>
-        <hr>
+  <div >
+      <b-row>
 
-    </div>
-</template> 
+          <b-col cols="2" >
+              <h5>Compass</h5>
+              <hr/>
+              <b-form-input v-model="searchQuery" placeholder="type to search"></b-form-input>
+              <b-button 
+                  variant="outline-success"
+                  class="mb-1 mt-1"
+                  style="width: 100%;"
+                  @click="addMap()"> 
+                  <i class="fas fa-plus"></i> Add Map
+              </b-button>
+              <hr>
+
+              <div :key="searchQuery" style="overflow-y: scroll; height: 30rem;">
+                  <div v-for="(map, index) in filteredMaps" :key="index + '_TLN'" >
+                      <b-button-group 
+                          class="mb-1"
+                          style="width: 100%;"
+                          >
+                          <b-button 
+                              :variant="selectedMap.name == map.name ? 'dark' : 'outline-dark'"
+                              style="width: 90%;"
+                              @click="selectMap(index)"
+                              >
+                              {{ map.name }}
+                          </b-button>
+
+                          <b-button variant="outline-danger" @click="deleteMap(index, map.name)">
+                              <i class="fas fa-lg fa-trash mt-2"></i>
+                          </b-button>
+                      </b-button-group>
+                  </div>
+              </div>
+            
+          </b-col>
+
+          <b-col cols="10">
+              <Map v-if="campaign.maps.length > 0" :map="selectedMap" :campaign="campaign"></Map>
+          </b-col>
+
+      </b-row>
+  </div>
+</template>
 
 <script>
-// import _ from "lodash";
+import _ from "lodash";
+import Map from "./Map.vue";
 
 export default {
-  name: "App",
-  components: {},
-  data() {
-    return {
-    };
+props: ["campaign"],
+components: {Map},
+data() {
+  return {
+      searchQuery: "",
+      selectedMap: null,
+      defaultMap: {
+          name: "New Map",
+          source: "",
+          links: []
+      }
+  };
+},
+created() {
+  if(this.campaign.maps.length == 0)
+      this.campaign.maps.push(_.cloneDeep(this.defaultMap));
+  this.selectMap(0);
+},
+methods: {
+  clearFilter(){
+      this.searchQuery = "",
+      this.selectMap(0);
   },
-  created() {
+  deleteMap(index, name){
+      if(!confirm("Delete Map: " + name + " ?")) return;
+
+      this.campaign.maps.splice(index, 1);
+      if(this.campaign.maps.length == 0)
+          this.campaign.maps.push(_.cloneDeep(this.defaultMap));
+      this.selectMap(0);
   },
-  methods: {
+  addMap(){
+      this.searchQuery = "";
+      let map = _.cloneDeep(this.defaultMap);
+      map.name += " " + this.campaign.maps.length;
+      this.campaign.maps.unshift(map);
+      this.selectMap(0);
   },
-  computed: {
-  },
+  selectMap(index){
+      this.selectedMap = this.filteredMaps[index];
+  }
+},
+computed: {
+  filteredMaps(){
+      if(this.searchQuery.length == 0) return this.campaign.maps;
+      else return this.campaign.maps.filter(x => 
+          x.source.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
+          x.name.toLowerCase().includes(this.searchQuery.toLowerCase())
+      )
+  }
+},
 };
 </script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: white;
-  background-color: #2c3e50;
-  margin-top: 20px;
-}
-#app > * {
-  background-color: #304152;
-}
-#smallprint {
-  color: black;
-  font-size: 0.8rem;
-}
-</style>
