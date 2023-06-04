@@ -83,6 +83,7 @@ export default {
         this.selectNote(0);
     },
     addNote(){
+        this.searchQuery = "";
         let note = _.cloneDeep(this.defaultNote);
         note.date += " " + this.campaign.timeline.length;
         this.campaign.timeline.unshift(note);

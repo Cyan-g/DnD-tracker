@@ -63,6 +63,8 @@ data() {
           money: 0,
           maxHP: 20,
           currentHp: 20,
+          armorClass: 10,
+          speed: 30,
           strength: 10,
           dexterity: 10,
           constitution: 10,
@@ -122,6 +124,7 @@ methods: {
       this.selectCharacter(0);
   },
   addCharacter(){
+      this.searchQuery = "";
       let character = _.cloneDeep(this.defaultCharacter);
       character.name += " " + this.campaign.characters.length;
       this.campaign.characters.unshift(character);
@@ -135,7 +138,7 @@ computed: {
   filteredCharacters(){
       if(this.searchQuery.length == 0) return this.campaign.characters;
       else return this.campaign.characters.filter(x => 
-          x.content.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
+          x.notes.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
           x.name.toLowerCase().includes(this.searchQuery.toLowerCase())
       )
   }

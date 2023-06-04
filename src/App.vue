@@ -30,6 +30,12 @@
           <Timeline :campaign="campaign"></Timeline>
         </b-card>
       </b-tab>
+      
+      <b-tab title-link-class="btn-light mb-1" title="Characters">
+        <b-card>
+          <CharacterList :campaign="campaign"></CharacterList>
+        </b-card>
+      </b-tab>
 
       <b-tab title-link-class="btn-light mb-1" title="Combat">
         <b-card>
@@ -43,12 +49,6 @@
 
       <b-tab title-link-class="btn-light mb-1" title="Places">
         <b-card></b-card>
-      </b-tab>
-
-      <b-tab title-link-class="btn-light mb-1" title="Characters">
-        <b-card>
-          <CharacterList :campaign="campaign"></CharacterList>
-        </b-card>
       </b-tab>
 
     </b-tabs>

@@ -48,7 +48,7 @@
             </b-dropdown>
           </b-col>
           <b-col cols="12" class="text-center mt-1">
-            <b-button @click="addLink()"> add</b-button>
+            <b-button @click="addLink()" :disabled="!newLink.label"> add</b-button>
           </b-col>
         </b-row>
       </b-modal>
@@ -82,6 +82,7 @@ export default {
     addLink(){
       this.linkList.push(_.cloneDeep(this.newLink));
       this.newLink = _.cloneDeep(this.linkTemplate);
+      this.$bvModal.hide("newLinkModal");
     },
     getOptions(){
       let list = [];
@@ -92,21 +93,21 @@ export default {
         );
 
       else if(this.newLink.type == "character")
-        list = this.campaign.timeline
+        list = this.campaign.characters
         .map((x, i) => 
-          ({label: x.date, number: this.campaign.timeline.length - i - 1})
+          ({label: x.name, number: this.campaign.characters.length - i - 1})
         );
 
       else if(this.newLink.type == "location")
         list = this.campaign.timeline
         .map((x, i) => 
-          ({label: x.date, number: this.campaign.timeline.length - i - 1})
+          ({label: x.name, number: this.campaign.timeline.length - i - 1})
         );
 
       else if(this.newLink.type == "map")
         list = this.campaign.timeline
         .map((x, i) => 
-          ({label: x.date, number: this.campaign.timeline.length - i - 1})
+          ({label: x.name, number: this.campaign.timeline.length - i - 1})
         );
         
       return list;

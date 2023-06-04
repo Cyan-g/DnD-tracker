@@ -31,12 +31,13 @@ export default {
     findContent(){
       if(this.link.type == "note"){
         let content = this.campaign.timeline[this.campaign.timeline.length - this.link.number -1];
-        if(content.date != this.link.label) content = this.campaign.timeline.find(x => x.date == this.link.label);
+        if(!content || content.date != this.link.label) content = this.campaign.timeline.find(x => x.date == this.link.label);
         this.content = content;
       }
       if(this.link.type == "character"){
-        // let content = this.campaign.timeline[this.campaign.timeline.length - this.link.number];
-        // this.content = content;
+        let content = this.campaign.characters[this.campaign.characters.length - this.link.number];
+        if(!content || content.name != this.link.label) content = this.campaign.characters.find(x => x.name == this.link.label);
+        this.content = content;
       }
       if(this.link.type == "location"){
         // let content = this.campaign.timeline[this.campaign.timeline.length - this.link.number];
