@@ -6,24 +6,28 @@
       <b-row>
         <b-col>
           <b-row>
+
             <!-- NOTES -->
-            <b-col cols="5">
+            <b-col>
               Notes
               <b-form-textarea v-model="character.notes" style="height: 35rem;">	
               </b-form-textarea>
             </b-col>
             
             <!-- GENERAL -->
-            <b-col cols="3" style="min-width: 170px;">
+            <b-col cols="3" style="min-width: 170px;" v-if="campaign.settings.showCharacterStats">
              <b-row>
+
               <b-col cols="6">
                 <small>Current HP</small>
                 <b-form-input v-model="character.currentHP" style="height: 1rem; width: 100%" class="mt-1"></b-form-input>
               </b-col>
+
               <b-col cols="6">
                 <small>Max HP</small>
                 <b-form-input v-model="character.maxHP" style="height: 1rem;  width: 100%" class="mt-1"></b-form-input>
               </b-col>
+
               <b-col cols="12" class="mb-1">
                   <div class="mt-1" :style="'overflow: hidden;border: solid gray 1px; height: 0.5rem; border-radius: 4px; background-color: ' + 'red' + ';'">
                       <div :style="'width: ' + (character.currentHP/character.maxHP) * 100 + '%; background-color: ' + 'green' +'; height: 100%'"></div>
@@ -40,11 +44,33 @@
                 <b-form-input v-model="character.speed"></b-form-input>
               </b-col>
 
+              <b-col cols="12">
+                <hr/>
+                Spellcasting
+
+                <b-dropdown variant="dark" style="width:100%" :text="character.spellCasting">
+                  <b-dropdown-item
+                    v-for="item in castingStats"
+                    :key="item"
+                    @click="character.spellCasting = item"
+                    >{{ item }}</b-dropdown-item
+                  >
+                </b-dropdown>
+              </b-col>
+
+              <b-col cols="12">
+                <small>Spell Save DC :</small>
+                <span style="float: right;">{{ spellSaveDC }}</span>
+                <br>
+                <small>Spell Attack Bonus :</small>
+                <span style="float: right;">{{ spellAttackBonus }}</span>
+              </b-col>
+
              </b-row>
             </b-col>
             
             <!-- STATS -->
-            <b-col cols="4" class="pr-0" style="min-width: 260px;"> 
+            <b-col cols="4" class="pr-0" style="min-width: 260px;" v-if="campaign.settings.showCharacterStats"> 
               <b-row>
 
                 <b-col cols="4" class="pr-0 text-left">
@@ -164,7 +190,6 @@
              
             </b-col>
 
-
           </b-row>
         </b-col>
         <b-col cols="4" v-if="campaign">
@@ -179,6 +204,15 @@ import LinkList from "./LinkList.vue"
 
 export default {
 props: ["character", "campaign"],
+data(){
+  return {
+    castingStats: [
+      "None",
+      "Intelligence",
+      "Wisdom",
+      "Charisma"
+    ]
+}},
 components: {LinkList},
 methods: {
   numberFormat(number){
@@ -188,9 +222,11 @@ methods: {
   getStatScaling(label){
     switch (label) {
       case "Strength Save":
+      case "Strength":
       case "Athletics": return Math.floor((this.character.strength - 10) / 2);
 
       case "Dexterity Save":
+      case "Dexterity":
       case "Acrobatics":
       case "Sleight of Hand":
       case "Stealth": return Math.floor((this.character.dexterity - 10) / 2);
@@ -198,6 +234,7 @@ methods: {
       case "Consitution Save": return Math.floor((this.character.constitution - 10) / 2);
 
       case "Intelligence Save":
+      case "Intelligence":
       case "Arcana":
       case "History":
       case "Investigation":
@@ -205,6 +242,7 @@ methods: {
       case "Religion": return Math.floor((this.character.intelligence - 10) / 2);
 
       case "Wisdom Save":
+      case "Wisdom":
       case "Animal Handling":
       case "Insight":
       case "Medicine":
@@ -212,6 +250,7 @@ methods: {
       case "Survival":  return Math.floor((this.character.wisdom - 10) / 2);
 
       case "Charisma Save":
+      case "Charisma":
       case "Deception":
       case "Intimidation":
       case "Performance":
@@ -223,6 +262,17 @@ computed: {
   passivePerception(){
     var perception = this.character.skills.find(x => x.label == "Perception");
     return 8 + this.getStatScaling("Perception") + (perception.value ? this.character.proficiencyBonus : 0);
+  },
+  spellSaveDC(){
+    if(this.character.spellCasting == "None") return 0;
+
+    return 8 + this.getStatScaling(this.character.spellCasting) +  this.character.proficiencyBonus;
+  },
+
+  spellAttackBonus(){
+    if(this.character.spellCasting == "None") return 0;
+
+    return this.numberFormat(this.getStatScaling(this.character.spellCasting) +  this.character.proficiencyBonus);
   }
 }
 };

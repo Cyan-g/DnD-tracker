@@ -264,7 +264,7 @@
                                     <b-form-input v-model="enemy.name" class="mt-1 text-right" ></b-form-input>
                                 </b-col>
                                
-                                <b-col cols="12">
+                                <b-col cols="12" v-if="campaign.settings.showEnemyHP">
                                     <div class="mt-1" :style="'overflow: hidden;border: solid gray 1px; height: 0.5rem; border-radius: 4px; background-color: ' + 'red' + ';'">
                                         <div :key="enemy.hp + enemy.maxHp + '_hp_' + index" :style="'float:right; width: ' + (enemy.hp/enemy.maxHp) * 100 + '%; background-color: ' + 'green' +'; height: 100%'"></div>
                                     </div>
@@ -272,7 +272,7 @@
                             </b-row>
                         </b-col>
 
-                        <b-col cols="4" >
+                        <b-col cols="4" v-if="campaign.settings.showEnemyHP">
                             <b-row>
                                 <b-col cols="12">
                                     <b-form-input
@@ -298,7 +298,7 @@
                             <b-button 
                                 pill 
                                 v-b-popover.hover.top="'remove'"
-                                class="button1"
+                                variant="outline-danger"
                                 @click="campaign.combat.enemies.splice(index, 1)"
                                 >
                                 <i class="fas fa-skull"></i>

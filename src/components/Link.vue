@@ -9,7 +9,7 @@
       <i :class="linkIcon"></i> 
         {{link.label}}
     </b-button>
-    <b-modal id="contentModal" size="lg" v-if="content" hide-footer hide-header>
+    <b-modal :id="link.label + '--' + link.number" size="lg" v-if="content" hide-footer hide-header>
       <TimelineNote v-if="link.type == 'note'" :note="content"></TimelineNote>
       <Character v-if="link.type == 'character'" :character="content"></Character>
       <Location v-if="link.type == 'location'" :location="content"></Location>
@@ -49,7 +49,7 @@ export default {
       }
 
       this.$nextTick(() => {
-          this.$bvModal.show("contentModal");
+          this.$bvModal.show(this.link.label + '--' + this.link.number);
       });
     }
   },

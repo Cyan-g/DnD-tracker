@@ -17,6 +17,9 @@
         <b-card>
           <h5>Savedata</h5>
           <hr>
+          <b-checkbox v-model="campaign.settings.showEnemyHP">Show Enemy HP</b-checkbox>
+          <b-checkbox v-model="campaign.settings.showCharacterStats">Show Character Stats</b-checkbox>
+          <hr>
           <b-button variant="dark" @click="exportCampaign()">Export</b-button>
           <b-button class="ml-1" variant="dark" :disabled="campaignText.length < 10" @click="importCampaign()">Import</b-button>
           <br>
@@ -72,12 +75,23 @@ export default {
   data() {
     return {
       campaign: null,
-      campaignText: "",
-      campaignTemplate: {
-        name: "New Campaign",
+      defaultSettings: {
+        showEnemyHP: false,
+        showCharacterStats: false,
         color1: "#FF2D00",
         color2: "#7F7F7F",
         color3: "#000000",
+      },
+      campaignText: "",
+      campaignTemplate: {
+        name: "New Campaign",
+        settings: {
+          showEnemyHP: false,
+          showCharacterStats: false,
+          color1: "#FF2D00",
+          color2: "#7F7F7F",
+          color3: "#000000",
+        },
         timeline: [],
         characters: [],
         locations: [],
@@ -88,6 +102,9 @@ export default {
   },
   created() {
     this.campaign = _.cloneDeep(this.campaignTemplate);
+    var settings = JSON.parse(localStorage.getItem("settings"));
+    if(!settings) settings = _.cloneDeep(this.defaultSettings);
+    this.campaign.settings = settings;
   },
   methods: {
     importCampaign(){
@@ -99,6 +116,14 @@ export default {
   },
   computed: {
   },
+  watch: {
+    "campaign.settings": {
+        handler() {
+            localStorage.setItem("settings", JSON.stringify(this.campaign.settings));
+        },
+        deep: true,
+    },
+  }
 };
 </script>
 
