@@ -1,5 +1,6 @@
 <template>
     <div>
+
       <b-row>
         <b-col cols="4">
           <h4>Links</h4> 
@@ -9,6 +10,7 @@
         </b-col>
       </b-row>
       <hr>
+
       <b-row>
         <b-col class="mb-1" cols="6" v-for="(link, index) in linkList" :key="index + '_link'" >
           <b-button-group>
@@ -38,11 +40,14 @@
           </b-col>
           <b-col cols="6">
             <b>Link to</b>
-            <b-dropdown variant="dark" style="width:100%" :text="newLink.label">
+            <b-dropdown ref="ddown" split variant="dark" style="width:100%">
+              <template #button-content>
+                <b-form-input v-model="searchQuery" style="height: 1.5rem;" debounce="1000"></b-form-input>
+              </template>
               <b-dropdown-item
                 v-for="item in getOptions()"
                 :key="item.number"
-                @click="newLink.label = item.label; newLink.number = item.number"
+                @click="newLink.label = item.label; newLink.number = item.number; searchQuery = newLink.label"
                 >{{ item.label }}</b-dropdown-item
               >
             </b-dropdown>
@@ -63,6 +68,8 @@ export default {
   data() {
     return {
       typeList: ["note","character","location", "map"],
+      searchQuery: "",
+      showDropdown: false,
       newLink: {
         label: "",
         type: "note",
@@ -75,7 +82,20 @@ export default {
       }
     };
   },
+  watch: {
+    "searchQuery": {
+      handler(){
+       this.openDdwn();
+      }
+    }
+  },
   methods: {
+    openDdwn(){
+      this.$refs.ddown.visible = true // to show;
+    },
+    closeDdwn(){
+      this.$refs.ddown.visible = false // to hide;
+    },
     openModal(){
       this.$bvModal.show("newLinkModal");
     },
@@ -110,7 +130,7 @@ export default {
           ({label: x.name, number: this.campaign.timeline.length - i - 1})
         );
         
-      return list;
+      return list.filter(x => x.label.toLowerCase().includes(this.searchQuery.toLowerCase()));
     }
 }
 };

@@ -8,6 +8,7 @@
             <b-form-textarea style="height: 35rem; width: 100%" v-model="note.content">
             </b-form-textarea>
           </b-col>
+
           <b-col cols="4" v-if="campaign">
             <LinkList :linkList="note.links" :campaign="campaign"></LinkList>
           </b-col>
