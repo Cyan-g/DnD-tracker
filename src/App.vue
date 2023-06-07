@@ -28,26 +28,30 @@
         </b-card>
       </b-tab>
 
+      <b-tab title-link-class="btn-light mb-1" title="Combat">
+        <b-card v-if="campaign">
+          <Combat :campaign="campaign"></Combat>
+        </b-card>
+      </b-tab>
+
       <b-tab title-link-class="btn-light mb-1" title="Notebook">
-        <b-card>
+        <b-card v-if="campaign">
           <Timeline :campaign="campaign"></Timeline>
         </b-card>
       </b-tab>
       
       <b-tab title-link-class="btn-light mb-1" title="Characters">
-        <b-card>
+        <b-card v-if="campaign">
           <CharacterList :campaign="campaign"></CharacterList>
         </b-card>
       </b-tab>
 
-      <b-tab title-link-class="btn-light mb-1" title="Combat">
-        <b-card>
-          <Combat :campaign="campaign"></Combat>
-        </b-card>
+      <b-tab title-link-class="btn-light mb-1" title="Spell Tome">
+        <b-card></b-card>
       </b-tab>
 
-      <b-tab title-link-class="btn-light mb-1" title="Compass">
-        <b-card>
+      <b-tab title-link-class="btn-light mb-1" title="Maps">
+        <b-card v-if="campaign">
           <MapList :campaign="campaign"></MapList>
         </b-card>
       </b-tab>
@@ -55,6 +59,8 @@
       <b-tab title-link-class="btn-light mb-1" title="Places">
         <b-card></b-card>
       </b-tab>
+
+
 
     </b-tabs>
   </body>
@@ -84,7 +90,7 @@ export default {
         showCharacterStats: false,
         color1: "#FF2D00",
         color2: "#7F7F7F",
-        color3: "#000000",
+        color3: "#000000"
       },
       campaignText: "",
       campaignTemplate: {
@@ -112,6 +118,7 @@ export default {
   },
   methods: {
     importCampaign(){
+      this.campaign = null;
       this.campaign = JSON.parse(this.campaignText);
     },
     exportCampaign(){

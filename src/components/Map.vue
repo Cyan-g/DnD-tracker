@@ -1,9 +1,26 @@
 <template>
     <div>
         <h5>Map</h5>
-        <b-form-file accept="image/*" v-model="map.source" @input="log()"></b-form-file>
-        <img :src="map.source"/>
-        <pre>{{ map.source }}</pre>
+        <b-row>
+
+          <b-col cols="6">
+            <b-form-input v-model="map.name"></b-form-input>
+          </b-col>
+
+          <b-col cols="6">
+            <b-form-file accept="image/*" v-model="file" @input="getImage()" ></b-form-file>
+          </b-col>
+
+          <b-col cols="12">
+            <hr>
+            <img 
+              v-if="map.source"
+              @click="pin($event)"
+              :src="map.source"
+              style="width: 100%;border: solid black 2px; border-radius: 1rem;"
+              />
+          </b-col>
+        </b-row>
     </div>
 </template> 
 
@@ -15,14 +32,32 @@ export default {
   components: {},
   data() {
     return {
+      file: null
     };
   },
   created() {
   },
   methods: {
-    log(){
-      console.log(this.map.source)
+    pin(event){
+      var imageRect = event.target.getBoundingClientRect(); 
+      var x = Math.floor(event.clientX - imageRect.left);
+      var y = Math.floor(event.clientY - imageRect.top);
+
+      x = x / imageRect.width;
+      y = y / imageRect.height;
+      
+      console.log((x * 100).toFixed(2) + '%', (y * 100).toFixed(2) + '%');
+    },
+    getImage(){
+      let reader = new FileReader();
+
+      let that = this;
+      reader.onloadend = function() {
+        that.map.source = reader.result;
+      }
+      reader.readAsDataURL(this.file);
     }
+    
   },
   computed: {
   },

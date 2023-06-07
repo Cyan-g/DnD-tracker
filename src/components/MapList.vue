@@ -3,7 +3,7 @@
       <b-row>
 
           <b-col cols="2" >
-              <h5>Compass</h5>
+              <h5>Maps</h5>
               <hr/>
               <b-form-input v-model="searchQuery" placeholder="type to search"></b-form-input>
               <b-button 
@@ -65,9 +65,10 @@ data() {
   };
 },
 created() {
-  if(this.campaign.maps.length == 0)
-      this.campaign.maps.push(_.cloneDeep(this.defaultMap));
-  this.selectMap(0);
+    if(this.campaign.maps.length == 0)
+        this.campaign.maps.push(_.cloneDeep(this.defaultMap));
+
+    this.selectMap(0);
 },
 methods: {
   clearFilter(){
