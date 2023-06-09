@@ -15,7 +15,7 @@
             </b-col>
             
             <!-- GENERAL -->
-            <b-col cols="3" style="min-width: 170px;" v-if="campaign.settings.showCharacterStats">
+            <b-col cols="3" style="min-width: 170px;" v-if="campaign && campaign.settings.showCharacterStats">
              <b-row>
 
               <b-col cols="6">
@@ -70,7 +70,7 @@
             </b-col>
             
             <!-- STATS -->
-            <b-col cols="4" class="pr-0" style="min-width: 260px;" v-if="campaign.settings.showCharacterStats"> 
+            <b-col cols="4" class="pr-0" style="min-width: 260px;" v-if="campaign && campaign.settings.showCharacterStats"> 
               <b-row>
 
                 <b-col cols="4" class="pr-0 text-left">

@@ -20,11 +20,13 @@
                 style="width: 100%; border: solid black 2px; border-radius: 1rem;"
               />
                 <Pin 
-                  v-for="pin in map.pins" 
-                  :key="pin.name + '#' + pin.number" 
+                  v-for="(pin, i) in map.pins" 
+                  :key="pin.x + '#' + pin.y" 
                   :pin="pin"
+                  :campaign="campaign"
                   @enter="hoverPin = true"
                   @leave="hoverPin = false"
+                  @delete="map.pins.splice(i, 1)"
                   :style="{position: 'absolute', left: pin.x + '!important',top: pin.y}">
                 </Pin>
             </div>
@@ -48,7 +50,6 @@ export default {
         links: [],
         name: "New Pin",
         notes: "",
-        number: 0,
         x: "0%",
         y: "0%"
       }

@@ -2,16 +2,34 @@
     <div 
       @mouseenter="$emit('enter')"
       @mouseleave="$emit('leave')"
+      class="text-danger"
       >
-        <b-button 
-          pill 
-          class="pin" 
-          v-b-popover.hover.top="pin.name"
-          variant="dark">
-        </b-button>
+      <div
+        class="pin"
+        @click="openModal()"
+        v-b-popover.hover.top="pin.name"
+        >
+        <i 
+          class="fas fa-lg fa-map-pin"
+        ></i>
+      </div>
 
-        <b-modal>
-          <LinkList :links="pin.links"></LinkList>
+        <b-modal hide-header hide-footer :id="pin.x + '-' + pin.y">
+          <b-row>
+            <b-col cols="6">
+              <b-form-input v-model="pin.name"></b-form-input>
+            </b-col>
+
+            <b-col cols="6">
+              <b-button variant="outline-danger" pill @click="$emit('delete')"><i class="fas fa-trash"></i></b-button>
+            </b-col>
+
+            <b-col cols="12">
+              <hr>
+              <b-form-textarea v-model="pin.notes" style="height: 20rem" class="mb-2"></b-form-textarea>
+            </b-col>
+          </b-row>
+          <LinkList :linkList="pin.links" :campaign="campaign"></LinkList>
         </b-modal>
     </div>
 </template> 
@@ -30,6 +48,9 @@ export default {
   created() {
   },
   methods: {
+    openModal(){
+      this.$bvModal.show(this.pin.x + '-' + this.pin.y);
+    }
   },
   computed: {
   },
@@ -39,12 +60,12 @@ export default {
 <style>
 .pin {
   height: 1.8rem;
-  width: 1.8rem;
-  border-radius: 50%;
-  border: solid white 1px !important;
-  bottom: -0.9rem;
-  right: -0.9rem;
+  cursor: pointer;
+  width: 1rem;
+  bottom: -0.5rem;
+  left: -0.2rem;
   position: absolute;
+  vertical-align: middle;
 }
 </style>
 
