@@ -110,6 +110,7 @@ export default {
         characters: [],
         locations: [],
         maps: [],
+        spells: [],
         combat: {players: [], enemies: []}
       }
     };

@@ -1,11 +1,11 @@
 <template>
     <div 
-      @mouseenter="$emit('enter')"
-      @mouseleave="$emit('leave')"
-      class="text-danger"
+      @mouseenter="enter()"
+      @mouseleave="leave()"
+      class="text-danger text-center"
       >
       <div
-        class="pin"
+        :class="hover ? 'largePin' : 'pin'"
         @click="openModal()"
         v-b-popover.hover.top="pin.name"
         >
@@ -43,11 +43,20 @@ export default {
   components: {LinkList},
   data() {
     return {
+      hover: false
     };
   },
   created() {
   },
   methods: {
+    enter(){
+      this.hover = true;
+      this.$emit('enter');
+    },
+    leave(){
+      this.hover = false;
+      this.$emit('leave');
+    },
     openModal(){
       this.$bvModal.show(this.pin.x + '-' + this.pin.y);
     }
@@ -58,13 +67,24 @@ export default {
 </script>
 
 <style>
+.largePin {
+  height: 3rem;
+  cursor: pointer;
+  width: 3rem;
+  bottom: -1.5rem;
+  left: -1.5rem;
+  position: absolute;
+  vertical-align: middle;
+  font-size: x-large;
+}
 .pin {
   height: 1.8rem;
   cursor: pointer;
   width: 1rem;
   bottom: -0.5rem;
-  left: -0.2rem;
+  left: -0.5rem;
   position: absolute;
+  font-size: medium;
   vertical-align: middle;
 }
 </style>
