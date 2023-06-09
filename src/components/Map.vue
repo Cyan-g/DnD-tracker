@@ -13,40 +13,69 @@
 
           <b-col cols="12">
             <hr>
-            <img 
-              v-if="map.source"
-              @click="pin($event)"
-              :src="map.source"
-              style="width: 100%;border: solid black 2px; border-radius: 1rem;"
+            <div @click="pin($event)" style="position:relative">
+              <img 
+                v-if="map.source"
+                :src="map.source"
+                style="width: 100%; border: solid black 2px; border-radius: 1rem;"
               />
+                <Pin 
+                  v-for="pin in map.pins" 
+                  :key="pin.name + '#' + pin.number" 
+                  :pin="pin"
+                  @enter="hoverPin = true"
+                  @leave="hoverPin = false"
+                  :style="{position: 'absolute', left: pin.x + '!important',top: pin.y}">
+                </Pin>
+            </div>
           </b-col>
         </b-row>
     </div>
 </template> 
 
 <script>
-// import _ from "lodash";
+import _ from "lodash";
+import Pin from "./Pin.vue";
 
 export default {
   props: ["map", "campaign"],
-  components: {},
+  components: {Pin},
   data() {
     return {
-      file: null
+      file: null,
+      hoverPin: false,
+      pinTemplate: {
+        links: [],
+        name: "New Pin",
+        notes: "",
+        number: 0,
+        x: "0%",
+        y: "0%"
+      }
     };
   },
   created() {
   },
   methods: {
     pin(event){
+      if(this.hoverPin) return;
       var imageRect = event.target.getBoundingClientRect(); 
       var x = Math.floor(event.clientX - imageRect.left);
       var y = Math.floor(event.clientY - imageRect.top);
 
       x = x / imageRect.width;
       y = y / imageRect.height;
-      
-      console.log((x * 100).toFixed(2) + '%', (y * 100).toFixed(2) + '%');
+
+      x = (x * 100).toFixed(2) + '%';
+      y = (y * 100).toFixed(2) + '%';
+
+      var newPin = _.cloneDeep(this.pinTemplate);
+
+      newPin.name =  newPin.name + " " + this.map.pins.length;
+      newPin.x = x;
+      newPin.y = y;
+
+      this.map.pins.push(newPin);
     },
     getImage(){
       let reader = new FileReader();
@@ -60,25 +89,6 @@ export default {
     
   },
   computed: {
-  },
+  }
 };
 </script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: white;
-  background-color: #2c3e50;
-  margin-top: 20px;
-}
-#app > * {
-  background-color: #304152;
-}
-#smallprint {
-  color: black;
-  font-size: 0.8rem;
-}
-</style>

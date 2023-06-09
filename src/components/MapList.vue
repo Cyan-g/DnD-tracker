@@ -60,7 +60,7 @@ data() {
       defaultMap: {
           name: "New Map",
           source: "",
-          links: []
+          pins: []
       }
   };
 },
