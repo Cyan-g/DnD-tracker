@@ -56,8 +56,10 @@
         </b-card>
       </b-tab>
 
-      <b-tab title-link-class="btn-light mb-1" title="Places">
-        <b-card></b-card>
+      <b-tab title-link-class="btn-light mb-1" title="Locations">
+        <b-card v-if="campaign">
+          <LocationList :campaign="campaign"></LocationList>
+        </b-card>
       </b-tab>
 
 
@@ -73,11 +75,13 @@ import Timeline from "./components/Timeline.vue";
 import Combat from "./components/Combat.vue";
 import CharacterList from "./components/CharacterList.vue";
 import MapList from "./components/MapList.vue";
+import LocationList from "./components/LocationList.vue";
 
 export default {
   name: "App",
   components: {
     MapList,
+    LocationList,
     CharacterList,
     Timeline,
     Combat

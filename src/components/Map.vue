@@ -1,8 +1,6 @@
 <template>
     <div>
-        <h5>Map</h5>
         <b-row>
-
           <b-col cols="6">
             <b-form-input v-model="map.name"></b-form-input>
           </b-col>

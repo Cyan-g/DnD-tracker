@@ -25,7 +25,7 @@
               </b-col>
               <b-col>
                 <b>Notes</b>
-                <b-form-textarea v-model="character.notes" style="height: 30rem;">	
+                <b-form-textarea v-model="character.notes" style="height: 25rem;">	
                 </b-form-textarea>
               </b-col>
              </b-row>
