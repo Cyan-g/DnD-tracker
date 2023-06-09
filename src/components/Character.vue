@@ -9,9 +9,26 @@
 
             <!-- NOTES -->
             <b-col>
-              Notes
-              <b-form-textarea v-model="character.notes" style="height: 35rem;">	
-              </b-form-textarea>
+             <b-row>
+              <b-col cols="6">
+                <b>Race</b>
+                <b-form-input v-model="character.race"></b-form-input>
+              </b-col>
+              <b-col cols="6">
+                <b>Origin</b>
+                <b-form-input v-model="character.race"></b-form-input>
+              </b-col>
+              <b-col cols="12">
+                <b>Relationship</b>
+                <b-form-textarea v-model="character.relationship" style="height: 4rem;">	
+                </b-form-textarea>
+              </b-col>
+              <b-col>
+                <b>Notes</b>
+                <b-form-textarea v-model="character.notes" style="height: 30rem;">	
+                </b-form-textarea>
+              </b-col>
+             </b-row>
             </b-col>
             
             <!-- GENERAL -->

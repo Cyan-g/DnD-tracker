@@ -59,6 +59,9 @@ data() {
       {
           name: "New Character",
           notes: "",
+          race: "Human",
+          origin: "unknown",
+          relationship: "good",
           links: [],
           spellCasting: "None",
           money: 0,
