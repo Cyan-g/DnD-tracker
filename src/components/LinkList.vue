@@ -25,7 +25,7 @@
         </b-col>
       </b-row>
      
-      <b-modal id="newLinkModal" hide-header hide-footer>	
+      <b-modal :id="id" hide-header hide-footer>	
         <b-row>
           <b-col cols="6">
             <b>Type of Link</b>
@@ -34,6 +34,7 @@
                 v-for="item in typeList"
                 :key="item"
                 @click="newLink.type = item"
+                @input="newLink.label = ''"
                 >{{ item }}</b-dropdown-item
               >
             </b-dropdown>
@@ -64,7 +65,7 @@
 import _ from "lodash";
 
 export default {
-  props: ["linkList", "campaign"],
+  props: ["linkList", "campaign", "id"],
   data() {
     return {
       typeList: ["note","character","location", "map"],
@@ -97,12 +98,12 @@ export default {
       this.$refs.ddown.visible = false // to hide;
     },
     openModal(){
-      this.$bvModal.show("newLinkModal");
+      this.$bvModal.show(this.id);
     },
     addLink(){
       this.linkList.push(_.cloneDeep(this.newLink));
       this.newLink = _.cloneDeep(this.linkTemplate);
-      this.$bvModal.hide("newLinkModal");
+      this.$bvModal.hide(this.id);
     },
     getOptions(){
       let list = [];
@@ -119,13 +120,13 @@ export default {
         );
 
       else if(this.newLink.type == "location")
-        list = this.campaign.timeline
+        list = this.campaign.locations
         .map((x, i) => 
           ({label: x.name, number: this.campaign.timeline.length - i - 1})
         );
 
       else if(this.newLink.type == "map")
-        list = this.campaign.timeline
+        list = this.campaign.maps
         .map((x, i) => 
           ({label: x.name, number: this.campaign.timeline.length - i - 1})
         );

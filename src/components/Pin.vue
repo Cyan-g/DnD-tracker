@@ -29,7 +29,7 @@
               <b-form-textarea v-model="pin.notes" style="height: 20rem" class="mb-2"></b-form-textarea>
             </b-col>
           </b-row>
-          <LinkList :linkList="pin.links" :campaign="campaign"></LinkList>
+          <LinkList :linkList="pin.links" :campaign="campaign" id="PinLinkModal"></LinkList>
         </b-modal>
     </div>
 </template> 

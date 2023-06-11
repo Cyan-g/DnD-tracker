@@ -18,6 +18,7 @@
                 style="width: 100%; border: solid black 2px; border-radius: 1rem;"
               />
                 <Pin 
+                  v-show="campaign"
                   v-for="(pin, i) in map.pins" 
                   :key="pin.x + '#' + pin.y" 
                   :pin="pin"

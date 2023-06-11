@@ -35,17 +35,17 @@ export default {
         this.content = content;
       }
       if(this.link.type == "character"){
-        let content = this.campaign.characters[this.campaign.characters.length - this.link.number];
+        let content = this.campaign.characters[this.campaign.characters.length - this.link.number ];
         if(!content || content.name != this.link.label) content = this.campaign.characters.find(x => x.name == this.link.label);
         this.content = content;
       }
       if(this.link.type == "location"){
-        // let content = this.campaign.timeline[this.campaign.timeline.length - this.link.number];
-        // this.content = content;
+        let content = this.campaign.locations[this.campaign.locations.length - this.link.number -1];
+        this.content = content;
       }
       if(this.link.type == "map"){
-        // let content = this.campaign.timeline[this.campaign.timeline.length - this.link.number];
-        // this.content = content;
+        let content = this.campaign.maps[this.campaign.maps.length - this.link.number -1];
+        this.content = content;
       }
 
       this.$nextTick(() => {
@@ -60,7 +60,7 @@ export default {
         case "note": return "fas fa-scroll";
         case "character": return "fas fa-user";
         case "map": return "fas fa-map";
-        case "place": return "fas fa-map-marker-alt";
+        case "location": return "fas fa-map-marker-alt";
         default: return "fas fa-note";
       }
     }

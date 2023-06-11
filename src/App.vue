@@ -47,7 +47,9 @@
       </b-tab>
 
       <b-tab title-link-class="btn-light mb-1" title="Spell Tome">
-        <b-card></b-card>
+        <b-card v-if="campaign">
+          <SpellTome :campaign="campaign"></SpellTome>
+        </b-card>
       </b-tab>
 
       <b-tab title-link-class="btn-light mb-1" title="Maps">
@@ -76,6 +78,7 @@ import Combat from "./components/Combat.vue";
 import CharacterList from "./components/CharacterList.vue";
 import MapList from "./components/MapList.vue";
 import LocationList from "./components/LocationList.vue";
+import SpellTome from "./components/SpellTome.vue";
 
 export default {
   name: "App",
@@ -84,6 +87,7 @@ export default {
     LocationList,
     CharacterList,
     Timeline,
+    SpellTome,
     Combat
   },
   data() {
@@ -110,8 +114,26 @@ export default {
         characters: [],
         locations: [],
         maps: [],
+        combat: {players: [], enemies: []},
         spells: [],
-        combat: {players: [], enemies: []}
+        slots1: 0,
+        used1: 0,
+        slots2: 0,
+        used2: 0,
+        slots3: 0,
+        used3: 0,
+        slots4: 0,
+        used4: 0,
+        slots5: 0,
+        used5: 0,
+        slots6: 0,
+        used6: 0,
+        slots7: 0,
+        used7: 0,
+        slots8: 0,
+        used8: 0,
+        slots9: 0,
+        used9: 0,
       }
     };
   },

@@ -210,7 +210,7 @@
           </b-row>
         </b-col>
         <b-col cols="4" v-if="campaign">
-          <LinkList :linkList="character.links" :campaign="campaign"></LinkList>
+          <LinkList :linkList="character.links" :campaign="campaign" id="CharacterLinkModal"></LinkList>
         </b-col>
       </b-row>
   </div>

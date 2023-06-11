@@ -25,7 +25,7 @@
         </b-col>
 
         <b-col cols="4" v-if="campaign">
-          <LinkList :linkList="location.links" :campaign="campaign"></LinkList>
+          <LinkList :linkList="location.links" :campaign="campaign" id="LocationLinkModal"></LinkList>
         </b-col>
       </b-row>
   </div>
