@@ -17,6 +17,15 @@
                     <i class="fas fa-plus"></i> Add Spell
                 </b-button>
             </b-col>
+            <b-col cols="3">
+                <b-button 
+                    variant="outline-primary"
+                    class="mb-1 mt-4"
+                    style="width: 100%;"
+                    @click="refreshSlots()"> 
+                    <i class="fas fa-sync"></i> Refresh Spell Slots
+                </b-button>
+            </b-col>
         </b-row>
 
         <b-row>
@@ -86,11 +95,24 @@
                         :spellArea="spellArea"
                         :spellType="spellType"
                         :spellLevels="spellLevels"
+                        @delete="deleteSpell(spell)"
                         ></Spell>
                 </b-card>
 
                 <b-card class="mb-1" v-for="level in 2" :key="'_'+level" no-header body-class="p-1 bg-dark text-light" v-show="filteredSpells.filter(x => x.level == 'Level '+ level).length > 0">
-                    <h4 class="ml-2">Level {{ level }}</h4>
+                    <b-row>
+                        <b-col cols="5">
+                            <h4 class="ml-2">Level {{ level }}</h4>
+                        </b-col>
+                        <b-col>
+                            Total
+                            <b-form-input style="height: 1.3rem;" v-model="campaign['slots' + level]"></b-form-input>
+                        </b-col>
+                        <b-col>
+                            Remaining
+                            <b-form-input style="height: 1.3rem;" v-model="campaign['used' + level]"></b-form-input>
+                        </b-col>
+                    </b-row>
                     <hr>
                     <Spell 
                         v-for="(spell, index) in filteredSpells.filter(x => x.level == ('Level '+ level))" 
@@ -101,6 +123,7 @@
                         :spellArea="spellArea"
                         :spellType="spellType"
                         :spellLevels="spellLevels"
+                        @delete="deleteSpell(spell)"
                         ></Spell>
                 </b-card>
 
@@ -108,7 +131,19 @@
 
             <b-col cols="4">
                 <b-card class="mb-1" v-for="level in 3" :key="'_'+(level +2)" no-header body-class="p-1 bg-dark text-light" v-show="filteredSpells.filter(x => x.level == 'Level '+ (level +2)).length > 0">
-                    <h4 class="ml-2">Level {{ (level +2) }}</h4>
+                    <b-row>
+                        <b-col cols="5">
+                            <h4 class="ml-2">Level {{ (level+2) }}</h4>
+                        </b-col>
+                        <b-col>
+                            Total
+                            <b-form-input style="height: 1.3rem;" v-model="campaign['slots' + (level+2)]"></b-form-input>
+                        </b-col>
+                        <b-col>
+                            Remaining
+                            <b-form-input style="height: 1.3rem;" v-model="campaign['used' + (level+2)]"></b-form-input>
+                        </b-col>
+                    </b-row>
                     <hr>
                     <Spell 
                         v-for="(spell, index) in filteredSpells.filter(x => x.level == ('Level '+ (level +2)))" 
@@ -119,13 +154,26 @@
                         :spellArea="spellArea"
                         :spellType="spellType"
                         :spellLevels="spellLevels"
+                        @delete="deleteSpell(spell)"
                         ></Spell>
                 </b-card>
             </b-col>
 
             <b-col cols="4">
                 <b-card class="mb-1" v-for="level in 4" :key="'_'+(level + 5)" no-header body-class="p-1 bg-dark text-light" v-show="filteredSpells.filter(x => x.level == 'Level '+ (level + 5)).length > 0">
-                    <h4 class="ml-2">Level {{ (level + 5) }}</h4>
+                    <b-row>
+                        <b-col cols="5">
+                            <h4 class="ml-2">Level {{ (level+5) }}</h4>
+                        </b-col>
+                        <b-col>
+                            Total
+                            <b-form-input style="height: 1.3rem;" v-model="campaign['slots' + (level+5)]"></b-form-input>
+                        </b-col>
+                        <b-col>
+                            Remaining
+                            <b-form-input style="height: 1.3rem;" v-model="campaign['used' + (level+5)]"></b-form-input>
+                        </b-col>
+                    </b-row>
                     <hr>
                     <Spell 
                         v-for="(spell, index) in filteredSpells.filter(x => x.level == ('Level '+ (level + 5)))" 
@@ -136,6 +184,7 @@
                         :spellArea="spellArea"
                         :spellType="spellType"
                         :spellLevels="spellLevels"
+                        @delete="deleteSpell(spell)"
                         ></Spell>
                 </b-card>
             </b-col>
@@ -146,19 +195,18 @@
 
 <script>
 import _ from "lodash";
-import Spell from "./Spell.vue";
 
 export default {
   props: ["campaign"],
-  components: {Spell},
   data() {
     return {
         searchQuery: "",
-        searchSchool: "Other",
-        searchAction: "Other",
-        searchArea: "Other",
-        searchType: "Other",
+        searchSchool: "Any",
+        searchAction: "Any",
+        searchArea: "Any",
+        searchType: "Any",
         spellSchools: [
+            "Any",
             "Conjuration",
             "Necromancy",
             "Evocation",
@@ -167,26 +215,25 @@ export default {
             "Divination",
             "Enchantment",
             "Illusion",
-            "Other"
         ],
         spellActions: [
+            "Any",
             "Action",
             "Bonus Action",
             "Reaction",
             "Ritual",
-            "Other"
         ],
         spellArea: [
+            "Any",
             "Targeted",
             "Cone",
             "Cube",
             "Cylinder",
             "Line",
             "Sphere",
-            "Other",
         ],
         spellType: [
-            "Other",
+            "Any",
             "Spell Attack",
             "STR Save",
             "DEX Save",
@@ -210,14 +257,14 @@ export default {
         defaultSpell: {
             name: "New Spell",
             description: "",
-            type: "Other",
+            type: "Any",
             cost: "",
             prepared: false,
             concentration: false,
             verbal: false,
             somatic: false,
             material: false,
-            school: "Other",
+            school: "Any",
             castingTime: "Action",
             areaType: "Targeted",
             areaSize: 0,
@@ -235,10 +282,12 @@ export default {
     clearFilter(){
         this.searchQuery = "";
     },
-    deleteSpell(index, name){
-        if(!confirm("Delete Spell: " + name + " ?")) return;
+    deleteSpell(spell){
+        if(!confirm("Delete Spell: " + spell.name + " ?")) return;
 
+        let index = this.campaign.spells.findIndex(x => x.name == spell.name && x.description == spell.description);
         this.campaign.spells.splice(index, 1);
+
         if(this.campaign.spells.length == 0)
             this.campaign.spells.push(_.cloneDeep(this.defaultSpell));
     },
@@ -248,17 +297,19 @@ export default {
         spell.name += " " + this.campaign.spells.length;
         this.campaign.spells.unshift(spell);
     },
+    refreshSlots(){
+        for (var i = 1; i <= 9; i++)
+            this.campaign['used' + i] = this.campaign['slots' + i];
+    }
   },
   computed: {
     filteredSpells(){
-        if(this.searchQuery.length == 0) return this.campaign.spells;
-        else return this.campaign.spells.filter(x => 
-            (this.searchSchool == "Other" || x.school == this.searchSchool) &&
-            (this.searchType == "Other" || x.type == this.searchType) &&
-            (this.searchAction == "Other" || x.castingTime == this.searchAction) &&
-            (this.searchArea == "Other" || x.area == this.searchArea) &&
-            (x.description.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
-            x.name.toLowerCase().includes(this.searchQuery.toLowerCase()))
+        return this.campaign.spells.filter(x => 
+            (this.searchSchool == "Any" || x.school == this.searchSchool) &&
+            (this.searchType == "Any" || x.type == this.searchType) &&
+            (this.searchAction == "Any" || x.castingTime == this.searchAction) &&
+            (this.searchArea == "Any" || x.area == this.searchArea) &&
+            (this.searchQuery.length == 0 || x.description.toLowerCase().includes(this.searchQuery.toLowerCase()) || x.name.toLowerCase().includes(this.searchQuery.toLowerCase()))
         )
     }
   },

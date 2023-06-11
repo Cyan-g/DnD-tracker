@@ -2,13 +2,21 @@
     <div>
         <b-card class="mb-1" body-class="p-1 text-dark mt-0" no-header>
             <b-form-checkbox v-model="spell.prepared">
-                <b-button variant="outline-dark"  size="sm" style="font-size:x-small;"  @click="$bvModal.show('modal_' + spell.name)"> <i class="fas fa-pen"></i></b-button>
-                {{ spell.name }}
+                <b-button variant="outline-dark"  size="sm" style="padding: 3px;"  @click="$bvModal.show('modal_' + spell.name)"> 
+                    {{ spell.name }}
+                </b-button>
             </b-form-checkbox>
         </b-card>
 
         <b-modal size="lg" hide-header hide-footer :id="'modal_' + spell.name">
-            <b-form-input v-model="spell.name"></b-form-input>
+            <b-row>
+                <b-col cols="5">
+                    <b-form-input v-model="spell.name"></b-form-input>
+                </b-col>
+                <b-col cols="2">
+                    <b-button variant="outline-danger" pill @click="$bvModal.hide('modal_' + spell.name); $emit('delete')"><i class="fas fa-trash"></i></b-button>
+                </b-col>
+            </b-row>
             <hr>
             <b-row>
                 <b-col cols="4">

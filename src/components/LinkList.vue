@@ -33,29 +33,29 @@
               <b-dropdown-item
                 v-for="item in typeList"
                 :key="item"
-                @click="newLink.type = item"
-                @input="newLink.label = ''"
+                @click="newLink.type = item; searchQuery = '';"
                 >{{ item }}</b-dropdown-item
               >
             </b-dropdown>
           </b-col>
           <b-col cols="6">
             <b>Link to</b>
-            <b-dropdown ref="ddown" split variant="dark" style="width:100%">
-              <template #button-content>
-                <b-form-input v-model="searchQuery" style="height: 1.5rem;" debounce="1000"></b-form-input>
-              </template>
+            <b-form-input v-model="searchQuery" placeholder="Type to search" debounce="1000"></b-form-input>
+            <b-dropdown ref="ddown" variant="dark" style="width:100%">
               <b-dropdown-item
                 v-for="item in getOptions()"
                 :key="item.number"
-                @click="newLink.label = item.label; newLink.number = item.number; searchQuery = newLink.label"
+                @click="newLink.label = item.label; newLink.number = item.number;"
                 >{{ item.label }}</b-dropdown-item
               >
             </b-dropdown>
+            
           </b-col>
           <b-col cols="12" class="text-center mt-1">
-            <b-button @click="addLink()" :disabled="!newLink.label"> add</b-button>
+            <hr>
+            <b-button @click="addLink()" style="width: 50%;" size="md" :disabled="!newLink.label"> Add Link</b-button>
           </b-col>
+         
         </b-row>
       </b-modal>
     </div>
@@ -103,6 +103,7 @@ export default {
     addLink(){
       this.linkList.push(_.cloneDeep(this.newLink));
       this.newLink = _.cloneDeep(this.linkTemplate);
+      this.searchQuery = "";
       this.$bvModal.hide(this.id);
     },
     getOptions(){
