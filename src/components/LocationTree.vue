@@ -1,5 +1,5 @@
 <template>
-    <div style="border-left: dotted gray 1px;padding-left: 2px;">
+    <div style="border-left: dotted gray 1px;padding-left: 2px; ">
 
         <b-button-group 
             class="mb-1"
@@ -12,7 +12,7 @@
             <b-button 
                 class="p-1"
                 :variant="selectedLocation.name == location.name ? 'dark' : 'outline-dark'"
-                style="width: 90%;"
+                style="width: 90%; overflow: hidden;"
                 @click="selectLocation(location)"
                 >
                 {{ location.name }}
