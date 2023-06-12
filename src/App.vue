@@ -73,6 +73,7 @@
 
 <script>
 import _ from "lodash";
+import FileSaver from 'file-saver';
 import Timeline from "./components/Timeline.vue";
 import Combat from "./components/Combat.vue";
 import CharacterList from "./components/CharacterList.vue";
@@ -147,9 +148,15 @@ export default {
     importCampaign(){
       this.campaign = null;
       this.campaign = JSON.parse(this.campaignText);
+      this.campaignText = "";
     },
     exportCampaign(){
-      this.campaignText = JSON.stringify(this.campaign);
+      var blob = new Blob([JSON.stringify(this.campaign)], {
+        type: "text/plain;charset=utf-8",
+      });
+
+      // Create and save the file using the FileWriter library
+      FileSaver.saveAs(blob, this.campaign.name);
     }
   },
   computed: {

@@ -16,30 +16,20 @@
               <hr>
 
               <div :key="searchQuery" style="overflow-y: scroll; height: 30rem;">
-                  <div v-for="(location, index) in filteredlocations" :key="index + '_TLN'" >
-                      <b-button-group 
-                          class="mb-1"
-                          style="width: 100%;"
-                          >
-                          <b-button 
-                              :variant="selectedLocation.name == location.name ? 'dark' : 'outline-dark'"
-                              style="width: 90%;"
-                              @click="selectLocation(index)"
-                              >
-                              {{ location.name }}
-                          </b-button>
-
-                          <b-button variant="outline-danger" @click="deleteLocation(index, location.name)">
-                              <i class="fas fa-lg fa-trash mt-2"></i>
-                          </b-button>
-                      </b-button-group>
-                  </div>
+                 <LocationTree 
+                    v-for="(location, index) in filteredlocations" :key="index + '_TLN'" 
+                    :location="location"
+                    :selectLocation="selectLocation"
+                    :selectedLocation="selectedLocation"
+                    :index="index"
+                    :deleteLocation="deleteLocation">
+                 </LocationTree>
               </div>
             
           </b-col>
 
           <b-col cols="10">
-              <Location v-if="campaign.locations.length > 0" :location="selectedLocation" :campaign="campaign"></Location>
+              <Location :defaultLocation="defaultLocation" v-if="campaign.locations.length > 0" :location="selectedLocation" :campaign="campaign"></Location>
           </b-col>
 
       </b-row>
@@ -49,10 +39,11 @@
 <script>
 import _ from "lodash";
 import Location from "./Location.vue";
+import LocationTree from "./LocationTree.vue";
 
 export default {
 props: ["campaign"],
-components: {Location},
+components: { Location, LocationTree },
 data() {
   return {
       searchQuery: "",
@@ -62,6 +53,7 @@ data() {
           type: "City",
           inhabitants: "None",
           description: "",
+          subLocations: [],
           links: []
       }
   };
@@ -91,8 +83,8 @@ methods: {
       this.campaign.locations.unshift(location);
       this.selectLocation(0);
   },
-  selectLocation(index){
-      this.selectedLocation = this.filteredlocations[index];
+  selectLocation(location){
+      this.selectedLocation = location;
   }
 },
 computed: {

@@ -19,9 +19,10 @@
                   <div v-for="(character, index) in filteredCharacters" :key="index + '_TLN'" >
                       <b-button-group 
                           class="mb-1"
-                          style="width: 100%;"
+                          style="width: 100%; height: 2rem;"
                           >
                           <b-button 
+                              class="p-1"
                               :variant="selectedCharacter.name == character.name ? 'dark' : 'outline-dark'"
                               style="width: 90%;"
                               @click="selectCharacter(index)"
@@ -29,8 +30,10 @@
                               {{ character.name }}
                           </b-button>
 
-                          <b-button variant="outline-danger" @click="deleteCharacter(index, character.name)">
-                              <i class="fas fa-lg fa-trash mt-2"></i>
+                          <b-button 
+                            class="p-1"
+                            variant="outline-danger" @click="deleteCharacter(index, character.name)">
+                              <i class="fas fa-trash"></i>
                           </b-button>
                       </b-button-group>
                   </div>

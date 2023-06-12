@@ -11,6 +11,7 @@ import TimelineNote from "./components/TimelineNote.vue"
 import Character from "./components/Character.vue"
 import Map from "./components/Map.vue"
 import Location from "./components/Location.vue"
+import LocationTree from "./components/LocationTree.vue"
 import Vuelidate from "vuelidate";
 
 Vue.config.productionTip = false;
@@ -25,6 +26,7 @@ Vue.component("Character", Character)
 Vue.component("Map", Map)
 Vue.component("Spell", Spell)
 Vue.component("Location", Location)
+Vue.component("LocationTree", LocationTree)
 
 new Vue({
   render: (h) => h(App),

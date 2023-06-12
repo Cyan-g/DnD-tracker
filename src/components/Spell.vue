@@ -25,7 +25,7 @@
                         <b-dropdown-item
                             v-for="item in spellLevels"
                             :key="item"
-                            @click="spell.level = item"
+                            @click="spell.level = item; $bvModal.hide('modal_' + spell.name)"
                             >{{ item }}</b-dropdown-item
                         >
                     </b-dropdown>            

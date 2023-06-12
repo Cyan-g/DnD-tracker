@@ -1,7 +1,14 @@
 <template>
   <div>
       <br>
-      <b-form-input style="width: 20%" v-model="location.name"></b-form-input>
+     <b-row>
+      <b-col cols="3">
+        <b-form-input style="width: 100%" v-model="location.name"></b-form-input>
+      </b-col>
+      <b-col cols="2">
+        <b-button variant="outline-success" @click="addSubLocation()">Add Sub-Location</b-button>
+      </b-col>
+     </b-row>
       <br>
       <b-row>
         <b-col>
@@ -32,10 +39,19 @@
 </template>
 
 <script>
+import _ from "lodash";
 import LinkList from "./LinkList.vue"
 
 export default {
-props: ["location", "campaign"],
+props: ["location", "campaign","defaultLocation"],
 components: {LinkList},
+methods: {
+  addSubLocation(){
+    if(!this.location.subLocations) this.location.subLocations = [];
+    var newSubLocation = _.cloneDeep(this.defaultLocation);
+    newSubLocation.name = this.location.name + " " + this.location.subLocations.length;
+    this.location.subLocations.push(newSubLocation);
+  }
+}
 };
 </script>
