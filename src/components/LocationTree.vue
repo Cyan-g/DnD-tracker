@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div style="border-left: dotted gray 1px;padding-left: 2px;">
 
         <b-button-group 
             class="mb-1"
