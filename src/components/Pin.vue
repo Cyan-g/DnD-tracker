@@ -39,7 +39,7 @@
 import LinkList from "./LinkList.vue";
 
 export default {
-  props: ["pin", "campaign"],
+  props: ["pin", "campaign", "getStylingClass"],
   components: {LinkList},
   data() {
     return {

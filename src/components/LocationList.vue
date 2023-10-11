@@ -5,7 +5,9 @@
           <b-col cols="2" >
               <h5>Locations</h5>
               <hr/>
-              <b-form-input v-model="searchQuery" placeholder="type to search"></b-form-input>
+              <b-form-input 
+                :class="getStylingClass('input')"
+                v-model="searchQuery" placeholder="type to search"></b-form-input>
               <b-button 
                   variant="outline-success"
                   class="mb-1 mt-1"
@@ -42,7 +44,7 @@ import Location from "./Location.vue";
 import LocationTree from "./LocationTree.vue";
 
 export default {
-props: ["campaign"],
+props: ["campaign", "getStylingClass"],
 components: { Location, LocationTree },
 data() {
   return {

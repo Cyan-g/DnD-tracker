@@ -5,7 +5,10 @@
             <b-col cols="2" >
                 <h5>Notebook</h5>
                 <hr/>
-                <b-form-input v-model="searchQuery" placeholder="type to search"></b-form-input>
+                <b-form-input
+                    :class="getStylingClass('input')"
+                    v-model="searchQuery" placeholder="type to search">
+                </b-form-input>
                 <b-button 
                     variant="outline-success"
                     class="mb-1 mt-1"
@@ -22,8 +25,7 @@
                             style="width: 100%; height: 2rem;"
                             >
                             <b-button 
-                                :variant="selectedNote.date == note.date ? 'dark' : 'outline-dark'"
-                                class="p-1"
+                                :class="(selectedNote.date == note.date ? getStylingClass('button') : getStylingClass('buttonReverse')) +' p-1'"
                                 style="width: 90%;"
                                 @click="selectNote(index)"
                                 >
@@ -42,7 +44,7 @@
             </b-col>
 
             <b-col cols="10">
-                <TimelineNote v-if="campaign.timeline.length > 0" :note="selectedNote" :campaign="campaign"></TimelineNote>
+                <TimelineNote v-if="campaign.timeline.length > 0" :note="selectedNote" :campaign="campaign" :getStylingClass="getStylingClass"></TimelineNote>
             </b-col>
 
         </b-row>
@@ -54,7 +56,7 @@ import _ from "lodash";
 import TimelineNote from "./TimelineNote.vue";
 
 export default {
-  props: ["campaign"],
+  props: ["campaign", "getStylingClass"],
   components: {TimelineNote},
   data() {
     return {

@@ -5,7 +5,9 @@
           <b-col cols="2" >
               <h5>Characters</h5>
               <hr/>
-              <b-form-input v-model="searchQuery" placeholder="type to search"></b-form-input>
+              <b-form-input v-model="searchQuery" 
+                :class="getStylingClass('input')"
+                placeholder="type to search"></b-form-input>
               <b-button 
                   variant="outline-success"
                   class="mb-1 mt-1"
@@ -22,8 +24,7 @@
                           style="width: 100%; height: 2rem;"
                           >
                           <b-button 
-                              class="p-1"
-                              :variant="selectedCharacter.name == character.name ? 'dark' : 'outline-dark'"
+                              :class="(selectedCharacter.name == character.name ? getStylingClass('button') : getStylingClass('buttonReverse')) +' p-1'"
                               style="width: 90%;"
                               @click="selectCharacter(index)"
                               >
@@ -42,7 +43,7 @@
           </b-col>
 
           <b-col cols="10">
-              <Character v-if="campaign.characters.length > 0" :character="selectedCharacter" :campaign="campaign"></Character>
+              <Character v-if="campaign.characters.length > 0" :character="selectedCharacter" :campaign="campaign" :getStylingClass="getStylingClass"></Character>
           </b-col>
 
       </b-row>
@@ -53,7 +54,7 @@
 import _ from "lodash";
 
 export default {
-props: ["campaign"],
+props: ["campaign", "getStylingClass"],
 data() {
   return {
       searchQuery: "",

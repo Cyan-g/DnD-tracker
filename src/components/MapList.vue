@@ -5,7 +5,9 @@
           <b-col cols="2" >
               <h5>Maps</h5>
               <hr/>
-              <b-form-input v-model="searchQuery" placeholder="type to search"></b-form-input>
+              <b-form-input
+                :class="getStylingClass('input')"
+                v-model="searchQuery" placeholder="type to search"></b-form-input>
               <b-button 
                   variant="outline-success"
                   class="mb-1 mt-1"
@@ -22,8 +24,7 @@
                           style="width: 100%;height: 2rem;"
                           >
                           <b-button 
-                              :variant="selectedMap.name == map.name ? 'dark' : 'outline-dark'"
-                            class="p-1"
+                              :class="(selectedMap.name == map.name ? getStylingClass('button') : getStylingClass('buttonReverse')) +' p-1'"
                               style="width: 90%;"
                               @click="selectMap(index)"
                               >
@@ -42,7 +43,7 @@
           </b-col>
 
           <b-col cols="10">
-              <Map v-if="campaign.maps.length > 0" :map="selectedMap" :campaign="campaign"></Map>
+              <Map v-if="campaign.maps.length > 0" :map="selectedMap" :campaign="campaign" :getStylingClass="getStylingClass"></Map>
           </b-col>
 
       </b-row>
@@ -54,7 +55,7 @@ import _ from "lodash";
 import Map from "./Map.vue";
 
 export default {
-props: ["campaign"],
+props: ["campaign", "getStylingClass"],
 components: {Map},
 data() {
   return {

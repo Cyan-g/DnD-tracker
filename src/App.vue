@@ -3,68 +3,74 @@
   <body class="ml-3 mr-5">
     <b-row>
       <b-col cols="2">
-        <b-form-input v-model="campaign.name"></b-form-input>
+        <b-form-input :class="getStylingClass('input')" v-model="campaign.name"></b-form-input>
       </b-col>
     </b-row>
     <br>
     <b-tabs 
       vertical 
       pills
-      active-nav-item-class="text-light btn-dark"
+      active-nav-item-class="text-bold"
       >
 
-      <b-tab title-link-class="btn-light mb-1" title="Savedata">
-        <b-card>
+      <b-tab :title-link-class="getStylingClass('button') + ' mb-1'" title="Savedata">
+        <b-card :body-class="getStylingClass('background')">
           <h5>Savedata</h5>
           <hr>
-          <b-checkbox v-model="campaign.settings.showEnemyHP">Show Enemy HP</b-checkbox>
-          <b-checkbox v-model="campaign.settings.showCharacterStats">Show Character Stats</b-checkbox>
+          <b-row>
+            <b-col lg="3">
+              <b-checkbox v-model="campaign.settings.showEnemyHP">Show Enemy HP</b-checkbox>
+              <b-checkbox v-model="campaign.settings.showCharacterStats">Show Character Stats</b-checkbox>
+            </b-col>
+            <b-col lg="3">
+              <b-checkbox v-model="campaign.settings.darkMode">Dark Mode</b-checkbox>
+            </b-col>
+          </b-row>
+         
           <hr>
           <b-button variant="dark" @click="exportCampaign()">Export</b-button>
           <b-button class="ml-1" variant="dark" :disabled="campaignText.length < 10" @click="importCampaign()">Import</b-button>
           <br>
-          <b-form-textarea class="mt-2" style="height: 35rem; width: 100%" v-model="campaignText">
+          <b-form-textarea :class="getStylingClass('input') + ' mt-2'" style="height: 35rem; width: 100%" v-model="campaignText">
             </b-form-textarea>
         </b-card>
       </b-tab>
 
-      <b-tab title-link-class="btn-light mb-1" title="Combat">
-        <b-card v-if="campaign">
-          <Combat :campaign="campaign"></Combat>
+      <b-tab :title-link-class="getStylingClass('button') + ' mb-1'" title="Combat">
+        <b-card v-if="campaign" :body-class="getStylingClass('background')">
+          <Combat :campaign="campaign" :getStylingClass="getStylingClass"></Combat>
         </b-card>
       </b-tab>
 
-      <b-tab title-link-class="btn-light mb-1" title="Notebook">
-        <b-card v-if="campaign">
-          <Timeline :campaign="campaign"></Timeline>
+      <b-tab :title-link-class="getStylingClass('button') + ' mb-1'" title="Notebook">
+        <b-card v-if="campaign" :body-class="getStylingClass('background')">
+          <Timeline :campaign="campaign" :getStylingClass="getStylingClass"></Timeline>
         </b-card>
       </b-tab>
       
-      <b-tab title-link-class="btn-light mb-1" title="Characters">
-        <b-card v-if="campaign">
-          <CharacterList :campaign="campaign"></CharacterList>
+      <b-tab :title-link-class="getStylingClass('button') + ' mb-1'" title="Characters">
+        <b-card v-if="campaign" :body-class="getStylingClass('background')">
+          <CharacterList :campaign="campaign" :getStylingClass="getStylingClass"></CharacterList>
         </b-card>
       </b-tab>
 
-      <b-tab title-link-class="btn-light mb-1" title="Spell Tome">
-        <b-card v-if="campaign">
-          <SpellTome :campaign="campaign"></SpellTome>
+      <b-tab :title-link-class="getStylingClass('button') + ' mb-1'" title="Spell Tome">
+        <b-card v-if="campaign" :body-class="getStylingClass('background')">
+          <SpellTome :campaign="campaign" :getStylingClass="getStylingClass"></SpellTome>
         </b-card>
       </b-tab>
 
-      <b-tab title-link-class="btn-light mb-1" title="Maps">
-        <b-card v-if="campaign">
-          <MapList :campaign="campaign"></MapList>
+      <b-tab :title-link-class="getStylingClass('button') + ' mb-1'" title="Maps">
+        <b-card v-if="campaign" :body-class="getStylingClass('background')">
+          <MapList :campaign="campaign" :getStylingClass="getStylingClass"></MapList>
         </b-card>
       </b-tab>
 
-      <b-tab title-link-class="btn-light mb-1" title="Locations">
-        <b-card v-if="campaign">
-          <LocationList :campaign="campaign"></LocationList>
+      <b-tab :title-link-class="getStylingClass('button') + ' mb-1'" title="Locations">
+        <b-card v-if="campaign" :body-class="getStylingClass('background')">
+          <LocationList :campaign="campaign" :getStylingClass="getStylingClass"></LocationList>
         </b-card>
       </b-tab>
-
-
 
     </b-tabs>
   </body>
@@ -97,9 +103,7 @@ export default {
       defaultSettings: {
         showEnemyHP: false,
         showCharacterStats: false,
-        color1: "#FF2D00",
-        color2: "#7F7F7F",
-        color3: "#000000"
+        darkMode: false
       },
       campaignText: "",
       campaignTemplate: {
@@ -107,9 +111,7 @@ export default {
         settings: {
           showEnemyHP: false,
           showCharacterStats: false,
-          color1: "#FF2D00",
-          color2: "#7F7F7F",
-          color3: "#000000",
+          darkMode: false
         },
         timeline: [],
         characters: [],
@@ -145,6 +147,43 @@ export default {
     this.campaign.settings = settings;
   },
   methods: {
+    getStylingClass(element){
+      switch(element)
+      {
+        case 'button':
+          {
+            if(this.campaign.settings.darkMode)
+              return "btn-dark text-light"
+            else 
+              return "btn-light text-dark"
+          }
+
+        case 'buttonReverse':
+          {
+            if(this.campaign.settings.darkMode)
+              return "btn-light text-dark"
+            else 
+              return "btn-dark text-light"
+          }
+
+        case 'background':
+          {
+            if(this.campaign.settings.darkMode)
+              return "bg-gray"
+
+            break;
+          }
+
+        case 'input':
+          {
+            if(this.campaign.settings.darkMode)
+              return "bg-black"
+
+            break;
+          }
+      }
+    
+    },
     importCampaign(){
       this.campaign = null;
       this.campaign = JSON.parse(this.campaignText);
@@ -172,7 +211,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -185,4 +224,36 @@ export default {
 #app > * {
   background-color: #304152;
 }
+
+.card {
+  border: none !important;
+  border-radius: 5px !important;
+}
+
+.bg-black {
+  background-color: black !important;
+  color: white !important;
+  border-color: #505050 !important;
+}
+.bg-black:focus {
+  background-color: black !important;
+  color: white !important;
+  border-color: #505050 !important;
+}
+
+.bg-gray {
+  background-color: #333 !important;
+  color: white !important;
+  border-color: #505050 !important;
+}
+.bg-gray:focus {
+  background-color: #333 !important;
+  color: white !important;
+  border-color: #505050 !important;
+}
+
+.text-light {
+  color: white !important;
+}
+
 </style>

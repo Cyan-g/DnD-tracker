@@ -42,24 +42,24 @@
                     </div>
 
                     <div style="width: 4rem" class="mt-2 mr-1">
-                        <b-form-input
+                        <b-form-input :class="getStylingClass('input')"
                             class="mb-1"
                             v-b-popover.hover.top="'initiative'"
                             label="initiative" style="height: 1.4rem;" v-model="ally.initiative">
                         </b-form-input>
-                        <b-form-input
+                        <b-form-input :class="getStylingClass('input')"
                             v-b-popover.hover.top="'armor class'"
                             label="armorClass" style="height: 1.4rem;" v-model="ally.armorClass">
                         </b-form-input>
                     </div>
 
                     <div  style="width: 4rem" class="mt-2">
-                        <b-form-input 
+                        <b-form-input :class="getStylingClass('input')" 
                             class="mb-1"
                             v-b-popover.hover.top="'current HP'"
                             style="height: 1.4rem" v-model="ally.hp">
                         </b-form-input>
-                        <b-form-input 
+                        <b-form-input :class="getStylingClass('input')" 
                             v-b-popover.hover.top="'max HP'"
                             style="height: 1.4rem" v-model="ally.maxHp">
                         </b-form-input>
@@ -146,7 +146,7 @@
                             </b-button>
                         </div>
 
-                        <b-form-input v-model="ally.name" class="mt-1" style="height: 1.8rem"></b-form-input>
+                        <b-form-input :class="getStylingClass('input')" v-model="ally.name" class="mt-1" style="height: 1.8rem"></b-form-input>
 
                         <div class="mt-1" :style="'overflow: hidden;border: solid gray 1px; height: 0.5rem; border-radius: 4px; background-color: ' + 'red' + ';'">
                             <div :key="ally.hp + ally.maxHp + '_hp_' + index" :style="'width: ' + (ally.hp/ally.maxHp) * 100 + '%; background-color: ' + 'green' +'; height: 100%'"></div>
@@ -258,33 +258,34 @@
                             </b-button>
                         </div>
 
-                        <b-form-input v-model="enemy.name" class="mt-1" style="height: 1.8rem"></b-form-input>
+                        <b-form-input :class="getStylingClass('input') + ' mt-1'" v-model="enemy.name" style="height: 1.8rem"></b-form-input>
 
                         <div class="mt-1" :style="'overflow: hidden;border: solid gray 1px; height: 0.5rem; border-radius: 4px; background-color: ' + 'red' + ';'">
                             <div :key="enemy.hp + enemy.maxHp + '_hp_' + index" :style="'width: ' + (enemy.hp/enemy.maxHp) * 100 + '%; background-color: ' + 'green' +'; height: 100%'"></div>
                         </div>
-                        <b-form-textarea :key="enemy.showNotes" v-if="enemy.showNotes" class="mt-1" v-model="enemy.notes"></b-form-textarea>
+                        <b-form-textarea :class="getStylingClass('input') + ' mt-1'" :key="enemy.showNotes" v-if="enemy.showNotes" v-model="enemy.notes"></b-form-textarea>
                     </div>
 
                     <div  style="width: 4rem" class="mt-2">
                         <b-form-input 
+                            :class="getStylingClass('input')" 
                             class="mb-1"
                             v-b-popover.hover.top="'current HP'"
                             style="height: 1.4rem" v-model="enemy.hp">
                         </b-form-input>
-                        <b-form-input 
+                        <b-form-input :class="getStylingClass('input')" 
                             v-b-popover.hover.top="'max HP'"
                             style="height: 1.4rem" v-model="enemy.maxHp">
                         </b-form-input>
                     </div>
 
                     <div style="width: 4rem" class="mt-2 ml-1">
-                        <b-form-input
+                        <b-form-input :class="getStylingClass('input')"
                             class="mb-1"
                             v-b-popover.hover.top="'initiative'"
                             label="initiative" style="height: 1.4rem;" v-model="enemy.initiative">
                         </b-form-input>
-                        <b-form-input
+                        <b-form-input :class="getStylingClass('input')"
                             v-b-popover.hover.top="'armor class'"
                             label="armorClass" style="height: 1.4rem;" v-model="enemy.armorClass">
                         </b-form-input>
@@ -311,7 +312,7 @@
 import _ from "lodash";
 
 export default {
-  props: ["campaign"],
+  props: ["campaign", "getStylingClass"],
   components: {},
   data() {
     return {
@@ -342,6 +343,7 @@ export default {
             deafened: false,
             charmed: false,
             poisoned: false,
+            showNotes: false,
             notes: ""
         }
     };

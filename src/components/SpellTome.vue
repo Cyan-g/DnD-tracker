@@ -6,7 +6,9 @@
         <b-row>
             <b-col lg="3">
                 <b>Search</b><br>
-                <b-form-input v-model="searchQuery" placeholder="type to search"></b-form-input>
+                <b-form-input 
+                    :class="getStylingClass('input')"    
+                    v-model="searchQuery" placeholder="type to search"></b-form-input>
             </b-col>
             <b-col lg="3">
                 <b-button 
@@ -89,6 +91,7 @@
                     <Spell 
                         v-for="(spell, index) in filteredSpells.filter(x => x.level == 'Cantrip')" 
                         :key="'cantrip_' + index"
+                        :getStylingClass="getStylingClass"
                         :spell="spell"
                         :spellSchools="spellSchools"
                         :spellActions="spellActions"
@@ -114,17 +117,18 @@
                         </b-col>
                         <b-col>
                             Total
-                            <b-form-input style="height: 1.3rem;" v-model="campaign['slots' + level]"></b-form-input>
+                            <b-form-input :class="getStylingClass('input')" style="height: 1.3rem;" v-model="campaign['slots' + level]"></b-form-input>
                         </b-col>
                         <b-col>
                             Remaining
-                            <b-form-input style="height: 1.3rem;" v-model="campaign['used' + level]"></b-form-input>
+                            <b-form-input :class="getStylingClass('input')" style="height: 1.3rem;" v-model="campaign['used' + level]"></b-form-input>
                         </b-col>
                     </b-row>
                     <hr>
                     <Spell 
                         v-for="(spell, index) in filteredSpells.filter(x => x.level == ('Level '+ level))" 
                         :key="level + '+' + index"
+                        :getStylingClass="getStylingClass"
                         :spell="spell"
                         :spellSchools="spellSchools"
                         :spellActions="spellActions"
@@ -143,7 +147,7 @@
 import _ from "lodash";
 
 export default {
-  props: ["campaign"],
+  props: ["campaign", "getStylingClass"],
   data() {
     return {
         searchQuery: "",

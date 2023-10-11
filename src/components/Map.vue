@@ -2,11 +2,15 @@
     <div>
         <b-row>
           <b-col cols="6">
-            <b-form-input v-model="map.name"></b-form-input>
+            <b-form-input 
+              :class="getStylingClass('input')"
+              v-model="map.name"></b-form-input>
           </b-col>
 
           <b-col cols="6">
-            <b-form-file accept="image/*" v-model="file" @input="getImage()" ></b-form-file>
+            <b-form-file 
+              :class="getStylingClass('input')"
+              accept="image/*" v-model="file" @input="getImage()" ></b-form-file>
           </b-col>
 
           <b-col cols="12">
@@ -39,7 +43,7 @@ import _ from "lodash";
 import Pin from "./Pin.vue";
 
 export default {
-  props: ["map", "campaign"],
+  props: ["map", "campaign", "getStylingClass"],
   components: {Pin},
   data() {
     return {

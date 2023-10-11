@@ -1,7 +1,9 @@
 <template>
   <div>
       <br>
-      <b-form-input style="width: 20%" v-model="character.name"></b-form-input>
+      <b-form-input 
+        :class="getStylingClass('input')"
+        style="width: 20%" v-model="character.name"></b-form-input>
       <br>
       <b-row>
         <b-col>
@@ -12,20 +14,28 @@
              <b-row>
               <b-col cols="6">
                 <b>Race</b>
-                <b-form-input v-model="character.race"></b-form-input>
+                <b-form-input 
+                    :class="getStylingClass('input')"
+                  v-model="character.race"></b-form-input>
               </b-col>
               <b-col cols="6">
                 <b>Origin</b>
-                <b-form-input v-model="character.race"></b-form-input>
+                <b-form-input 
+                    :class="getStylingClass('input')"
+                  v-model="character.origin"></b-form-input>
               </b-col>
               <b-col cols="12">
                 <b>Relationship</b>
-                <b-form-textarea v-model="character.relationship" style="height: 4rem;">	
+                <b-form-textarea 
+                    :class="getStylingClass('input')"
+                    v-model="character.relationship" style="height: 4rem;">	
                 </b-form-textarea>
               </b-col>
               <b-col>
                 <b>Notes</b>
-                <b-form-textarea v-model="character.notes" style="height: 25rem;">	
+                <b-form-textarea 
+                    :class="getStylingClass('input')"
+                    v-model="character.notes" style="height: 25rem;">	
                 </b-form-textarea>
               </b-col>
              </b-row>
@@ -220,7 +230,7 @@
 import LinkList from "./LinkList.vue"
 
 export default {
-props: ["character", "campaign"],
+props: ["character", "campaign", "getStylingClass"],
 data(){
   return {
     castingStats: [

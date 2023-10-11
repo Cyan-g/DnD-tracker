@@ -1,19 +1,23 @@
 <template>
     <div>
-        <b-card class="mb-1" body-class="p-1 text-dark mt-0" no-header>
+        <b-card class="mb-1" :body-class="getStylingClass('background') + ' p-1 mt-0'" no-header>
             <b-form-checkbox 
+                :class="getStylingClass('input')"
                 v-b-popover.hover.left="'prepared'"
                 v-model="spell.prepared">
-                <b-button variant="outline-dark"  size="sm" style="padding: 3px;"  @click="$bvModal.show('modal_' + spell.name)"> 
+                <b-button 
+                    :class="getStylingClass('buttonReverse')"
+                    size="sm" style="padding: 3px;"  
+                    @click="$bvModal.show('modal_' + spell.name)"> 
                     {{ spell.name }}
                 </b-button>
             </b-form-checkbox>
         </b-card>
 
-        <b-modal size="lg" hide-header hide-footer :id="'modal_' + spell.name">
+        <b-modal size="lg" hide-header hide-footer :id="'modal_' + spell.name" :body-class="getStylingClass('background')">
             <b-row>
                 <b-col cols="5">
-                    <b-form-input v-model="spell.name"></b-form-input>
+                    <b-form-input :class="getStylingClass('input')" v-model="spell.name"></b-form-input>
                 </b-col>
                 <b-col cols="2">
                     <b-button variant="outline-danger" pill @click="$bvModal.hide('modal_' + spell.name); $emit('delete')"><i class="fas fa-trash"></i></b-button>
@@ -74,7 +78,7 @@
                     </b-dropdown>
                     <div v-if="spell.areaType != 'Targeted'" >
                         <b>feet</b>
-                        <b-form-input v-model="spell.areaSize"></b-form-input>
+                        <b-form-input :class="getStylingClass('input')" v-model="spell.areaSize"></b-form-input>
                     </div>
                     
                 </b-col>
@@ -82,9 +86,9 @@
                     <b-row>
                         <b-col cols="6">
                             <b>Range</b>
-                            <b-form-input v-model="spell.range"></b-form-input>
+                            <b-form-input :class="getStylingClass('input')" v-model="spell.range"></b-form-input>
                             <b>Duration</b>
-                            <b-form-input v-model="spell.duration"></b-form-input>
+                            <b-form-input :class="getStylingClass('input')" v-model="spell.duration"></b-form-input>
                           
                         </b-col>
                         <b-col cols="6">
@@ -98,10 +102,10 @@
                     </b-row>
 
                     <b>Description</b>
-                    <b-form-textarea style="height: 13rem;" v-model="spell.description"></b-form-textarea>
+                    <b-form-textarea :class="getStylingClass('input')" style="height: 13rem;" v-model="spell.description"></b-form-textarea>
 
                     <b>Components</b>
-                    <b-form-textarea v-model="spell.cost"></b-form-textarea>
+                    <b-form-textarea :class="getStylingClass('input')" v-model="spell.cost"></b-form-textarea>
                 </b-col>
             </b-row>
         </b-modal>
@@ -112,6 +116,7 @@
 
 export default {
   props: [
+    "getStylingClass",
     "spell",
     "spellSchools",
     "spellActions",
