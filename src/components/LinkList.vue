@@ -68,7 +68,7 @@ export default {
   props: ["linkList", "campaign", "id"],
   data() {
     return {
-      typeList: ["note","character","location", "map"],
+      typeList: ["note","character", "map"],
       searchQuery: "",
       showDropdown: false,
       newLink: {

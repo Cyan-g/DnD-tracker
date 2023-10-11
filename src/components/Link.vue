@@ -12,7 +12,7 @@
     <b-modal :id="link.label + '--' + link.number" size="lg" v-if="content" hide-footer hide-header>
       <TimelineNote v-if="link.type == 'note'" :note="content"></TimelineNote>
       <Character v-if="link.type == 'character'" :character="content"></Character>
-      <Location v-if="link.type == 'location'" :location="content"></Location>
+      <!-- <Location v-if="link.type == 'location'" :location="content"></Location> -->
       <Map v-if="link.type == 'map'" :map="content"></Map>
     </b-modal>
   </div>
@@ -39,10 +39,10 @@ export default {
         if(!content || content.name != this.link.label) content = this.campaign.characters.find(x => x.name == this.link.label);
         this.content = content;
       }
-      if(this.link.type == "location"){
-        let content = this.campaign.locations[this.campaign.locations.length - this.link.number -1];
-        this.content = content;
-      }
+      // if(this.link.type == "location"){
+      //   let content = this.campaign.locations[this.campaign.locations.length - this.link.number -1];
+      //   this.content = content;
+      // }
       if(this.link.type == "map"){
         let content = this.campaign.maps[this.campaign.maps.length - this.link.number -1];
         this.content = content;
