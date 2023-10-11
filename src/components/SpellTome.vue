@@ -4,11 +4,11 @@
         <hr/>
         <!-- Filters -->
         <b-row>
-            <b-col cols="3">
+            <b-col lg="3">
                 <b>Search</b><br>
                 <b-form-input v-model="searchQuery" placeholder="type to search"></b-form-input>
             </b-col>
-            <b-col cols="3">
+            <b-col lg="3">
                 <b-button 
                     variant="outline-success"
                     class="mb-1 mt-4"
@@ -17,7 +17,7 @@
                     <i class="fas fa-plus"></i> Add Spell
                 </b-button>
             </b-col>
-            <b-col cols="3">
+            <b-col lg="3">
                 <b-button 
                     variant="outline-primary"
                     class="mb-1 mt-4"
@@ -29,7 +29,7 @@
         </b-row>
 
         <b-row>
-            <b-col cols="3">
+            <b-col lg="3">
                 <b>School</b><br>
                 <b-dropdown style="width: 100%" variant="dark" :text="searchSchool">
                     <b-dropdown-item
@@ -41,7 +41,7 @@
                 </b-dropdown>
             </b-col>
 
-            <b-col cols="3">
+            <b-col lg="3">
                 <b>Type</b><br>
                 <b-dropdown style="width: 100%" variant="dark" :text="searchType">
                     <b-dropdown-item
@@ -53,7 +53,7 @@
                 </b-dropdown>
             </b-col>
 
-            <b-col cols="3">
+            <b-col lg="3">
                 <b>Cast Time</b><br>
                 <b-dropdown style="width: 100%" variant="dark" :text="searchAction">
                     <b-dropdown-item
@@ -65,7 +65,7 @@
                 </b-dropdown>
             </b-col>
 
-            <b-col cols="3">
+            <b-col lg="3">
                 <b>Target</b> <br>
                 <b-dropdown style="width: 100%" variant="dark" :text="searchArea">
                     <b-dropdown-item
@@ -81,7 +81,7 @@
         <hr>
 
         <b-row>
-            <b-col cols="4">
+            <b-col lg="4">
              
                 <b-card class="mb-1" no-header body-class="p-1 bg-dark text-light" v-if="filteredSpells.filter(x => x.level == 'Cantrip').length > 0">
                     <h4 class="ml-2">Cantrips</h4>
@@ -98,8 +98,16 @@
                         @delete="deleteSpell(spell)"
                         ></Spell>
                 </b-card>
-
-                <b-card class="mb-1" v-for="level in 2" :key="'_'+level" no-header body-class="p-1 bg-dark text-light" v-show="filteredSpells.filter(x => x.level == 'Level '+ level).length > 0">
+            </b-col>
+            
+            <b-col lg="4"  
+                v-for="level in 9" 
+                :key="'_'+level" >
+                <b-card 
+                    class="mb-1" 
+                    no-header 
+                    body-class="p-1 bg-dark text-light" 
+                    v-show="filteredSpells.filter(x => x.level == 'Level '+ level).length > 0">
                     <b-row>
                         <b-col cols="5">
                             <h4 class="ml-2">Level {{ level }}</h4>
@@ -126,69 +134,7 @@
                         @delete="deleteSpell(spell)"
                         ></Spell>
                 </b-card>
-
             </b-col>
-
-            <b-col cols="4">
-                <b-card class="mb-1" v-for="level in 3" :key="'_'+(level +2)" no-header body-class="p-1 bg-dark text-light" v-show="filteredSpells.filter(x => x.level == 'Level '+ (level +2)).length > 0">
-                    <b-row>
-                        <b-col cols="5">
-                            <h4 class="ml-2">Level {{ (level+2) }}</h4>
-                        </b-col>
-                        <b-col>
-                            Total
-                            <b-form-input style="height: 1.3rem;" v-model="campaign['slots' + (level+2)]"></b-form-input>
-                        </b-col>
-                        <b-col>
-                            Remaining
-                            <b-form-input style="height: 1.3rem;" v-model="campaign['used' + (level+2)]"></b-form-input>
-                        </b-col>
-                    </b-row>
-                    <hr>
-                    <Spell 
-                        v-for="(spell, index) in filteredSpells.filter(x => x.level == ('Level '+ (level +2)))" 
-                        :key="(level +2) + '+' + index"
-                        :spell="spell"
-                        :spellSchools="spellSchools"
-                        :spellActions="spellActions"
-                        :spellArea="spellArea"
-                        :spellType="spellType"
-                        :spellLevels="spellLevels"
-                        @delete="deleteSpell(spell)"
-                        ></Spell>
-                </b-card>
-            </b-col>
-
-            <b-col cols="4">
-                <b-card class="mb-1" v-for="level in 4" :key="'_'+(level + 5)" no-header body-class="p-1 bg-dark text-light" v-show="filteredSpells.filter(x => x.level == 'Level '+ (level + 5)).length > 0">
-                    <b-row>
-                        <b-col cols="5">
-                            <h4 class="ml-2">Level {{ (level+5) }}</h4>
-                        </b-col>
-                        <b-col>
-                            Total
-                            <b-form-input style="height: 1.3rem;" v-model="campaign['slots' + (level+5)]"></b-form-input>
-                        </b-col>
-                        <b-col>
-                            Remaining
-                            <b-form-input style="height: 1.3rem;" v-model="campaign['used' + (level+5)]"></b-form-input>
-                        </b-col>
-                    </b-row>
-                    <hr>
-                    <Spell 
-                        v-for="(spell, index) in filteredSpells.filter(x => x.level == ('Level '+ (level + 5)))" 
-                        :key="(level + 5) + '+' + index"
-                        :spell="spell"
-                        :spellSchools="spellSchools"
-                        :spellActions="spellActions"
-                        :spellArea="spellArea"
-                        :spellType="spellType"
-                        :spellLevels="spellLevels"
-                        @delete="deleteSpell(spell)"
-                        ></Spell>
-                </b-card>
-            </b-col>
-
         </b-row>
     </div>
 </template>
@@ -220,8 +166,7 @@ export default {
             "Any",
             "Action",
             "Bonus Action",
-            "Reaction",
-            "Ritual",
+            "Reaction"
         ],
         spellArea: [
             "Any",
@@ -234,6 +179,7 @@ export default {
         ],
         spellType: [
             "Any",
+            "Utility",
             "Spell Attack",
             "STR Save",
             "DEX Save",
@@ -261,6 +207,7 @@ export default {
             cost: "",
             prepared: false,
             concentration: false,
+            ritual: false,
             verbal: false,
             somatic: false,
             material: false,

@@ -1,7 +1,9 @@
 <template>
     <div>
         <b-card class="mb-1" body-class="p-1 text-dark mt-0" no-header>
-            <b-form-checkbox v-model="spell.prepared">
+            <b-form-checkbox 
+                v-b-popover.hover.left="'prepared'"
+                v-model="spell.prepared">
                 <b-button variant="outline-dark"  size="sm" style="padding: 3px;"  @click="$bvModal.show('modal_' + spell.name)"> 
                     {{ spell.name }}
                 </b-button>
@@ -91,6 +93,7 @@
                             <b-form-checkbox v-model="spell.somatic"> Somatic</b-form-checkbox>
                             <b-form-checkbox v-model="spell.component"> Material</b-form-checkbox>
                             <b-form-checkbox v-model="spell.concentration"> Concentration</b-form-checkbox>
+                            <b-form-checkbox v-model="spell.ritual"> Ritual</b-form-checkbox>
                         </b-col>
                     </b-row>
 
