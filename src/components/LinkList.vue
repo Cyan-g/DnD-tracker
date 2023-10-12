@@ -14,7 +14,7 @@
       <b-row>
         <b-col class="mb-1" cols="6" v-for="(link, index) in linkList" :key="index + '_link'" >
           <b-button-group>
-            <Link :link="link" :campaign="campaign"></Link> 
+            <Link :link="link" :campaign="campaign" :getStylingClass="getStylingClass"></Link> 
             <b-button 
               variant="outline-danger" 
               size="sm" 
@@ -65,7 +65,7 @@
 import _ from "lodash";
 
 export default {
-  props: ["linkList", "campaign", "id"],
+  props: ["linkList", "campaign", "id", "getStylingClass"],
   data() {
     return {
       typeList: ["note","character", "map"],

@@ -16,7 +16,7 @@
           </b-col>
 
           <b-col cols="4" v-if="campaign">
-            <LinkList :linkList="note.links" :campaign="campaign" id="NoteLinkModal"></LinkList>
+            <LinkList :getStylingClass="getStylingClass"  :linkList="note.links" :campaign="campaign" id="NoteLinkModal"></LinkList>
           </b-col>
         </b-row>
     </div>

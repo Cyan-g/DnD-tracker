@@ -220,7 +220,7 @@
           </b-row>
         </b-col>
         <b-col cols="4" v-if="campaign">
-          <LinkList :linkList="character.links" :campaign="campaign" id="CharacterLinkModal"></LinkList>
+          <LinkList :getStylingClass="getStylingClass"  :linkList="character.links" :campaign="campaign" id="CharacterLinkModal"></LinkList>
         </b-col>
       </b-row>
   </div>

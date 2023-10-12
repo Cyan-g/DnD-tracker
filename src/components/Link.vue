@@ -2,18 +2,18 @@
   <div :name="link.label + '_' + link.number">
     <b-button 
       size="sm" 
-      variant="outline-dark" 
+      :class="getStylingClass('button')"
       @click="findContent()"
       v-b-popover.hover.top="'show ' + link.type"
       >
       <i :class="linkIcon"></i> 
         {{link.label}}
     </b-button>
-    <b-modal :id="link.label + '--' + link.number" size="lg" v-if="content" hide-footer hide-header>
-      <TimelineNote v-if="link.type == 'note'" :note="content"></TimelineNote>
-      <Character v-if="link.type == 'character'" :character="content"></Character>
+    <b-modal :id="link.label + '--' + link.number" size="lg" v-if="content" hide-footer hide-header :body-class="getStylingClass('background')">
+      <TimelineNote v-if="link.type == 'note'" :note="content" :getStylingClass="getStylingClass"></TimelineNote>
+      <Character v-if="link.type == 'character'" :character="content" :getStylingClass="getStylingClass"></Character>
       <!-- <Location v-if="link.type == 'location'" :location="content"></Location> -->
-      <Map v-if="link.type == 'map'" :map="content"></Map>
+      <Map v-if="link.type == 'map'" :map="content" :getStylingClass="getStylingClass"></Map>
     </b-modal>
   </div>
 </template> 

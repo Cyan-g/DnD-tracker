@@ -14,10 +14,14 @@
         ></i>
       </div>
 
-        <b-modal hide-header hide-footer :id="pin.x + '-' + pin.y">
+        <b-modal 
+            :body-class="getStylingClass('background')"
+            hide-header hide-footer :id="pin.x + '-' + pin.y">
           <b-row>
             <b-col cols="6">
-              <b-form-input v-model="pin.name"></b-form-input>
+              <b-form-input 
+                :class="getStylingClass('input')"
+                v-model="pin.name"></b-form-input>
             </b-col>
 
             <b-col cols="6">
@@ -26,10 +30,13 @@
 
             <b-col cols="12">
               <hr>
-              <b-form-textarea v-model="pin.notes" style="height: 20rem" class="mb-2"></b-form-textarea>
+              <b-form-textarea 
+                :class="getStylingClass('input')"
+                v-model="pin.notes" style="height: 20rem" class="mb-2">
+              </b-form-textarea>
             </b-col>
           </b-row>
-          <LinkList :linkList="pin.links" :campaign="campaign" id="PinLinkModal"></LinkList>
+          <LinkList :getStylingClass="getStylingClass" :linkList="pin.links" :campaign="campaign" id="PinLinkModal"></LinkList>
         </b-modal>
     </div>
 </template> 

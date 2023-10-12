@@ -26,6 +26,7 @@
                   v-for="(pin, i) in map.pins" 
                   :key="pin.x + '#' + pin.y" 
                   :pin="pin"
+                  :getStylingClass="getStylingClass"
                   :campaign="campaign"
                   @enter="hoverPin = true"
                   @leave="hoverPin = false"
