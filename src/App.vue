@@ -5,6 +5,14 @@
       <b-col cols="2">
         <b-form-input :class="getStylingClass('input')" v-model="campaign.name"></b-form-input>
       </b-col>
+      <b-col cols="2">
+        <b-button @click="$bvModal.show('combatInfoModal')"> <i class="fas fa-book"></i> Action Codex</b-button>
+        <CombatInfo :getStylingClass="getStylingClass"></CombatInfo>
+      </b-col>
+      <b-col cols="2">
+        <b-button @click="$bvModal.show('conditionInfoModal')"> <i class="fas fa-book"></i> Condition Codex</b-button>
+        <ConditionInfo :getStylingClass="getStylingClass"></ConditionInfo>
+      </b-col>
     </b-row>
     <br>
     <b-tabs 
@@ -80,6 +88,8 @@
 <script>
 import _ from "lodash";
 import FileSaver from 'file-saver';
+import CombatInfo from "./components/CombatInfo.vue";
+import ConditionInfo from "./components/ConditionInfo.vue";
 import Timeline from "./components/Timeline.vue";
 import Combat from "./components/Combat.vue";
 import CharacterList from "./components/CharacterList.vue";
@@ -90,6 +100,8 @@ import SpellTome from "./components/SpellTome.vue";
 export default {
   name: "App",
   components: {
+    CombatInfo,
+    ConditionInfo,
     MapList,
     LocationList,
     CharacterList,
