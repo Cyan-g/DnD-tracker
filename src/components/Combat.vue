@@ -297,7 +297,7 @@
                             pill 
                             v-b-popover.hover.top="'remove'"
                             variant="outline-danger"
-                            @click="campaign.combat.players.splice(index, 1)"
+                            @click="campaign.combat.enemies.splice(index, 1)"
                             >
                             <i class="fas fa-skull"></i>
                         </b-button>
