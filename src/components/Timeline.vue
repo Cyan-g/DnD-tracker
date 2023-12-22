@@ -53,11 +53,9 @@
 
 <script>
 import _ from "lodash";
-import TimelineNote from "./TimelineNote.vue";
 
 export default {
   props: ["campaign", "getStylingClass"],
-  components: {TimelineNote},
   data() {
     return {
         searchQuery: "",
@@ -72,7 +70,9 @@ export default {
   created() {
     if(this.campaign.timeline.length == 0)
         this.campaign.timeline.push(_.cloneDeep(this.defaultNote));
-    this.selectNote(0);
+    this.$nextTick(() => {
+        this.selectNote(0);
+    });
   },
   methods: {
     clearFilter(){

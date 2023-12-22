@@ -36,8 +36,9 @@
           </b-row>
          
           <hr>
-          <b-button variant="dark" @click="exportCampaign()">Export</b-button>
-          <b-button class="ml-1" variant="dark" :disabled="campaignText.length < 10" @click="importCampaign()">Import</b-button>
+          <b-button variant="dark" @click="exportCampaign()">Save & Export</b-button>
+          <b-button class="ml-1" variant="dark" :disabled="campaignText.length < 10" @click="mapImport()">Import Maps from save</b-button>
+          <b-button class="ml-1" variant="dark" :disabled="campaignText.length < 10" @click="fullImport()">Import Full save</b-button>
           <br>
           <b-form-textarea :class="getStylingClass('input') + ' mt-2'" style="height: 35rem; width: 100%" v-model="campaignText">
             </b-form-textarea>
@@ -74,11 +75,11 @@
         </b-card>
       </b-tab>
 
-      <b-tab :title-link-class="getStylingClass('button') + ' mb-1'" title="Locations">
+      <!-- <b-tab :title-link-class="getStylingClass('button') + ' mb-1'" title="Locations">
         <b-card v-if="campaign" :body-class="getStylingClass('background')">
           <LocationList :campaign="campaign" :getStylingClass="getStylingClass"></LocationList>
         </b-card>
-      </b-tab>
+      </b-tab> -->
 
     </b-tabs>
   </body>
@@ -94,7 +95,7 @@ import Timeline from "./components/Timeline.vue";
 import Combat from "./components/Combat.vue";
 import CharacterList from "./components/CharacterList.vue";
 import MapList from "./components/MapList.vue";
-import LocationList from "./components/LocationList.vue";
+// import LocationList from "./components/LocationList.vue";
 import SpellTome from "./components/SpellTome.vue";
 
 export default {
@@ -103,7 +104,7 @@ export default {
     CombatInfo,
     ConditionInfo,
     MapList,
-    LocationList,
+    // LocationList,
     CharacterList,
     Timeline,
     SpellTome,
@@ -156,7 +157,11 @@ export default {
     this.campaign = _.cloneDeep(this.campaignTemplate);
     var settings = JSON.parse(localStorage.getItem("settings"));
     if(!settings) settings = _.cloneDeep(this.defaultSettings);
-    this.campaign.settings = settings;
+      this.campaign.settings = settings;
+
+    var savedCampaign = JSON.parse(localStorage.getItem("campaignData"));
+    if(savedCampaign) 
+      this.campaign = savedCampaign;
   },
   methods: {
     getStylingClass(element){
@@ -196,18 +201,26 @@ export default {
       }
     
     },
-    importCampaign(){
+    fullImport(){
       this.campaign = null;
       this.campaign = JSON.parse(this.campaignText);
+      this.campaignText = "";
+    },
+    mapImport(){
+      var saveFile = JSON.parse(this.campaignText);
+      this.campaign.maps = _.cloneDeep(saveFile.maps);
       this.campaignText = "";
     },
     exportCampaign(){
       var blob = new Blob([JSON.stringify(this.campaign)], {
         type: "text/plain;charset=utf-8",
       });
-
       // Create and save the file using the FileWriter library
       FileSaver.saveAs(blob, this.campaign.name);
+
+      var campaignData = _.cloneDeep(this.campaign);
+      campaignData.maps = [];
+      localStorage.setItem("campaignData", JSON.stringify(campaignData));
     }
   },
   computed: {
