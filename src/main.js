@@ -9,6 +9,7 @@ import Link from "./components/Link.vue"
 import Spell from "./components/Spell.vue"
 import TimelineNote from "./components/TimelineNote.vue"
 import Character from "./components/Character.vue"
+import CharacterSheet from "./components/CharacterSheet.vue"
 import Map from "./components/Map.vue"
 import Location from "./components/Location.vue"
 import LocationTree from "./components/LocationTree.vue"
@@ -23,6 +24,7 @@ Vue.use(Vuelidate);
 Vue.component("Link", Link)
 Vue.component("TimelineNote", TimelineNote)
 Vue.component("Character", Character)
+Vue.component("CharacterSheet", CharacterSheet)
 Vue.component("Map", Map)
 Vue.component("Spell", Spell)
 Vue.component("Location", Location)

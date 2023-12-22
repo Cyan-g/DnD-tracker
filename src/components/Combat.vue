@@ -41,28 +41,75 @@
                         </b-button>
                     </div>
 
-                    <div style="width: 4rem" class="mt-2 mr-1">
-                        <b-form-input :class="getStylingClass('input')"
-                            class="mb-1"
-                            v-b-popover.hover.top="'initiative'"
-                            label="initiative" style="height: 1.4rem;" v-model="ally.initiative">
-                        </b-form-input>
-                        <b-form-input :class="getStylingClass('input')"
-                            v-b-popover.hover.top="'armor class'"
-                            label="armorClass" style="height: 1.4rem;" v-model="ally.armorClass">
-                        </b-form-input>
+                    <div style="width: 5rem" class="mt-2 mr-1">
+                        <b-input-group>
+                            <template #prepend>
+                                <b-button 
+                                    v-b-popover.hover.top="'Initiative'"
+                                    disabled 
+                                    style="height: 1.4rem; width: 1rem; font-size: small;" 
+                                    class="p-0">
+                                    <i class="fas fa-running"></i>
+                                </b-button>
+                            </template>
+                            <b-form-input :class="getStylingClass('input')" 
+                                class="mb-1"
+                                style="display: inline-block; height: 1.4rem"
+                                v-model="ally.initiative">
+                            </b-form-input>
+                        </b-input-group>
+                        <b-input-group>
+                            <template #prepend>
+                                <b-button 
+                                    v-b-popover.hover.top="'Armor class'"
+                                    disabled 
+                                    style="height: 1.4rem; width: 1rem; font-size: small;" 
+                                    class="p-0">
+                                    <i class="fas fa-shield-alt"></i>
+                                </b-button>
+                            </template>
+                            <b-form-input :class="getStylingClass('input')" 
+                                class="mb-1"
+                                style="display: inline-block; height: 1.4rem"
+                                v-model="ally.armorClass">
+                            </b-form-input>
+                        </b-input-group>
                     </div>
 
-                    <div  style="width: 4rem" class="mt-2">
-                        <b-form-input :class="getStylingClass('input')" 
-                            class="mb-1"
-                            v-b-popover.hover.top="'current HP'"
-                            style="height: 1.4rem" v-model="ally.hp">
-                        </b-form-input>
-                        <b-form-input :class="getStylingClass('input')" 
-                            v-b-popover.hover.top="'max HP'"
-                            style="height: 1.4rem" v-model="ally.maxHp">
-                        </b-form-input>
+                    <div style="width: 5rem" class="mt-2">
+                        <b-input-group>
+                            <template #prepend>
+                                <b-button 
+                                    v-b-popover.hover.top="'current HP'"
+                                    disabled 
+                                    style="height: 1.4rem; width: 1rem; font-size: small;" 
+                                    class="p-0">
+                                    <i class="fas fa-heart-broken"></i>
+                                </b-button>
+                            </template>
+                            <b-form-input :class="getStylingClass('input')" 
+                                class="mb-1"
+                                style="display: inline-block; height: 1.4rem"
+                                v-model="ally.hp">
+                            </b-form-input>
+                        </b-input-group>
+
+                        <b-input-group>
+                            <template #prepend>
+                                <b-button 
+                                    v-b-popover.hover.top="'max HP'"
+                                    disabled 
+                                    style="height: 1.4rem; width: 1rem; font-size: small;" 
+                                    class="p-0">
+                                    <i class="fas fa-heart"></i>
+                                </b-button>
+                            </template>
+                            <b-form-input :class="getStylingClass('input')" 
+                                class="mb-1"
+                                style="display: inline-block; height: 1.4rem"
+                                v-model="ally.maxHp">
+                            </b-form-input>
+                        </b-input-group>
                     </div>
 
                     <div style="width: 11rem" class="ml-1">
@@ -266,29 +313,75 @@
                         <b-form-textarea :class="getStylingClass('input') + ' mt-1'" :key="enemy.showNotes" v-if="enemy.showNotes" v-model="enemy.notes"></b-form-textarea>
                     </div>
 
-                    <div  style="width: 4rem" class="mt-2">
-                        <b-form-input 
-                            :class="getStylingClass('input')" 
-                            class="mb-1"
-                            v-b-popover.hover.top="'current HP'"
-                            style="height: 1.4rem" v-model="enemy.hp">
-                        </b-form-input>
-                        <b-form-input :class="getStylingClass('input')" 
-                            v-b-popover.hover.top="'max HP'"
-                            style="height: 1.4rem" v-model="enemy.maxHp">
-                        </b-form-input>
+                    <div  style="width: 5rem" class="mt-2">
+                        <b-input-group>
+                            <template #append>
+                                <b-button 
+                                    v-b-popover.hover.top="'current HP'"
+                                    disabled 
+                                    style="height: 1.4rem; width: 1rem; font-size: small;" 
+                                    class="p-0">
+                                    <i class="fas fa-heart-broken"></i>
+                                </b-button>
+                            </template>
+                            <b-form-input :class="getStylingClass('input')" 
+                                class="mb-1"
+                                style="display: inline-block; height: 1.4rem"
+                                v-model="enemy.hp">
+                            </b-form-input>
+                        </b-input-group>
+
+                        <b-input-group>
+                            <template #append>
+                                <b-button 
+                                    v-b-popover.hover.top="'Max HP'"
+                                    disabled 
+                                    style="height: 1.4rem; width: 1rem; font-size: small;" 
+                                    class="p-0">
+                                    <i class="fas fa-heart"></i>
+                                </b-button>
+                            </template>
+                            <b-form-input :class="getStylingClass('input')" 
+                                class="mb-1"
+                                style="display: inline-block; height: 1.4rem"
+                                v-model="enemy.maxHp">
+                            </b-form-input>
+                        </b-input-group>
                     </div>
 
-                    <div style="width: 4rem" class="mt-2 ml-1">
-                        <b-form-input :class="getStylingClass('input')"
-                            class="mb-1"
-                            v-b-popover.hover.top="'initiative'"
-                            label="initiative" style="height: 1.4rem;" v-model="enemy.initiative">
-                        </b-form-input>
-                        <b-form-input :class="getStylingClass('input')"
-                            v-b-popover.hover.top="'armor class'"
-                            label="armorClass" style="height: 1.4rem;" v-model="enemy.armorClass">
-                        </b-form-input>
+                    <div style="width: 5rem" class="mt-2 ml-1">
+                        <b-input-group>
+                            <template #append>
+                                <b-button 
+                                    v-b-popover.hover.top="'Initiative'"
+                                    disabled 
+                                    style="height: 1.4rem; width: 1rem; font-size: small;" 
+                                    class="p-0">
+                                    <i class="fas fa-running"></i>
+                                </b-button>
+                            </template>
+                            <b-form-input :class="getStylingClass('input')" 
+                                class="mb-1"
+                                style="display: inline-block; height: 1.4rem"
+                                v-model="enemy.initiative">
+                            </b-form-input>
+                        </b-input-group>
+                        <b-input-group>
+                            <template #append>
+                                <b-button 
+                                    v-b-popover.hover.top="'Armor class'"
+                                    disabled 
+                                    style="height: 1.4rem; width: 1rem; font-size: small;" 
+                                    class="p-0">
+                                    <i class="fas fa-shield-alt"></i>
+                                </b-button>
+                            </template>
+                            <b-form-input :class="getStylingClass('input')" 
+                                class="mb-1"
+                                style="display: inline-block; height: 1.4rem"
+                                v-model="enemy.armorClass">
+                            </b-form-input>
+                        </b-input-group>
                     </div>
 
                     

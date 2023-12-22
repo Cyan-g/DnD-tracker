@@ -25,7 +25,7 @@
                             style="width: 100%; height: 2rem;"
                             >
                             <b-button 
-                                :class="(selectedNote.date == note.date ? getStylingClass('button') : getStylingClass('buttonReverse')) +' p-1'"
+                                :class="(selectedNote != null && selectedNote.date == note.date ? getStylingClass('button') : getStylingClass('buttonReverse')) +' p-1'"
                                 style="width: 90%;"
                                 @click="selectNote(index)"
                                 >

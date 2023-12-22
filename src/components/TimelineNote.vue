@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div v-if="note">
         <br>
         <b-form-input 
           :class="getStylingClass('input')"
