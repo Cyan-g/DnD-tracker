@@ -69,6 +69,12 @@
         </b-card>
       </b-tab>
 
+      <!-- <b-tab :title-link-class="getStylingClass('button') + ' mb-1'" title="Character Sheet">
+        <b-card v-if="campaign" :body-class="getStylingClass('background')">
+          <CharacterSheet :campaign="campaign" :getStylingClass="getStylingClass"></CharacterSheet>
+        </b-card>
+      </b-tab> -->
+
       <b-tab :title-link-class="getStylingClass('button') + ' mb-1'" title="Maps">
         <b-card v-if="campaign" :body-class="getStylingClass('background')">
           <MapList :campaign="campaign" :getStylingClass="getStylingClass"></MapList>
@@ -126,6 +132,7 @@ export default {
           showCharacterStats: false,
           darkMode: false
         },
+        character: null,
         timeline: [],
         characters: [],
         locations: [],
